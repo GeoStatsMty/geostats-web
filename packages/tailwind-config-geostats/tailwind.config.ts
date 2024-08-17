@@ -11,6 +11,14 @@ const config: Config = {
 	theme: {
 		extend: {
 			keyframes: {
+				'big-spin': {
+					'0%': {
+						transform: 'rotate(360deg)',
+					},
+					'100%': {
+						transform: 'rotate(0deg)',
+					},
+				},
 				'spin-path': {
 					'0%': {
 						'stroke-dasharray': '1, 150',
@@ -28,6 +36,7 @@ const config: Config = {
 			},
 			animation: {
 				'spin-path': 'spin-path 1.5s ease-in-out infinite;',
+				'big-spin': 'big-spin 35s linear infinite;',
 			},
 			strokeWidth: {
 				3: '6px',
