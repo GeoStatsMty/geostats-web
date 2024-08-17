@@ -9,7 +9,8 @@
 	],
 	"scripts": {
 		"dev": "turbo watch dev",
-		"build": "turbo build"
+		"build": "turbo build",
+		"test": "turbo test"
 	},
 	"repository": {
 		"type": "git",
