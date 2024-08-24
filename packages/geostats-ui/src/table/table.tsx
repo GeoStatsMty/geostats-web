@@ -12,7 +12,7 @@ import {cx} from '@/cva.ts';
 
 export type TableProps<T> = {
 	readonly className?: string;
-} & AriaTableProps<T> &
+} & AriaTableProps &
 	TableStateProps<T>;
 
 export function Table<T extends object>(props: TableProps<T>) {
