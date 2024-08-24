@@ -1,7 +1,7 @@
 "use client"
 import {
   Modal
-} from "../chunk-NS3QULJG.js";
+} from "../chunk-JGN4R6XY.js";
 export {
   Modal
 };

@@ -2,7 +2,7 @@
 "use client";
 import {
   TableHeaderRow
-} from "../chunk-ZR7H7G6O.js";
+} from "../chunk-KEJOA6IT.js";
 export {
   TableHeaderRow
 };

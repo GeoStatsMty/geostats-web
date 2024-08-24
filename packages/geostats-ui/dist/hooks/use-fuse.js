@@ -1,7 +1,7 @@
 "use client"
 import {
   useFuse
-} from "../chunk-KR37POKN.js";
+} from "../chunk-VDSIWZQJ.js";
 export {
   useFuse
 };

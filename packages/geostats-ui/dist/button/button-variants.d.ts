@@ -29,9 +29,9 @@ declare const buttonVariants: (props?: ({
     } | null | undefined)[] | {
         [x: string]: any;
     } | null | undefined;
-    className?: undefined;
+    className?: never;
 } | {
-    class?: undefined;
+    class?: never;
     className?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | any | {
         [x: string]: any;
     } | null | undefined)[] | {

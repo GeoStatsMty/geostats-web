@@ -4,7 +4,7 @@ import { TableStateProps } from 'react-stately';
 
 type TableProps<T> = {
     readonly className?: string;
-} & AriaTableProps<T> & TableStateProps<T>;
+} & AriaTableProps & TableStateProps<T>;
 declare function Table<T extends object>(props: TableProps<T>): react_jsx_runtime.JSX.Element;
 
 export { Table, type TableProps };

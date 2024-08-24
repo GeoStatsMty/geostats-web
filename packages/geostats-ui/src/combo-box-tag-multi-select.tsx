@@ -94,7 +94,7 @@ export function ComboBoxTagMultiSelect<
 				inputValue={filterText}
 				className='w-full'
 				onInputChange={setFilterText}
-				onSelectionChange={(key: Key) => {
+				onSelectionChange={(key: Key | null) => {
 					if (key === null) {
 						if (filterText !== '') {
 							setFilterText('');
