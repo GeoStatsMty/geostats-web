@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl'; 
 
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic3RvY2s0NCIsImEiOiJjbHE0amx3aXEwODQyMmlsb3RnNHk0MDN1In0.qWALc9kC_uuNNBucnTeauw'; 
+mapboxgl.accessToken =  process.env.NEXT_PUBLIC_MAPBOX_TOKEN!; 
 
 
 export type MainMapProps = {
@@ -14,6 +14,10 @@ export type MainMapProps = {
 	readonly className ? : string
 	readonly showFiscalia : boolean
 }
+
+
+const monterreyLat = 25.67;
+const monterreyLng = -100.32;
 
 
 export  default function MapScreen(props: MainMapProps){ 
@@ -29,6 +33,10 @@ export  default function MapScreen(props: MainMapProps){
 	const mapRef = useRef<Map>()
 
 
+	const [lng, setLng] = useState(monterreyLng);
+	const [lat, setLat] = useState(monterreyLat);
+	const [zoom, setZoom] = useState(10.5);
+
 	useEffect( ()=> {
 
 		if(!mapRef.current) return
@@ -42,15 +50,9 @@ export  default function MapScreen(props: MainMapProps){
 				
 				'source' : 'feminicidios-fiscalia',
 				'source-layer' : 'Feminicidios_de_Fiscalia_cent-3rdfpy',
-				//'filter': '',
-				//'layout':   ,
 				'maxzoom': 20,
-				//'metadata'   ,
 				'minzoom': 7 ,
 				'paint': {
-	
-					
-					//'fill' : "#000000",
 					'circle-radius': [
 					"interpolate",
 					["linear"],
@@ -64,7 +66,6 @@ export  default function MapScreen(props: MainMapProps){
 					'circle-blur' : 1  
 					
 				},
-					//'slot':  ,
 	
 			});	
 			return () => {
@@ -78,15 +79,9 @@ export  default function MapScreen(props: MainMapProps){
 			
 			'source' : 'feminicidios-periodicos',
 			'source-layer' : 'Feminicidios_de_Periodicos_ce-1wv0e9',
-			//'filter': '',
-			//'layout':   ,
 			'maxzoom': 20,
-			//'metadata'   ,
 			'minzoom': 7 ,
 			'paint': {
-
-				
-			  //'fill' : "#000000",
 			  'circle-radius': [
 				"interpolate",
 				["linear"],
@@ -100,8 +95,6 @@ export  default function MapScreen(props: MainMapProps){
 			  'circle-blur' : 1  
 			  
 			},
-			 //'slot':  ,
-
 		});
 
 		return () => {
@@ -118,8 +111,12 @@ export  default function MapScreen(props: MainMapProps){
             mapRef.current = new mapboxgl.Map({ 
                 container: mapContainerRef.current, 
                 style: 'mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4', 
-                center: [-100.31, 25], // starting position [lng, lat] 
-                zoom: 8, // starting zoom 
+				center: [lng, lat],
+				maxBounds: [
+					[monterreyLng - 2, monterreyLat - 3],
+					[monterreyLng + 2, monterreyLat + 3],
+				],
+				zoom: zoom,
             }); 
             
 			const map = mapRef.current
@@ -159,10 +156,7 @@ export  default function MapScreen(props: MainMapProps){
                   'type': 'fill',
                   'source' : 'resago-social',
                   'source-layer' : 'Grado_de_resago_social_nl_1-2k7zy0',
-                  //'filter': '',
-                  //'layout':   ,
                   'maxzoom': 20,
-                  //'metadata'   ,
                   'minzoom': 7 ,
                   'paint': {
 					'fill-color': [
@@ -176,13 +170,7 @@ export  default function MapScreen(props: MainMapProps){
 						"rgba(154, 133, 40, 0.7)",
 						"rgba(0, 0, 0, 0)"
 					  ],
-                 
-                    //'fill' : "#000000",
-                    //'circle-radius': 1000,
-                    //'circle-color': '#007cbf',    
-                    //'line-color': "#FFC0CB"
                   },
-                   //'slot':  ,
 
                 });
 				
@@ -190,23 +178,14 @@ export  default function MapScreen(props: MainMapProps){
                 map.addLayer({
 					'id': 'area-sin-cubrimiento-de-sitio',
 					'type': 'fill',
-					
 					'source' : 'area-sin-cubrimiento-de-sitio',
 					'source-layer' : 'Area_Sin_Cubrimiento_de_Sitio-3mxqpk',
-					//'filter': '',
-					//'layout':   ,
 					'maxzoom': 20,
-					//'metadata'   ,
 					'minzoom': 7 ,
 					'paint': {
 					  'fill-color': "rgba(220, 40, 40, 0.07)",
 					  'fill-outline-color': "rgba(255, 117, 117, 0.6)"
-					  //'fill' : "#000000",
-					  //'circle-radius': 1000,
-					  //'circle-color': '#007cbf',    
-					  //'line-color': "#FFC0CB"
 					},
-					 //'slot':  ,
   
 				  });
 				
