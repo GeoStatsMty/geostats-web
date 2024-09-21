@@ -2,7 +2,7 @@
 "use client";
 import {
   Sidebar
-} from "./chunk-AYBFKMN4.js";
+} from "./chunk-FOOXM5LN.js";
 export {
   Sidebar
 };
