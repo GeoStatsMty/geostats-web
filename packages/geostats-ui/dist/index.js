@@ -23,7 +23,6 @@ import {
 import {
   Paper
 } from "./chunk-AI7D4V7S.js";
-import "./chunk-7VPZIDDK.js";
 import {
   TableCell
 } from "./chunk-5CS6LJEF.js";
@@ -58,6 +57,7 @@ import {
 import {
   Modal
 } from "./chunk-JGN4R6XY.js";
+import "./chunk-7VPZIDDK.js";
 import {
   Select
 } from "./chunk-3ERLCYRE.js";
