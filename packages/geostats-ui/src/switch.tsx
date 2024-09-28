@@ -1,20 +1,32 @@
-'use client'
+'use client';
 
-import React, {useRef} from 'react';
-import { SwitchProps as AriaSwitchProps, Switch as AriaSwitch } from 'react-aria-components';
+import React from 'react';
+import {
+	SwitchProps as AriaSwitchProps,
+	Switch as AriaSwitch,
+} from 'react-aria-components';
+import {twMerge} from 'tailwind-merge';
 
 export type SwitchProps = {
-    readonly className?: string;
+	readonly className?: string;
+	readonly label?: string;
 } & AriaSwitchProps;
 
+export function Switch(props: SwitchProps) {
+	const {label, className, ...rest} = props;
 
-export function Switch(props : SwitchProps){
-
-    const {className, defaultSelected, isSelected, value, isDisabled, } = props;
-
-    return( 
-        <AriaSwitch className="flex items-center gap-1 size-12" >
-            <div className="w-[2rem] h-[1.143rem] border-2 border-[var(--border-color)] bg-[var(--background-color)] rounded-[1.143rem] transition-all duration-200"></div>
-        </AriaSwitch>
-    );
+	return (
+		<AriaSwitch
+			{...rest}
+			className={twMerge(
+				'group flex items-center gap-1 text-stone-300 text-sm',
+				className,
+			)}
+		>
+			<div className='me-2 w-[calc(theme(spacing.8)+4px)] rounded-full border border-stone-300 p-px transition-colors group-data-[selected=true]:border-stone-50 group-data-[selected=true]:bg-neutral-50'>
+				<div className='size-4 rounded-full bg-stone-100 transition-all group-data-[selected=true]:translate-x-full group-data-[selected=true]:bg-stone-900' />
+			</div>
+			{label}
+		</AriaSwitch>
+	);
 }
