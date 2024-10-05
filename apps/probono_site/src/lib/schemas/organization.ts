@@ -1,7 +1,7 @@
 import z from 'zod';
 import {DonationAuthStatus, CluniStatus, Gender} from '@prisma/client';
 import imageSchema from './image.ts';
-import {json, phoneSchema, urlHostnameRefinement} from '@/lib/schemas/util.ts';
+import {json, phoneSchema, urlHostnameRefinement, UrlValidation, hasValidDomain, formatURL} from '@/lib/schemas/util.ts';
 import {addressInitSchema} from '@/lib/schemas/address.ts';
 
 const organizationSchema = z.object({
@@ -13,7 +13,15 @@ const organizationSchema = z.object({
 		.int()
 		.lte(new Date().getFullYear(), 'Fecha futura'),
 	email: z.string().email('Correo inválido').nullish(),
-	webpage: z.string().url('Dirección inválida').nullish(),
+	webpage: z.preprocess((val) => {
+		if (typeof val === "string") {
+		  return formatURL(val);
+		}
+		return val;
+	  }, z.string().refine(hasValidDomain, {
+		message: "Dirección inválida. Asegúrate de que la URL tenga un dominio válido",
+	  }))
+	  .nullish(),
 	phone: phoneSchema.nullish(),
 	hasInvestmentAgreement: z.coerce.boolean().nullish(),
 	logoUrl: z.string().nullish(),

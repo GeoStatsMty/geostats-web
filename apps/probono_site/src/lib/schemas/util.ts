@@ -33,12 +33,13 @@ export const emptyStringToNullSchema = z.string().transform(emptyStringToNull);
  * @return {function} - A Zod refinement function that takes a URL and a Zod RefinementCtx and refines the URL hostname.
  */
 export function urlHostnameRefinement(hostname: string) {
-	const hostnames = new Set([`${hostname}.com`, `www.${hostname}.com`]);
+	const hostnames = new Set([`${hostname}.com`, `${hostname}.org`, `${hostname}.net`, `www.${hostname}.com`]);
 	return (url: string, context: z.RefinementCtx) => {
 		try {
-			const urlObject = url.startsWith('https://')
-				? new URL(url)
-				: new URL(`https://${url}`);
+			const urlObject = new URL(url.startsWith('https://') || url.startsWith('http://')
+			? url
+			: `https://${url}`);
+
 
 			if (!hostnames.has(urlObject.hostname)) {
 				context.addIssue({
@@ -69,6 +70,27 @@ export function urlHostnameRefinement(hostname: string) {
 		}
 	};
 }
+
+export function UrlValidation(error: string) {
+	return z.string().refine(hasValidDomain, {
+	  message: error,
+	});
+  }
+  
+  // Función para verificar dominio válido
+  export function hasValidDomain(url: string): boolean {
+	const domainPattern = /\.(com|net|org|edu|gov|io|co|biz|info)$/;
+	return domainPattern.test(url);
+  }
+  
+  // Función para formatear URL (agregar "https://" si falta)
+  export function formatURL(url: string): string {
+	if (!/^https?:\/\//i.test(url)) {
+	  return `https://${url}`;
+	}
+	return url;
+  }
+  
 
 export function formInputSchema<Schema extends z.ZodTypeAny>(schema: Schema) {
 	return z.preprocess(emptyStringToNull, schema);
