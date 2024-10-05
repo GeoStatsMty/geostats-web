@@ -2,7 +2,7 @@
 "use client";
 import {
   AnimatedLayoutContainer
-} from "./chunk-LTJJTLAW.js";
+} from "./chunk-2SDLHVAI.js";
 export {
   AnimatedLayoutContainer
 };

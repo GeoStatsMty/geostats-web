@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from 'react';
 import {
 	addSitiosDeApoyoLayer,
 	addSitiosDeApoyoSource,
+	removeSitiosDeApoyoLayer,
 } from '@/lib/sitios-de-apoyo.ts';
 import {
 	addFeminicidiosFiscaliaLayer,
@@ -19,10 +20,12 @@ import {
 import {
 	addAreaSinCubrimientoDeSitioLayer,
 	addAreaSinCubrimientoDeSitioSource,
+	removeAreaSinCubrimientoDeSitioLayer,
 } from '@/lib/area-sin-cubrimiento-de-sitio.ts';
 import {
 	addResagoSocialLayer,
 	addResagoSocialSource,
+	removeResagoSocialLayer,
 } from '@/lib/resago-social.ts';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
@@ -30,6 +33,9 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
 export type MainMapProps = {
 	readonly className?: string;
 	readonly showFiscalia: boolean;
+	readonly showCubrimientoDeSitio: boolean;
+	readonly showRezagoSocial : boolean;
+	readonly showSitiosDeApoyo : boolean;
 };
 
 const monterreyLat = 25.67;
@@ -37,7 +43,11 @@ const monterreyLng = -100.32;
 const initialZoom = 10.5;
 
 export default function MapScreen(props: MainMapProps) {
-	const {className, showFiscalia} = props;
+	const {className, 
+		showFiscalia, 
+		showCubrimientoDeSitio, 
+		showRezagoSocial, 
+		showSitiosDeApoyo} = props;
 
 	const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,7 +55,10 @@ export default function MapScreen(props: MainMapProps) {
 
 	const mapRef = useRef<Map>();
 
+	const xd = true
+
 	useEffect(() => {
+
 		if (!mapRef.current || !isLoaded) {
 			return;
 		}
@@ -68,6 +81,56 @@ export default function MapScreen(props: MainMapProps) {
 		};
 	}, [showFiscalia, isLoaded]);
 
+
+	useEffect(() => {
+
+		if (!mapRef.current || !isLoaded) {
+			return;
+		}
+
+		if(showCubrimientoDeSitio) addAreaSinCubrimientoDeSitioLayer(mapRef.current);
+
+		return () => {
+			if (mapRef.current) {
+				removeAreaSinCubrimientoDeSitioLayer(mapRef.current);
+			}
+		};
+
+	}, [showCubrimientoDeSitio, isLoaded]);
+
+	useEffect(() => {
+
+		if (!mapRef.current || !isLoaded) {
+			return;
+		}
+
+		if(showRezagoSocial) addResagoSocialLayer(mapRef.current);
+
+		return () => {
+			if (mapRef.current) {
+				removeResagoSocialLayer(mapRef.current);
+			}
+		};
+
+	}, [showRezagoSocial, isLoaded]);
+
+
+	useEffect(() => {
+
+		if (!mapRef.current || !isLoaded) {
+			return;
+		}
+
+		if(showSitiosDeApoyo) addSitiosDeApoyoLayer(mapRef.current);
+
+		return () => {
+			if (mapRef.current) {
+				removeSitiosDeApoyoLayer(mapRef.current);
+			}
+		};
+
+	}, [showSitiosDeApoyo, isLoaded]);
+
 	useEffect(() => {
 		if (mapContainerRef.current) {
 			mapRef.current = new Map({
@@ -82,6 +145,7 @@ export default function MapScreen(props: MainMapProps) {
 			});
 
 			const map = mapRef.current;
+			
 
 			map.on('load', () => {
 				addResagoSocialSource(map);
@@ -95,12 +159,7 @@ export default function MapScreen(props: MainMapProps) {
 				addSitiosDeApoyoSource(map);
 
 				setIsLoaded(true);
-
-				addResagoSocialLayer(map);
-
-				addAreaSinCubrimientoDeSitioLayer(map);
-
-				addSitiosDeApoyoLayer(map);
+				
 			});
 
 			/*
