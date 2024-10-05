@@ -30,3 +30,4 @@ export * from '@/spacer';
 export * from '@/tag-group';
 export * from '@/text-field';
 export * from '@/toast';
+export * from  '@/switch';

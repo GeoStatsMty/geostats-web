@@ -35,7 +35,7 @@
 		"postcss": "^8.4.35",
 		"react-aria": "^3.32.1",
 		"react-dropzone": "^14.2.3",
-		"react-email": "^2.1.4",
+		"react-email": "^2.1.6",
 		"react-is": "^18.3.0-canary-5c607369c-20240116",
 		"react-leaflet": "^4.2.1",
 		"react-query": "^3.39.3",
