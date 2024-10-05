@@ -29,6 +29,26 @@ import {formatInMxn} from '@/lib/format-mxn.ts';
 import {Form, type FormState, FormHeader} from '@/components/form';
 import {NumberField, TextField, Select, Separator} from 'geostats-ui';
 
+// Lista de dominios válidos
+const validDomains = [
+	'.com', '.net', '.org', '.edu', '.gov', '.io', '.co', '.us',
+	'.uk', '.ca', '.de', '.fr', '.jp', '.au', '.cn', '.in', '.es',
+];
+
+function formatURL(value: string): string {
+	if (!value) return value;
+	// Verificar si ya tiene un prefijo HTTP o HTTPS
+	if (!/^https?:\/\//i.test(value)) {
+		return `https://${value}`;
+	}
+	return value;
+}
+
+// Función para verificar si la URL tiene un dominio válido
+function hasValidDomain(value: string): boolean {
+	return validDomains.some(domain => value.endsWith(domain));
+}
+
 export type GeneralInfoFormProps = {
 	readonly action: (
 		state: FormState<OrganizationUpdate>,
@@ -50,7 +70,8 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 	} = props;
 
 	const validate = formValidators(organizationInitSchema);
-	return (
+	
+		return (
 		<Form
 			successToast={{
 				title: 'Se han guardado los cambios.',
@@ -140,7 +161,6 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 							className="size-4 fill-stone-600 group-focus-within:fill-stone-50"
 						/>
 					}
-					type="url"
 					className="mb-4 grow basis-5/12"
 					validate={validate.webpage}
 					defaultValue={organization.webpage ?? ''}
