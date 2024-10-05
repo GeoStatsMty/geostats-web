@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import {type Address, type Organization} from '@prisma/client';
 import Image from 'next/image';
@@ -45,31 +46,42 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 					{organization.name}
 				</h2>
 			</div>
-			<div className='grid w-full grow grid-cols-[64px_1fr] gap-4'>
+			<div className='grid grow grid-cols-[64px_minmax(0,1fr)] gap-4 '>
 				{organization.email && (
 					<>
 						<div>
 							<Email className='mx-auto fill-current' />
 						</div>
-						{organization.email}
+						<a href={`mailto:${organization.email}`} className='text-ellipsis min-w-0 overflow-hidden'>
+							{organization.email}
+						</a>
 					</>
 				)}
 
-				{organization.phone && (
-					<>
-						<div>
-							<Phone className='mx-auto fill-current' />
-						</div>
-						{organization.phone}
-					</>
+				{organization.phone && ( 
+				<>
+					<div onClick={() => navigator.clipboard.writeText(`${organization.phone}`)}>
+					<Phone className='mx-auto fill-current' />
+					</div>
+					<h3 
+					className='text-ellipsis min-w-0 overflow-hidden' 
+					onClick={() => navigator.clipboard.writeText(`${organization.phone}`)}
+					style={{ cursor: 'pointer' }}  // Añadido para indicar que es clicable
+					>
+					{organization.phone}
+					</h3>
+				</>
 				)}
+
 
 				{organization.webpage && (
 					<>
 						<div>
 							<Public className='mx-auto fill-current' />
 						</div>
-						{organization.webpage}
+						<a href={organization.webpage} target="_blank" rel="noopener noreferrer" className='underline text-ellipsis min-w-0 overflow-hidden'>
+							{organization.webpage}
+						</a>
 					</>
 				)}
 
@@ -79,7 +91,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 							<LocationOn className='mx-auto fill-current' />
 						</div>
 						{organization.address.street}{' '}
-						{organization.address.number}
+						{organization.address.number}{' '}
 					</>
 				)}
 			</div>
