@@ -18,7 +18,11 @@
 		"turbo": "^2.3.1"
 	},
 	"dependencies": {
-		"esbuild-plugin-alias": "^0.2.1"
+		"esbuild-plugin-alias": "^0.2.1",
+		"react-markdown": "^9.0.1",
+		"remark-abbr": "^1.4.2",
+		"remark-footnotes": "^5.0.0",
+		"remark-gfm": "^4.0.0"
 	},
 	"packageManager": "pnpm@9.0.0"
 }
