@@ -1,7 +1,10 @@
-import {Layer, Map} from 'mapbox-gl';
+import {Layer, Map, Popup} from 'mapbox-gl';
 
 const sourceId = 'feminicidios-fiscalia-source';
 const layerId = 'feminicidios-fiscalia-layer';
+
+
+
 const layer: Layer = {
 	id: layerId,
 	type: 'circle',
@@ -39,3 +42,5 @@ export function addFeminiciosFiscaliaSource(map: Map) {
 		url: 'mapbox://stock44.2k4nz34n',
 	});
 }
+
+
