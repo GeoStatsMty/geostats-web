@@ -6,6 +6,7 @@ import {
 	useFocusRing,
 	mergeProps,
 	useGridListSelectionCheckbox,
+	useObjectRef,
 } from 'react-aria';
 import {
 	useListState,
@@ -13,7 +14,6 @@ import {
 	type ListState,
 	type Node,
 } from 'react-stately';
-import {useObjectRef} from '@react-aria/utils';
 import {Checkbox} from './checkbox.tsx';
 import {cx} from './cva.ts';
 

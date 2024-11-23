@@ -1,7 +1,6 @@
 'use client';
 import React, {type ReactNode, type RefObject} from 'react';
-import {type AriaButtonOptions, useButton} from 'react-aria';
-import {useObjectRef} from '@react-aria/utils';
+import {type AriaButtonOptions, useButton, useObjectRef} from 'react-aria';
 import {type VariantProps} from '@/cva.ts';
 import {buttonVariants} from '@/button/button-variants.tsx';
 

@@ -9,7 +9,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"geostats-ui": "*",
+		"geostats-ui": "workspace:*",
 		"next": "14.2.4",
 		"react": "^18",
 		"react-dom": "^18",
@@ -20,11 +20,12 @@
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"eslint": "^8",
-		"eslint-config-geostats": "*",
+		"eslint-config-geostats": "workspace:*",
+		"tsconfig-geostats": "workspace:*",
 		"eslint-config-next": "14.2.5",
 		"postcss": "^8",
-		"prettier-config-geostats": "*",
-		"tailwind-config-geostats": "*",
+		"prettier-config-geostats": "workspace:*",
+		"tailwind-config-geostats": "workspace:*",
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5"
 	}

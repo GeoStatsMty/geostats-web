@@ -4,7 +4,7 @@ declare const paperVariants: (props?: ({
     hoverEffect?: boolean | undefined;
     spacing?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | undefined;
 } & ({
-    class?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | any | {
+    class?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | /*elided*/ any | {
         [x: string]: any;
     } | null | undefined)[] | {
         [x: string]: any;
@@ -32,7 +32,7 @@ declare const paperVariants: (props?: ({
     className?: never;
 } | {
     class?: never;
-    className?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | any | {
+    className?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | /*elided*/ any | {
         [x: string]: any;
     } | null | undefined)[] | {
         [x: string]: any;

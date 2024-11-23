@@ -2,11 +2,6 @@
 	"name": "geostats",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
-	"workspaces": [
-		"packages/*",
-		"apps/*"
-	],
 	"scripts": {
 		"dev": "turbo watch dev",
 		"build": "turbo build",
@@ -18,12 +13,12 @@
 	},
 	"private": true,
 	"devDependencies": {
-		"eslint": "^8.57.0",
-		"prettier": "^3.2.5",
-		"turbo": "^2.0.4"
+		"eslint": "^8.57.1",
+		"prettier": "^3.3.3",
+		"turbo": "^2.3.1"
 	},
 	"dependencies": {
 		"esbuild-plugin-alias": "^0.2.1"
 	},
-	"packageManager": "npm@10.1.0"
+	"packageManager": "pnpm@9.0.0"
 }

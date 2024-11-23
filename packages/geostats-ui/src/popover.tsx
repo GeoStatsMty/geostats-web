@@ -4,9 +4,9 @@ import {
 	DismissButton,
 	Overlay,
 	usePopover,
+	useObjectRef,
 } from 'react-aria';
 import type {OverlayTriggerState} from 'react-stately';
-import {useObjectRef} from '@react-aria/utils';
 
 type PopoverProps = {
 	readonly children: React.ReactNode;

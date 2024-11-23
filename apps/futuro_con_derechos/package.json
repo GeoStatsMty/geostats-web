@@ -9,23 +9,28 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"geostats-ui": "*",
+		"@n8tb1t/use-scroll-position": "^2.0.3",
+		"framer-motion": "^11.11.10",
+		"geostats-ui": "workspace:*",
 		"mapbox-gl": "^3.4.0",
 		"next": "14.2.4",
 		"react": "^18",
+		"react-aria-components": "^1.3.3",
 		"react-dom": "^18",
-		"react-email": "^1.10.1"
+		"react-email": "^1.10.1",
+		"tailwind-scrollbar": "^3.1.0"
 	},
 	"devDependencies": {
 		"@types/mapbox-gl": "^3.1.0",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
-		"eslint-config-geostats": "*",
+		"eslint-config-geostats": "workspace:*",
 		"postcss": "^8",
-		"prettier-config-geostats": "*",
-		"tailwind-config-geostats": "*",
+		"prettier-config-geostats": "workspace:*",
+		"tailwind-config-geostats": "workspace:*",
 		"tailwindcss": "^3.4.1",
+		"tsconfig-geostats": "workspace:*",
 		"typescript": "^5"
 	}
 }

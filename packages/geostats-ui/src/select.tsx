@@ -1,11 +1,11 @@
 import React, {type ReactNode, RefObject} from 'react';
 import {useSelectState, type SelectStateOptions} from 'react-stately';
-import {useObjectRef} from '@react-aria/utils';
 import {
 	useSelect,
 	type AriaSelectProps,
 	HiddenSelect,
 	type Placement,
+	useObjectRef,
 } from 'react-aria';
 // @ts-expect-error bad typings
 import ArrowDropDown from '@material-design-icons/svg/round/arrow_drop_down.svg';
@@ -95,7 +95,7 @@ export function Select<T extends Record<string, unknown>>(
 				<span {...valueProps} className='grow text-left'>
 					{selectedItem
 						? selectedItem.rendered
-						: placeholder ?? 'Selecciona una opción'}
+						: (placeholder ?? 'Selecciona una opción')}
 				</span>
 				<ArrowDropDown aria-hidden='true' className='fill-current' />
 			</Button>

@@ -1,7 +1,11 @@
 import {type ReactNode, type RefObject} from 'react';
-import {type AriaNumberFieldProps, useLocale, useNumberField} from 'react-aria';
+import {
+	type AriaNumberFieldProps,
+	useLocale,
+	useNumberField,
+	useObjectRef,
+} from 'react-aria';
 import {type NumberFieldStateOptions, useNumberFieldState} from 'react-stately';
-import {useObjectRef} from '@react-aria/utils';
 import {twJoin} from 'tailwind-merge';
 // @ts-expect-error bad typings
 import ArrowDropDown from '@material-design-icons/svg/round/arrow_drop_down.svg';

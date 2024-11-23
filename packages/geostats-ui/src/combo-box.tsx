@@ -7,10 +7,10 @@ import {
 } from 'react-stately';
 // @ts-expect-error bad typings
 import ArrowDropDown from '@material-design-icons/svg/round/arrow_drop_down.svg';
-import {BaseListBox} from './list-box.tsx';
-import {Button} from './button/button.tsx';
-import {Popover} from './popover.tsx';
-import {cx} from './cva.ts';
+import {BaseListBox} from '@/list-box.tsx';
+import {Button} from '@/button';
+import {Popover} from '@/popover.tsx';
+import {cx} from '@/cva.ts';
 
 export type ComboBoxProps<T extends Record<string, unknown>> =
 	| StatefulComboBoxProps<T>

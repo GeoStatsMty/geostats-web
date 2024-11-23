@@ -1,6 +1,5 @@
-import React, {type RefObject , type ReactNode} from 'react';
-import {type AriaTextFieldProps, useTextField} from 'react-aria';
-import {useObjectRef} from '@react-aria/utils';
+import React, {type RefObject, type ReactNode} from 'react';
+import {type AriaTextFieldProps, useTextField, useObjectRef} from 'react-aria';
 import {cx} from './cva.ts';
 
 export type TextFieldProps = {
@@ -9,9 +8,7 @@ export type TextFieldProps = {
 	readonly inputRef?: RefObject<HTMLInputElement>;
 } & AriaTextFieldProps;
 
-export function TextField(
-	props: TextFieldProps
-) {
+export function TextField(props: TextFieldProps) {
 	const {label, isDisabled, className, description, icon, isRequired} = props;
 	const inputRef = useObjectRef(props.inputRef);
 	const {
@@ -64,4 +61,4 @@ export function TextField(
 			)}
 		</div>
 	);
-};
+}

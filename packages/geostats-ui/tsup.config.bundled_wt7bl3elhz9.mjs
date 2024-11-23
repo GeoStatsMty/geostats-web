@@ -1,0 +1,20 @@
+// tsup.config.ts
+import { defineConfig } from "tsup";
+import svgr from "esbuild-plugin-svgr";
+import jsx from "@svgr/plugin-jsx";
+var tsup_config_default = defineConfig((options) => ({
+  banner: {
+    js: `"use client"`
+  },
+  entry: ["src/**/*.tsx", "src/**/*.ts"],
+  format: ["esm"],
+  dts: true,
+  sourcemap: true,
+  external: ["react", "react-dom"],
+  esbuildPlugins: [svgr({ svgo: false, plugins: [jsx] })],
+  ...options
+}));
+export {
+  tsup_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidHN1cC5jb25maWcudHMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9faW5qZWN0ZWRfZmlsZW5hbWVfXyA9IFwiL2hvbWUvaGlyYW0vUHJvamVjdHMvZ2Vvc3RhdHMtd2ViL3BhY2thZ2VzL2dlb3N0YXRzLXVpL3RzdXAuY29uZmlnLnRzXCI7Y29uc3QgX19pbmplY3RlZF9kaXJuYW1lX18gPSBcIi9ob21lL2hpcmFtL1Byb2plY3RzL2dlb3N0YXRzLXdlYi9wYWNrYWdlcy9nZW9zdGF0cy11aVwiO2NvbnN0IF9faW5qZWN0ZWRfaW1wb3J0X21ldGFfdXJsX18gPSBcImZpbGU6Ly8vaG9tZS9oaXJhbS9Qcm9qZWN0cy9nZW9zdGF0cy13ZWIvcGFja2FnZXMvZ2Vvc3RhdHMtdWkvdHN1cC5jb25maWcudHNcIjtpbXBvcnQge2RlZmluZUNvbmZpZ30gZnJvbSAndHN1cCc7XG5pbXBvcnQgc3ZnciBmcm9tICdlc2J1aWxkLXBsdWdpbi1zdmdyJztcbmltcG9ydCBqc3ggZnJvbSAnQHN2Z3IvcGx1Z2luLWpzeCc7XG5cbmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyhvcHRpb25zID0+ICh7XG5cdGJhbm5lcjoge1xuXHRcdGpzOiBgXCJ1c2UgY2xpZW50XCJgLFxuXHR9LFxuXHRlbnRyeTogWydzcmMvKiovKi50c3gnLCAnc3JjLyoqLyoudHMnXSxcblx0Zm9ybWF0OiBbJ2VzbSddLFxuXHRkdHM6IHRydWUsXG5cdHNvdXJjZW1hcDogdHJ1ZSxcblx0ZXh0ZXJuYWw6IFsncmVhY3QnLCAncmVhY3QtZG9tJ10sXG5cdGVzYnVpbGRQbHVnaW5zOiBbc3Zncih7c3ZnbzogZmFsc2UsIHBsdWdpbnM6IFtqc3hdfSldLFxuXHQuLi5vcHRpb25zLFxufSkpO1xuIl0sCiAgIm1hcHBpbmdzIjogIjtBQUFnVCxTQUFRLG9CQUFtQjtBQUMzVSxPQUFPLFVBQVU7QUFDakIsT0FBTyxTQUFTO0FBRWhCLElBQU8sc0JBQVEsYUFBYSxjQUFZO0FBQUEsRUFDdkMsUUFBUTtBQUFBLElBQ1AsSUFBSTtBQUFBLEVBQ0w7QUFBQSxFQUNBLE9BQU8sQ0FBQyxnQkFBZ0IsYUFBYTtBQUFBLEVBQ3JDLFFBQVEsQ0FBQyxLQUFLO0FBQUEsRUFDZCxLQUFLO0FBQUEsRUFDTCxXQUFXO0FBQUEsRUFDWCxVQUFVLENBQUMsU0FBUyxXQUFXO0FBQUEsRUFDL0IsZ0JBQWdCLENBQUMsS0FBSyxFQUFDLE1BQU0sT0FBTyxTQUFTLENBQUMsR0FBRyxFQUFDLENBQUMsQ0FBQztBQUFBLEVBQ3BELEdBQUc7QUFDSixFQUFFOyIsCiAgIm5hbWVzIjogW10KfQo=

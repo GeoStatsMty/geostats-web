@@ -4,7 +4,7 @@ declare const buttonVariants: (props?: ({
     size?: "xs" | "sm" | "md" | "lg" | "xl" | undefined;
     variant?: "text" | "primary" | "secondary" | "outlined" | "destructive" | undefined;
 } & ({
-    class?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | any | {
+    class?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | /*elided*/ any | {
         [x: string]: any;
     } | null | undefined)[] | {
         [x: string]: any;
@@ -32,7 +32,7 @@ declare const buttonVariants: (props?: ({
     className?: never;
 } | {
     class?: never;
-    className?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | any | {
+    className?: string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | (string | number | boolean | /*elided*/ any | {
         [x: string]: any;
     } | null | undefined)[] | {
         [x: string]: any;
