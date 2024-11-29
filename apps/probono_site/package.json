@@ -39,7 +39,7 @@
 		"react-aria": "^3.32.1",
 		"react-dom": "^18.3.1",
 		"react-dropzone": "^14.2.3",
-		"react-email": "^2.1.6",
+		"react-email": "^3.0.2",
 		"react-is": "^18.3.0-canary-5c607369c-20240116",
 		"react-leaflet": "^4.2.1",
 		"react-query": "^3.39.3",

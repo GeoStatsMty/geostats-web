@@ -1,6 +1,6 @@
 'use client';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl, {Map} from 'mapbox-gl';
+import mapboxgl, {Map, Popup} from 'mapbox-gl';
 import {useEffect, useRef, useState} from 'react';
 import {
 	addSitiosDeApoyoLayer,
@@ -56,6 +56,63 @@ export default function MapScreen(props: MainMapProps) {
 	const mapRef = useRef<Map>();
 
 	const xd = true
+
+	useEffect(() => {
+		if (!mapRef.current || !isLoaded) return;
+	
+		const map = mapRef.current;
+		const popup = new mapboxgl.Popup({
+			closeButton: false,
+			closeOnClick: false,
+		});
+	
+		// Definición de capas con descripciones específicas
+		const layers = [
+			{ id: 'feminicidios-fiscalia-layer', defaultText: 'Sin datos disponibles fiscalia' },
+			{ id: 'feminicidios-periodicos-layer', defaultText: 'Sin datos disponibles periodico' },
+		];
+
+		
+	
+		function handleMouseEnter(
+			e: mapboxgl.MapMouseEvent & { features?: mapboxgl.MapboxGeoJSONFeature[] },
+			defaultText: string
+		) {
+			if (e.features && e.features.length > 0) {
+				const feature = e.features[0];
+				const numPoints = feature.properties?.NUMPOINTS || defaultText;
+				const municipio = feature.properties?.MUNICIPIO || 'NoMunicipio';
+				popup
+					.setLngLat(e.lngLat)
+					.setHTML(`<div>Cantidad de puntos: ${numPoints}, ${municipio}</div>`)
+					.addTo(map);
+			}
+		}
+	
+		function handleMouseLeave() {
+			popup.remove();
+		}
+	
+		// Vincular eventos de mouse a las capas
+		layers.forEach(({ id, defaultText }) => {
+			map.on('mouseenter', id, (e) => handleMouseEnter(e, defaultText));
+			map.on('mouseleave', id, handleMouseLeave);
+		});
+	
+		// Limpiar eventos al desmontar
+		return () => {
+			layers.forEach(({ id }) => {
+				map.off('mouseenter', id, handleMouseEnter as any);
+				map.off('mouseleave', id, handleMouseLeave);
+			});
+			popup.remove();
+		};
+	}, [isLoaded]);
+	
+	
+	
+	
+	
 
 	useEffect(() => {
 
@@ -170,6 +227,9 @@ export default function MapScreen(props: MainMapProps) {
               https://docs.mapbox.com/mapbox-gl-js/api/sources/
               https://docs.mapbox.com/mapbox-gl-js/example/vector-source/
               https://docs.mapbox.com/help/glossary/source-layer/
+			  https://docs.mapbox.com/mapbox-gl-js/api/markers/#marker
+			  https://docs.mapbox.com/mapbox-gl-js/example/popup-on-hover/
+			  https://docs.mapbox.com/mapbox-gl-js/example/polygon-popup-on-click/
 			 */
 			return () => map.remove();
 		}
