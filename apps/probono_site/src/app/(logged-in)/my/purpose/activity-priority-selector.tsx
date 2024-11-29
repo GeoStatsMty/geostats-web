@@ -35,7 +35,7 @@ export default function ActivityPrioritySelector(
 	}, [items, selectedKeys]);
 
 	const filteredItems = useMemo(
-		() => filteredKeys.toList().map(key => getItem(key)),
+		() => filteredKeys.toList().map(key => getItem(key)!),
 		[filteredKeys, getItem],
 	);
 
