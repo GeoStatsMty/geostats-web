@@ -1,12 +1,15 @@
+import React from 'react';
+import { notFound } from 'next/navigation';
+import prisma from '@/lib/prisma';
 import {getApprovedOrganizationInfo} from '@/lib/models/organization.ts';
 import OrganizationCard from '@/app/(main)/organizations/organization-card.tsx';
 import {getAllSectors} from '@/lib/models/sector.ts';
-import prisma from '@/lib/prisma.ts';
 import SectorsForm from '@/app/(main)/organizations/location-sectors-map.tsx';
-import {notFound} from 'next/navigation';
 
-export default async function OrganizationsPage() {
+
+export default async function OrganizationDetailsPage({ params }: { params: { id: string } }) {
 	const organizations = await getApprovedOrganizationInfo();
+	const { id } = params;
 
 	const organizationsWithAddresses = organizations.filter(organization =>
 		Boolean(organization.location),
@@ -16,32 +19,27 @@ export default async function OrganizationsPage() {
 		location: [number, number];
 	}>;
 
-	const organizationSectors = await prisma.organization.findUniqueOrThrow({
+	// Obtén los sectores de la organización
+	const organization = await prisma.organization.findUnique({
 		where: {
-			id: 1,
+			id: Number(id),
 		},
 		select: {
+			name: true,
 			sectors: {
 				select: {
 					id: true,
+					name: true,
 				},
 			},
 		},
 	});
 
-	if (!organizationSectors) {
-		return {}; // o notFound(); según lo que necesites
-	}
-
-	const sectors = await getAllSectors();
-
-	const organization = {
-		...organizationSectors,
-	};
-
 	if (!organization) {
 		notFound();
 	}
+
+	const sectors = await getAllSectors();
 
 	return (
 		<main className='mx-auto min-h-screen max-w-screen-xl px-4 py-16'>
