@@ -4,7 +4,7 @@ import {getApprovedOrganizationInfo} from '@/lib/models/organization.ts';
 import OrganizationCard from '@/app/(main)/organizations/organization-card.tsx';
 
 const LocationMap = dynamic(
-	async () => import('@/app/(main)/organizations/location-map.tsx'),
+	async () => import('@/app/(main)/organizations/LocationMaponlyAddress.tsx'),
 	{
 		ssr: false,
 		loading() {

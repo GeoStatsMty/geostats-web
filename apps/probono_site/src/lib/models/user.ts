@@ -71,6 +71,25 @@ export const getUsersActiveOrganization = cache(
 	},
 );
 
+
+export const getOrganizationById = cache(
+	async <Args extends Omit<Prisma.OrganizationDefaultArgs, 'where'>>(
+		id: number,
+		args?: Args,
+	): Promise<OrganizationGetPayload<Args> | null> => {
+		const organization = await prisma.organization.findUnique({
+			...args,
+			where: {
+				id,
+			},
+		});
+
+		// Retornar null si no se encuentra la organización
+		return organization ? (organization as OrganizationGetPayload<Args>) : null;
+	},
+);
+
+
 /**
  * Retrieve user information from Auth0 session.
  *

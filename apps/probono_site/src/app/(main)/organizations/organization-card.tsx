@@ -14,6 +14,7 @@ import YoutubeLogo from 'public/logos/youtube.png';
 import Public from '@material-design-icons/svg/round/public.svg';
 
 import {SocialLink, Paper} from 'geostats-ui';
+import Link from 'next/link';
 
 export type OrganizationCardProps = {
 	readonly organization: Organization & {address: Address | null};
@@ -42,9 +43,11 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 						</div>
 					)}
 				</div>
+				<Link href={`/organizations/${organization.id}`}>
 				<h2 className='flex-1 truncate text-2xl font-bold'>
 					{organization.name}
 				</h2>
+				</Link>
 			</div>
 			<div className='grid grow grid-cols-[64px_minmax(0,1fr)] gap-4 '>
 				{organization.email && (
@@ -153,4 +156,9 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 			</div>
 		</Paper>
 	);
+}
+
+function handleCardClick(id: Number) {
+	// Lógica para navegar o realizar alguna acción al hacer clic en la tarjeta
+	console.log('Clicked organization id:', id);
 }

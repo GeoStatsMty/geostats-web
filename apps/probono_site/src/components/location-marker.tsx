@@ -14,16 +14,18 @@ const locationIcon = new Icon({
 export type LocationMarkerProps = {
 	readonly position: [number, number];
 	readonly popup?: ReactNode;
+	readonly onClick?: () => void; // Agregamos la propiedad onClick
 };
 
 export default function LocationMarker(props: LocationMarkerProps) {
-	const {position, popup} = props;
+	const {position, popup, onClick} = props;
 	return (
 		<Marker
 			position={position}
 			icon={locationIcon}
 			eventHandlers={
 				{
+					click: () => onClick?.(), // Manejamos el evento click
 					// Mouseover(event) {
 					// 	event.target.openPopup();
 					// },
@@ -41,3 +43,4 @@ export default function LocationMarker(props: LocationMarkerProps) {
 		</Marker>
 	);
 }
+
