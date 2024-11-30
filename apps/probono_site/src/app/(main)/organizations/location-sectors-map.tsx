@@ -54,12 +54,16 @@ export default function locationSectors(props: SectorFormProps) {
 	const selectedSectors = useMemo(
 		() =>
 			Seq(selectedSectorKeys)
-				.map(key => sectorsList.getItem(key))
-				.groupBy(sector => sector.municipalityId)
+				.map(key => {
+					const sector = sectorsList.getItem(key);
+					return sector ? sector : null; // Explicitly return null for undefined
+				})
+				.filter(sector => sector !== null) // Remove null values
+				.groupBy(sector => sector!.municipalityId)
 				.map((sectors, id) => ({
 					name: sectors.first()!.municipalityName,
 					id,
-					sectors: sectors.sortBy(sector => sector.name),
+					sectors: sectors.sortBy(sector => sector!.name),
 				}))
 				.toList()
 				.sortBy(municipality => municipality.name),
