@@ -19,6 +19,11 @@ export default async function OrganizationDetailsPage({ params }: { params: { id
 		location: [number, number];
 	}>;
 
+	// Obtener la dirección de la organización específica
+    const selectedOrganization = organizationsWithAddresses.find(
+        org => org.id === Number(id)
+    );
+
 	// Obtén los sectores de la organización
 	const organization = await prisma.organization.findUnique({
 		where: {
@@ -48,7 +53,7 @@ export default async function OrganizationDetailsPage({ params }: { params: { id
 				<SectorsForm
 					sectors={sectors}
 					organization={organization}
-					organizations={organizationsWithAddresses}
+					organizations={selectedOrganization ? [selectedOrganization] : []}
 				/>
 				{organizations.map(org => (
 					<OrganizationCard

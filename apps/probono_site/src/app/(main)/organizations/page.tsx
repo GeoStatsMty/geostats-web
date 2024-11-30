@@ -1,9 +1,19 @@
+import React from 'react';
+import dynamic from 'next/dynamic';
 import {getApprovedOrganizationInfo} from '@/lib/models/organization.ts';
 import OrganizationCard from '@/app/(main)/organizations/organization-card.tsx';
-import {getAllSectors} from '@/lib/models/sector.ts';
-import prisma from '@/lib/prisma.ts';
-import SectorsForm from '@/app/(main)/organizations/location-sectors-map.tsx';
-import {notFound} from 'next/navigation';
+
+const LocationMap = dynamic(
+	async () => import('@/app/(main)/organizations/LocationMaponlyAddress.tsx'),
+	{
+		ssr: false,
+		loading() {
+			return (
+				<div className='h-96 w-full animate-pulse rounded-md bg-stone-900' />
+			);
+		},
+	},
+);
 
 export default async function OrganizationsPage() {
 	const organizations = await getApprovedOrganizationInfo();
@@ -16,46 +26,20 @@ export default async function OrganizationsPage() {
 		location: [number, number];
 	}>;
 
-	const organizationSectors = await prisma.organization.findUniqueOrThrow({
-		where: {
-			id: 1,
-		},
-		select: {
-			sectors: {
-				select: {
-					id: true,
-				},
-			},
-		},
-	});
-
-	if (!organizationSectors) {
-		return {}; // o notFound(); según lo que necesites
-	}
-
-	const sectors = await getAllSectors();
-
-	const organization = {
-		...organizationSectors,
-	};
-
-	if (!organization) {
-		notFound();
-	}
-
 	return (
 		<main className='mx-auto min-h-screen max-w-screen-xl px-4 py-16'>
 			<h1 className='mb-6 mt-4 text-4xl text-stone-50'>Organizaciones</h1>
-			<div className='flex flex-wrap gap-8'>
-				<SectorsForm
-					sectors={sectors}
-					organization={organization}
+			<div className='mb-8 h-96 w-full overflow-hidden rounded-md glow-2xl'>
+				<LocationMap
 					organizations={organizationsWithAddresses}
+					className='size-full'
 				/>
-				{organizations.map(org => (
+			</div>
+			<div className='flex flex-wrap gap-8'>
+				{organizations.map(organization => (
 					<OrganizationCard
-						key={org.id}
-						organization={org}
+						key={organization.id}
+						organization={organization}
 					/>
 				))}
 			</div>
