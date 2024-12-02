@@ -35,6 +35,7 @@ export default async function OrganizationsPage() {
 					className='size-full'
 				/>
 			</div>
+			<h1 className='mb-6 mt-4 text-2xl text-stone-50'>Haz click en la organización para ver su impacto geográfico.</h1>
 			<div className='flex flex-wrap gap-8'>
 				{organizations.map(organization => (
 					<OrganizationCard
