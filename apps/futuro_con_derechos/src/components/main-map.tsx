@@ -1,7 +1,7 @@
 'use client';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl, {Map, Popup} from 'mapbox-gl';
-import {useEffect, useRef, useState} from 'react';
+import mapboxgl, {Map, MapMouseEvent, Popup} from 'mapbox-gl';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
 	addSitiosDeApoyoLayer,
 	addSitiosDeApoyoSource,
@@ -103,7 +103,7 @@ export default function MapScreen(props: MainMapProps) {
 				popup
 					.setLngLat(e.lngLat)
 					.setHTML(
-						`<div>Cantidad de puntos: ${numPoints}, ${municipio}</div>`,
+						`<div style="color:black">Número de siniestros: ${numPoints}</div>`,
 					)
 					.addTo(map);
 			}
@@ -201,16 +201,47 @@ export default function MapScreen(props: MainMapProps) {
 	}, [showSitiosDeApoyo, isLoaded]);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
+		if (!mapRef.current || !isLoaded || !showModelo) {
 			return;
 		}
 
-		if (showModelo) {
-			addModeloLayer(mapRef.current);
-		}
+		const map = mapRef.current;
+
+		const modeloPopup = new mapboxgl.Popup({
+			closeButton: false,
+			closeOnClick: false,
+		});
+
+		addModeloLayer(mapRef.current);
+
+		const handleMouseEnterModeloLayer = (e: MapMouseEvent) => {
+			if (e.features && e.features.length > 0) {
+				const properties = e.features[0].properties!;
+				const predictedCount = properties['Predicció'];
+				const total = properties['FemTot'];
+				const probability = properties['ProbAtLe'];
+				modeloPopup
+					.setLngLat(e.lngLat)
+					.setHTML(
+						`<div style="color:black">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</div>`,
+					)
+					.addTo(map);
+			}
+		};
+
+		const handleMouseLeaveModeloLayer = () => {
+			modeloPopup.remove();
+		};
+
+		const layerId = 'modelo-layer';
+
+		map.on('mousemove', layerId, handleMouseEnterModeloLayer);
+		map.on('mouseleave', layerId, handleMouseLeaveModeloLayer);
 
 		return () => {
 			if (mapRef.current) {
+				map.on('mousemove', layerId, handleMouseEnterModeloLayer);
+				map.on('mouseleave', layerId, handleMouseLeaveModeloLayer);
 				removeModeloLayer(mapRef.current);
 			}
 		};

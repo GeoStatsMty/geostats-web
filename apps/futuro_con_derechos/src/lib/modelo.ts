@@ -1,4 +1,4 @@
-import {type Map, type Layer} from 'mapbox-gl';
+import mapboxgl, {type Map, type Layer, MapMouseEvent} from 'mapbox-gl';
 
 const sourceId = 'modelo-source';
 const layerId = 'modelo-layer';
