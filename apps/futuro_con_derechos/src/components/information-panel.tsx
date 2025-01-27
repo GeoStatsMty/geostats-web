@@ -92,7 +92,9 @@ export default function InformationPanel({
             initial={false}
             animate={showInformationPanel ? 'open' : 'closed'}
         >
-            <Paper className={`${showInformationPanel ? 'bg-opacity-5' : 'bg-transparent'} p-6 h-full flex relative`}>
+            {/* Antiguo <Paper className={`${showInformationPanel ? 'bg-opacity-5' : 'bg-transparent'} p-6 h-full flex relative`}> */}
+            <Paper className="p-0 h-full flex relative">
+            
                 {/* Contenedor de dos columnas */}
                 <div className="flex flex-row gap-4 h-full w-full">
                     {/* Columna para el contenido Markdown con scroll a la derecha */}
