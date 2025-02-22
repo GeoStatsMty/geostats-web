@@ -1,8 +1,8 @@
 "use client"
 import {
   SocialLink
-} from "./chunk-7R7Q2SWX.js";
-import "./chunk-X4HVG5MV.js";
+} from "./chunk-X6WUQCXX.js";
+import "./chunk-ZWT6NWOG.js";
 export {
   SocialLink
 };
