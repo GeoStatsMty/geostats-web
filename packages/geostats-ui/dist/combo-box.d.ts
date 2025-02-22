@@ -1,7 +1,7 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ReactNode } from 'react';
 import { AriaComboBoxProps } from 'react-aria';
-import { ComboBoxStateOptions, ComboBoxState } from 'react-stately';
+import { ComboBoxState, ComboBoxStateOptions } from 'react-stately';
 
 type ComboBoxProps<T extends Record<string, unknown>> = StatefulComboBoxProps<T> | BaseComboBoxProps<T>;
 declare function ComboBox<T extends Record<string, unknown>>(props: ComboBoxProps<T>): react_jsx_runtime.JSX.Element;

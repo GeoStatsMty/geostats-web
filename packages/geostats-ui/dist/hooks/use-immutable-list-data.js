@@ -1,7 +1,7 @@
 "use client"
 import {
   useImmutableListData
-} from "../chunk-TFCFETUK.js";
+} from "../chunk-QJMAKKE6.js";
 export {
   useImmutableListData
 };
