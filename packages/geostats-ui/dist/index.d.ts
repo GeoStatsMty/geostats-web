@@ -27,6 +27,7 @@ export { compose, cva, cx } from './cva.js';
 export { Dialog, DialogProps } from './dialog.js';
 export { BaseDropdown, BaseDropdownProps, Dropdown, DropdownProps, StatefulDropDown, StatefulDropDownProps } from './dropdown.js';
 export { FileDropZone, FileDropZoneProps } from './file-drop-zone.js';
+export { GeostatsTileLayer } from './map/index.js';
 export { HashSpyToaster, HashSpyToasterProps } from './hash-spy-toaster.js';
 export { List, ListItem, ListProps } from './list.js';
 export { BaseListBox, BaseListBoxProps, ListBox, ListBoxProps, ListBoxSectionProps, OptionProps } from './list-box.js';
