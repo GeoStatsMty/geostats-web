@@ -1,8 +1,8 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./src/**/*.stories.{ts,tsx,jsx,js}",
-    "../../packages/geostats-ui/dist/**/*.{js,mjs}"
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "../../packages/geostats-ui/src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {},

@@ -25,7 +25,6 @@ export * from '@/select';
 export * from '@/separator';
 export * from '@/sidebar';
 export * from '@/sidebar-trigger';
-export * from '../../../apps/probono_site/src/components/social-link';
 export * from '@/spacer';
 export * from '@/tag-group';
 export * from '@/text-field';
