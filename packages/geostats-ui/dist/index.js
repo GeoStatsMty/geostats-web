@@ -4,10 +4,19 @@ import {
   Paper
 } from "./chunk-F77O4PV3.js";
 import "./chunk-Z7BBF3VO.js";
+import {
+  GeostatsTileLayer
+} from "./chunk-DIFB7Y6A.js";
 import "./chunk-RWRSGMW3.js";
 import {
   Table
-} from "./chunk-GJQWQDAP.js";
+} from "./chunk-ADPEPPWS.js";
+import {
+  TableCell
+} from "./chunk-NV4UZ5L5.js";
+import {
+  TableCheckboxCell
+} from "./chunk-4REWEA6B.js";
 import {
   TableColumnHeader
 } from "./chunk-SYTOFJEN.js";
@@ -23,12 +32,6 @@ import {
 import {
   TableSelectAllCell
 } from "./chunk-QGP7XVOW.js";
-import {
-  TableCell
-} from "./chunk-NV4UZ5L5.js";
-import {
-  TableCheckboxCell
-} from "./chunk-4REWEA6B.js";
 import "./chunk-3BR3XIIV.js";
 import "./chunk-3G3QMPLE.js";
 import {
@@ -165,6 +168,7 @@ export {
   Dialog,
   Dropdown,
   FileDropZone,
+  GeostatsTileLayer,
   HashSpyToaster,
   LinkButton,
   List,
