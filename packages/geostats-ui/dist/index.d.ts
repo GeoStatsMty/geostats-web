@@ -1,7 +1,6 @@
 export { ALinkButton, ALinkButtonProps } from './button/a-link-button.js';
 export { Button, ButtonProps } from './button/button.js';
 export { ButtonVariantProps, buttonVariants } from './button/button-variants.js';
-export { LinkButton, LinkButtonProps } from './button/link-button.js';
 export { useFuse } from './hooks/use-fuse.js';
 export { ImmutableListData, ImmutableListOptions, useImmutableListData } from './hooks/use-immutable-list-data.js';
 export { ReorderableListStateProps } from './hooks/use-reorderable-list-state.js';
@@ -51,7 +50,6 @@ export { VariantProps } from 'cva';
 import 'react/jsx-runtime';
 import 'react';
 import 'react-aria';
-import 'next/link';
 import 'immutable';
 import 'fuse.js';
 import 'react-stately';

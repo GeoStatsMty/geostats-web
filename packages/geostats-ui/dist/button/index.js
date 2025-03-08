@@ -1,8 +1,5 @@
 "use client"
-import "../chunk-7Z4IKLCC.js";
-import {
-  LinkButton
-} from "../chunk-IEXGETYE.js";
+import "../chunk-34NIZ3Z3.js";
 import {
   ALinkButton
 } from "../chunk-E5NON7KI.js";
@@ -16,7 +13,6 @@ import "../chunk-ZWT6NWOG.js";
 export {
   ALinkButton,
   Button,
-  LinkButton,
   buttonVariants
 };
 //# sourceMappingURL=index.js.map
