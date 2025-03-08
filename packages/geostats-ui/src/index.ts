@@ -11,7 +11,6 @@ export * from '@/cva';
 export * from '@/dialog';
 export * from '@/dropdown';
 export * from '@/file-drop-zone';
-export * from '@/map';
 export * from '@/hash-spy-toaster';
 export * from '@/list';
 export * from '@/list-box';
