@@ -40,14 +40,14 @@ export { Select, SelectProps } from './select.js';
 export { Separator, SeparatorProps } from './separator.js';
 export { Sidebar, SidebarProps } from './sidebar.js';
 export { SidebarTrigger, SidebarTriggerProps } from './sidebar-trigger.js';
-export { SocialLink, SocialLinkProps } from './social-link.js';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+import { StaticImageData } from 'next/image';
 export { Spacer } from './spacer.js';
 export { TagGroup, TagGroupProps } from './tag-group.js';
 export { TextField, TextFieldProps } from './text-field.js';
 export { ToastContent, ToastProvider, ToastProviderProps, useToasts } from './toast.js';
 export { Switch, SwitchProps } from './switch.js';
 export { VariantProps } from 'cva';
-import 'react/jsx-runtime';
 import 'react';
 import 'react-aria';
 import 'immutable';
@@ -57,6 +57,16 @@ import '@react-stately/selection';
 import '@react-types/grid';
 import '@react-types/shared';
 import '@react-aria/form';
-import 'next/image';
 import '@react-stately/toast';
 import 'react-aria-components';
+
+type SocialLinkProps = {
+    readonly image: StaticImageData;
+    readonly name: string;
+    readonly href: string;
+    readonly size?: number;
+    readonly className?: string;
+};
+declare function SocialLink(props: SocialLinkProps): react_jsx_runtime.JSX.Element;
+
+export { SocialLink, type SocialLinkProps };

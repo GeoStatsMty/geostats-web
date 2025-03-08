@@ -12,7 +12,7 @@ import {
 	getCurrentUserOrganizations,
 	getUsersActiveOrganization,
 } from '@/lib/models/user.ts';
-import {SocialLink} from 'geostats-ui';
+import {SocialLink} from '@/components/social-link.tsx';
 
 export type LoggedInLayoutProps = {
 	readonly children: ReactNode;

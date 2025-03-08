@@ -1,6 +1,6 @@
 import React from 'react';
 import Image, {type StaticImageData} from 'next/image';
-import {cx} from '@/cva.ts';
+import {cx} from 'geostats-ui';
 
 export type SocialLinkProps = {
 	readonly image: StaticImageData;

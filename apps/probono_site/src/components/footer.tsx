@@ -5,7 +5,7 @@ import GeoStatsLogo from 'public/logos/geostats.png';
 import FacebookLogo from 'public/logos/facebook.png';
 import InstagramLogo from 'public/logos/instagram.png';
 import LinkedinLogo from 'public/logos/linkedin.png';
-import {SocialLink} from 'geostats-ui';
+import {SocialLink} from '@/components/social-link.tsx';
 
 export default function Footer() {
 	return (
