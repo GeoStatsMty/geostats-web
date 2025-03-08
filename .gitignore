@@ -234,3 +234,8 @@ next-env.d.ts
 /packages/geostats-ui/dist/
 
 **/.env**
+
+**/dist/**
+
+apps/storybook/storybook-static/**
+
