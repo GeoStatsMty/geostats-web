@@ -1,9 +1,25 @@
 'use client';
 
 import React from 'react';
-import {MapContainer, TileLayer} from 'react-leaflet';
-import LocationMarker from '@/components/location-marker';
 import {useRouter} from 'next/navigation';
+import dynamic from 'next/dynamic';
+
+const LocationMarker = dynamic(
+	() => import('@/components/location-marker.tsx'),
+	{
+		ssr: false,
+	},
+);
+
+const MapContainer = dynamic(
+	() => import('react-leaflet').then(mod => mod.MapContainer),
+	{ssr: false},
+);
+
+const TileLayer = dynamic(
+	() => import('react-leaflet').then(mod => mod.TileLayer),
+	{ssr: false},
+);
 
 export type LocationMapProps = {
 	readonly organizations: Array<{

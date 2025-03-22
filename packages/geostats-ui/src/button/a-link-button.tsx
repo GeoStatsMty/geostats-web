@@ -1,6 +1,7 @@
+'use client';
 import {type ComponentProps, type ReactNode} from 'react';
 import {type VariantProps} from 'cva';
-import {buttonVariants} from '@/button/button-variants';
+import {buttonVariants} from '@/button/button-variants.ts';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type ALinkButtonProps = {

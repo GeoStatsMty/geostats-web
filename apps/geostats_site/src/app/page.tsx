@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import GeostatsLogo from 'public/logos/geostats.png';
 import {SpinningHexagons} from '@/components/spinning-hexagons.tsx';
-import NavLink, {ALinkButton} from 'geostats-ui';
+import {ALinkButton} from 'geostats-ui';
 
 export default function Home() {
 	return (

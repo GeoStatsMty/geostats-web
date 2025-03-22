@@ -1,3 +1,4 @@
+'use client';
 import {
 	type Key,
 	type ListData,

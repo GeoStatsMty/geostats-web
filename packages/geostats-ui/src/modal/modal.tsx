@@ -1,3 +1,4 @@
+'use client';
 import React, {type ReactNode} from 'react';
 import {type AriaModalOverlayProps, Overlay, useModalOverlay} from 'react-aria';
 import {type OverlayTriggerState} from 'react-stately';

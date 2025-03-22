@@ -1,6 +1,5 @@
 import React from 'react';
 import {redirect} from 'next/navigation';
-import {getSession} from '@auth0/nextjs-auth0';
 import Image from 'next/image';
 import NavigateNext from '@material-design-icons/svg/round/navigate_next.svg';
 import {AnimatedLayoutContainer} from 'geostats-ui';
@@ -13,6 +12,7 @@ import {
 } from '@/lib/models/organization-invitation.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
 import {SubmitButton} from '@/components/submit-button.tsx';
+import {auth0} from '@/lib/auth0.ts';
 
 export type OrganizationOnboardingPageProps = {
 	readonly searchParams: {
@@ -24,13 +24,17 @@ export default async function OrganizationOnboardingPage(
 	props: OrganizationOnboardingPageProps,
 ) {
 	const {searchParams} = props;
-	const session = (await getSession())!;
+	const session = await auth0.getSession();
+
+	if (!session) {
+		throw new Error('Could not retrieve auth0 session.');
+	}
 
 	const {inviteId} = searchParams;
 
 	const user = await prisma.user.findUnique({
 		where: {
-			authId: session.user.sub as string,
+			authId: session.user.sub,
 		},
 	});
 
@@ -97,7 +101,8 @@ export default async function OrganizationOnboardingPage(
 						Fuiste invitado a unirte a{' '}
 						<strong>{invite.organization.name}</strong> por{' '}
 						<strong>
-							{invite.sender.givenName} {invite.sender.familyName}{' '}
+							{invite.sender.givenName}{' '}
+							{invite.sender.familyName}{' '}
 						</strong>
 						. Al unirte serás capaz de modificar los detalles de la
 						organización, ayudando a completar su perfil dentro de

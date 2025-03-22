@@ -1,3 +1,4 @@
+'use client';
 import type {GridNode} from '@react-types/grid';
 import type {TableState} from 'react-stately';
 import React, {useRef} from 'react';

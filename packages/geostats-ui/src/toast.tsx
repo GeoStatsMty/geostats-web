@@ -51,7 +51,7 @@ const toastVariants: Variants = {
 
 function Toast(props: ToastProps) {
 	const {state, toast} = props;
-	const {animation, content} = toast;
+	const {content} = toast;
 	const {title, description, icon, variant = 'success'} = content;
 	const ref = useRef<HTMLDivElement>(null);
 	const {toastProps, titleProps, descriptionProps, closeButtonProps} =
@@ -68,7 +68,8 @@ function Toast(props: ToastProps) {
 			])}
 			ref={ref}
 			layout
-			initial={animation === 'queued' ? 'initialQueued' : 'initial'}
+			// TODO fix view transitions
+			// initial={animation === 'queued' ? 'initialQueued' : 'initial'}
 			animate='entering'
 			exit='exiting'
 			variants={toastVariants}

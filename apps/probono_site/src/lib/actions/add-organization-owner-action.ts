@@ -103,7 +103,7 @@ export default async function addOrganizationOwnerAction(
 				},
 			});
 
-			const html = render(
+			const html = await render(
 				createElement(OrganizationInvitationEmail, {
 					organizationLogoUrl: organization.logoUrl ?? '',
 					organizationName: organization.name,
@@ -124,7 +124,7 @@ export default async function addOrganizationOwnerAction(
 						id: invite.id,
 					},
 				});
-				throw error;
+				console.error('Failed to delete organization invitation.');
 			}
 		}
 	} catch (error) {

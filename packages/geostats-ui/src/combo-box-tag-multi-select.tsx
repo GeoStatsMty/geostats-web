@@ -1,3 +1,4 @@
+'use client';
 import React, {useMemo} from 'react';
 import {useListState, type Key} from 'react-stately';
 import {type List, Seq, Set} from 'immutable';

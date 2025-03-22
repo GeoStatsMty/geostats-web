@@ -1,3 +1,4 @@
+'use client';
 import React, {type ReactNode, RefObject} from 'react';
 import {useSelectState, type SelectStateOptions} from 'react-stately';
 import {
@@ -9,7 +10,7 @@ import {
 } from 'react-aria';
 // @ts-expect-error bad typings
 import ArrowDropDown from '@material-design-icons/svg/round/arrow_drop_down.svg';
-import {Button} from './button/button.tsx';
+import {Button} from '@/button';
 import {Popover} from './popover.tsx';
 import {ListBox} from './list-box.tsx';
 import {cx} from './cva.ts';

@@ -1,3 +1,4 @@
+'use client';
 import React, {useRef} from 'react';
 import {type AriaTableProps, useTable} from 'react-aria';
 import {type TableStateProps, useTableState} from 'react-stately';

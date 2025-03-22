@@ -1,19 +1,7 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import {getApprovedOrganizationInfo} from '@/lib/models/organization.ts';
 import OrganizationCard from '@/app/(main)/organizations/organization-card.tsx';
-
-const LocationMap = dynamic(
-	async () => import('@/app/(main)/organizations/LocationMaponlyAddress.tsx'),
-	{
-		ssr: false,
-		loading() {
-			return (
-				<div className='h-96 w-full animate-pulse rounded-md bg-stone-900' />
-			);
-		},
-	},
-);
+import LocationMap from './LocationMaponlyAddress';
 
 export default async function OrganizationsPage() {
 	const organizations = await getApprovedOrganizationInfo();
@@ -35,7 +23,9 @@ export default async function OrganizationsPage() {
 					className='size-full'
 				/>
 			</div>
-			<h1 className='mb-6 mt-4 text-2xl text-stone-50'>Haz click en la organización para ver su impacto geográfico.</h1>
+			<h1 className='mb-6 mt-4 text-2xl text-stone-50'>
+				Haz click en la organización para ver su impacto geográfico.
+			</h1>
 			<div className='flex flex-wrap gap-8'>
 				{organizations.map(organization => (
 					<OrganizationCard

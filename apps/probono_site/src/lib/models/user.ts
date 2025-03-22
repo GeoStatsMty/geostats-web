@@ -1,12 +1,10 @@
 import {omit} from 'lodash';
-import {getSession} from '@auth0/nextjs-auth0';
 import {cache} from 'react';
 import {cookies} from 'next/headers';
-import {type NextRequest, type NextResponse} from 'next/server';
 import {Prisma} from '@prisma/client';
 import {type UserInit, type UserUpdate} from '@/lib/schemas/user.ts';
 import prisma from '@/lib/prisma.ts';
-import {management} from '@/lib/auth0.ts';
+import {auth0, management} from '@/lib/auth0.ts';
 import {
 	deleteOrganizations,
 	getUsersDependantOrganizations,
@@ -26,13 +24,13 @@ export const getUsersActiveOrganization = cache(
 	async <Args extends Omit<Prisma.OrganizationDefaultArgs, 'where'>>(
 		args?: Args,
 	): Promise<OrganizationGetPayload<Args>> => {
-		const session = await getSession();
+		const session = await auth0.getSession();
 
 		if (!session) {
 			throw new Error('Not authenticated');
 		}
 
-		const cookieStore = cookies();
+		const cookieStore = await cookies();
 
 		const organizationId = cookieStore.get('organizationId');
 
@@ -71,7 +69,6 @@ export const getUsersActiveOrganization = cache(
 	},
 );
 
-
 export const getOrganizationById = cache(
 	async <Args extends Omit<Prisma.OrganizationDefaultArgs, 'where'>>(
 		id: number,
@@ -85,10 +82,11 @@ export const getOrganizationById = cache(
 		});
 
 		// Retornar null si no se encuentra la organización
-		return organization ? (organization as OrganizationGetPayload<Args>) : null;
+		return organization
+			? (organization as OrganizationGetPayload<Args>)
+			: null;
 	},
 );
-
 
 /**
  * Retrieve user information from Auth0 session.
@@ -98,28 +96,26 @@ export const getOrganizationById = cache(
  * @param {Array} args - The optional NextRequest and NextResponse objects to be used for getSession, if available.
  * @returns {Promise<User | null>} - The user object if session exists, otherwise null.
  */
-export const getUserFromSession = cache(
-	async (...args: [] | [NextRequest, NextResponse]) => {
-		const session = await getSession(...args);
+export const getUserFromSession = cache(async () => {
+	const session = await auth0.getSession();
 
-		if (!session) {
-			return null;
-		}
+	if (!session) {
+		return null;
+	}
 
-		return prisma.user.findUnique({
-			where: {
-				authId: session.user.sub as string,
-			},
-			include: {
-				_count: {
-					select: {
-						organizations: true,
-					},
+	return prisma.user.findUnique({
+		where: {
+			authId: session.user.sub as string,
+		},
+		include: {
+			_count: {
+				select: {
+					organizations: true,
 				},
 			},
-		});
-	},
-);
+		},
+	});
+});
 
 /**
  * Fetches the organizations associated with the current user.
@@ -130,7 +126,7 @@ export const getUserFromSession = cache(
  * @throws {Error} - If the user cannot be found or if an error occurs during the database query.
  */
 export const getCurrentUserOrganizations = cache(async () => {
-	const session = await getSession();
+	const session = await auth0.getSession();
 	if (!session) {
 		return null;
 	}

@@ -1,6 +1,5 @@
 import React from 'react';
 import {redirect} from 'next/navigation';
-import {getSession} from '@auth0/nextjs-auth0';
 import PasswordForm from '@/app/(logged-in)/my/account/password/password-form.tsx';
 import {
 	type PasswordUpdate,
@@ -8,7 +7,7 @@ import {
 } from '@/lib/schemas/password.ts';
 import {decodeForm} from '@/lib/form-utils.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
-import {authentication, management} from '@/lib/auth0.ts';
+import {auth0, authentication, management} from '@/lib/auth0.ts';
 import {FormState} from '@/components/form';
 
 export default async function AccountPage() {
@@ -17,7 +16,7 @@ export default async function AccountPage() {
 		data: FormData,
 	): Promise<FormState<PasswordUpdate>> => {
 		'use server';
-		const session = await getSession();
+		const session = await auth0.getSession();
 
 		if (!session) {
 			return {
@@ -26,8 +25,6 @@ export default async function AccountPage() {
 				formErrors: ['Not authenticated'],
 			};
 		}
-
-		console.log(session.user);
 
 		try {
 			const parsedData = await decodeForm(data, passwordUpdateSchema);
@@ -53,7 +50,7 @@ export default async function AccountPage() {
 		redirect('/my/account');
 	};
 
-	const session = await getSession();
+	const session = await auth0.getSession();
 	const sessionType = session?.user?.sub.split('|')[0] as string;
 
 	if (sessionType !== 'auth0') {
@@ -61,8 +58,8 @@ export default async function AccountPage() {
 	}
 
 	return (
-		<main className="w-full">
-			<h1 className="mb-2 text-4xl text-stone-200">
+		<main className='w-full'>
+			<h1 className='mb-2 text-4xl text-stone-200'>
 				Cambio de contraseña
 			</h1>
 			<PasswordForm action={action} />

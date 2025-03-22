@@ -20,7 +20,8 @@ import AccountButton from '@/app/(logged-in)/onboarding/account-button.tsx';
 import TopBar from '@/components/top-bar.tsx';
 import Footer from '@/components/footer.tsx';
 
-import {SidebarTrigger, LinkButton} from 'geostats-ui';
+import {SidebarTrigger} from 'geostats-ui';
+import {NextLinkButton} from '@/components/next-link-button.tsx';
 
 export type MyLayoutProps = {
 	readonly children: ReactNode;
@@ -128,13 +129,13 @@ export default async function MyLayout(props: MyLayoutProps) {
 							Miembros
 						</MySectionLink>
 
-						<LinkButton
+						<NextLinkButton
 							href='/api/auth/logout'
 							className='mt-4 w-full'
 							variant='outlined'
 						>
 							Cerrar sesión
-						</LinkButton>
+						</NextLinkButton>
 					</div>
 				</SidebarTrigger>
 			</TopBar>

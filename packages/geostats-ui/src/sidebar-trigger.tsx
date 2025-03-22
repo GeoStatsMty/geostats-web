@@ -4,7 +4,7 @@ import {type OverlayTriggerProps, useOverlayTriggerState} from 'react-stately';
 import {useOverlayTrigger} from 'react-aria';
 import {AnimatePresence} from 'framer-motion';
 import {Button} from '@/button/button.tsx';
-import {type ButtonVariantProps} from '@/button/button-variants.tsx';
+import {type ButtonVariantProps} from '@/button/button-variants.ts';
 import {Sidebar} from '@/sidebar.tsx';
 
 export type SidebarTriggerProps = {

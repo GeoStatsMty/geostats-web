@@ -1,8 +1,7 @@
+'use client';
 import React, {type ComponentProps} from 'react';
 import {omit} from 'lodash';
-import paperVariants, {
-	type PaperVariantProps,
-} from '@/paper/paper-variants.tsx';
+import paperVariants, {type PaperVariantProps} from '@/paper/paper-variants.ts';
 
 export type PaperProps = ComponentProps<'div'> & PaperVariantProps;
 

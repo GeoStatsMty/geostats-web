@@ -62,7 +62,7 @@ export default function MapScreen(props: MainMapProps) {
 
 	const [isLoaded, setIsLoaded] = useState(false);
 
-	const mapRef = useRef<Map>();
+	const mapRef = useRef<Map | null>(null);
 
 	const xd = true;
 

@@ -1,3 +1,4 @@
+'use client';
 import {type ReactNode, type RefObject} from 'react';
 import {
 	type AriaNumberFieldProps,

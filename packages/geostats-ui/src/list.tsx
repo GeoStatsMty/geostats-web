@@ -1,3 +1,4 @@
+'use client';
 import React, {type RefObject} from 'react';
 import {
 	type AriaGridListProps,

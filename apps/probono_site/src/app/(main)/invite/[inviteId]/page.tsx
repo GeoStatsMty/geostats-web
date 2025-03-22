@@ -1,13 +1,12 @@
 import React from 'react';
-import {getSession} from '@auth0/nextjs-auth0';
 import {redirect} from 'next/navigation';
 import {
 	consumeOrganizationInvitation,
 	isInvitationValid,
 } from '@/lib/models/organization-invitation.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
-
-import {LinkButton} from 'geostats-ui';
+import {auth0} from '@/lib/auth0.ts';
+import {NextLinkButton} from '@/components/next-link-button.tsx';
 
 export type InvitePageProps = {
 	readonly params: {
@@ -21,7 +20,7 @@ export default async function InvitePage(props: InvitePageProps) {
 	const valid = await isInvitationValid(params.inviteId);
 
 	if (valid) {
-		const session = await getSession();
+		const session = await auth0.getSession();
 
 		if (!session) {
 			redirect(`/api/auth/signup?returnTo=/invite/${params.inviteId}`);
@@ -45,9 +44,9 @@ export default async function InvitePage(props: InvitePageProps) {
 					Esta invitación ya no es válida. Para unirte a la
 					organización, consigue otra invitación.
 				</p>
-				<LinkButton href='/' variant='secondary'>
+				<NextLinkButton href='/' variant='secondary'>
 					Volver al inicio
-				</LinkButton>
+				</NextLinkButton>
 			</div>
 		</div>
 	);

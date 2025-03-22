@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import {omit, pick} from 'lodash';
-import dynamic from 'next/dynamic';
 import Feed from '@material-design-icons/svg/round/feed.svg';
 import Psychology from '@material-design-icons/svg/round/psychology.svg';
 import Policy from '@material-design-icons/svg/round/policy.svg';
@@ -15,16 +14,7 @@ import SectorsList from '@/app/(logged-in)/my/sectors-list.tsx';
 import MembersList from '@/app/(logged-in)/my/members-list.tsx';
 
 import {Paper} from 'geostats-ui';
-
-const LocationMap = dynamic(
-	async () => import('@/app/(logged-in)/my/location-map.tsx'),
-	{
-		ssr: false,
-		loading() {
-			return <div className='mb-2 h-48 animate-pulse bg-stone-800' />;
-		},
-	},
-);
+import LocationMap from './location-map';
 
 async function countNullModelAttributes(
 	model: Record<string, unknown> & {

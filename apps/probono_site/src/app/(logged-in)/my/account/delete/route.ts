@@ -1,4 +1,3 @@
-import {withApiAuthRequired} from '@auth0/nextjs-auth0';
 import {redirect} from 'next/navigation';
 import {NextResponse} from 'next/server';
 import {deleteUser, getUserFromSession} from '@/lib/models/user.ts';
@@ -8,14 +7,14 @@ import {
 	ReauthenticationExpiredError,
 } from '@/lib/models/user-reauthentication.ts';
 
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const GET = withApiAuthRequired(async request => {
-	const user = await getUserFromSession(request, new NextResponse());
+export const GET = async () => {
+	const user = await getUserFromSession();
 
 	if (!user) {
-		// This shouldn't ever happen, if it does other parts of the application are mishandling users
-		redirect('/my');
+		return NextResponse.next({
+			status: 401,
+		});
 	}
 
 	try {
@@ -42,4 +41,4 @@ export const GET = withApiAuthRequired(async request => {
 	}
 
 	return redirect('/');
-});
+};

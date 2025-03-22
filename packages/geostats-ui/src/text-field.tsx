@@ -1,3 +1,4 @@
+'use client';
 import React, {type RefObject, type ReactNode} from 'react';
 import {type AriaTextFieldProps, useTextField, useObjectRef} from 'react-aria';
 import {cx} from './cva.ts';

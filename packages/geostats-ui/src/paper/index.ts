@@ -1,2 +1,2 @@
 export * from './paper';
-export * from './paper-variants.tsx';
+export * from './paper-variants.ts';

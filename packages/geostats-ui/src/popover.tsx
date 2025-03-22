@@ -1,3 +1,4 @@
+'use client';
 import React, {type ForwardedRef, forwardRef} from 'react';
 import {
 	type AriaPopoverProps,

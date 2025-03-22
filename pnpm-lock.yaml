@@ -615,6 +615,9 @@ importers:
       esbuild-plugin-alias:
         specifier: ^0.2.1
         version: 0.2.1
+      esbuild-plugin-preserve-directives:
+        specifier: ^0.0.11
+        version: 0.0.11(esbuild@0.25.0)
       esbuild-plugin-svgr:
         specifier: ^3.1.0
         version: 3.1.0(esbuild@0.25.0)(typescript@5.8.2)
@@ -4843,6 +4846,12 @@ packages:
 
   esbuild-plugin-alias@0.2.1:
     resolution: {integrity: sha512-jyfL/pwPqaFXyKnj8lP8iLk6Z0m099uXR45aSN8Av1XD4vhvQutxxPzgA2bTcAwQpa1zCXDcWOlhFgyP3GKqhQ==}
+
+  esbuild-plugin-preserve-directives@0.0.11:
+    resolution: {integrity: sha512-OolFhx1h/1ADEEoPjVi0hYWru1pTZBHki7XozawYVkhRhO63mwZT6isLylbwPs7dJ72doVQJGHCT2I1l9z8DcA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      esbuild: ^0.21.0
 
   esbuild-plugin-svgr@3.1.0:
     resolution: {integrity: sha512-SOfjehS9effRn8W/+T05GiXAbT6QHivr2uAUwzbXnqLnezKA4QIjvEt3VCzpzZU9J6oP21GZBB8tbDsJWYXPlw==}
@@ -13261,6 +13270,10 @@ snapshots:
       is-symbol: 1.1.1
 
   esbuild-plugin-alias@0.2.1: {}
+
+  esbuild-plugin-preserve-directives@0.0.11(esbuild@0.25.0):
+    dependencies:
+      esbuild: 0.25.0
 
   esbuild-plugin-svgr@3.1.0(esbuild@0.25.0)(typescript@5.8.2):
     dependencies:
