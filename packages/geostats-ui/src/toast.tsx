@@ -11,7 +11,7 @@ import {AnimatePresence, motion, type Variants} from 'framer-motion';
 import {omit} from 'lodash';
 // @ts-expect-error bad typings
 import Close from '@material-design-icons/svg/round/close.svg';
-import {Button} from './button/button.tsx';
+import {Button} from '@/button';
 import {cx} from './cva.ts';
 
 export type ToastContent = {
@@ -68,8 +68,6 @@ function Toast(props: ToastProps) {
 			])}
 			ref={ref}
 			layout
-			// TODO fix view transitions
-			// initial={animation === 'queued' ? 'initialQueued' : 'initial'}
 			animate='entering'
 			exit='exiting'
 			variants={toastVariants}
