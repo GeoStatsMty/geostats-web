@@ -8,7 +8,7 @@ const layer: Layer = {
 	type: 'circle',
 
 	source: sourceId,
-	'source-layer': 'Feminicidios_de_Fiscalia_cent-3rdfpy',
+	'source-layer': 'empresas-6uxgdw',
 	maxzoom: 20,
 	minzoom: 7,
 	paint: {
@@ -37,6 +37,6 @@ export function removeFeminicidiosFiscaliaLayer(map: Map) {
 export function addFeminiciosFiscaliaSource(map: Map) {
 	map.addSource(sourceId, {
 		type: 'vector',
-		url: 'mapbox://stock44.2k4nz34n',
+		url: 'mapbox://stock44.6cae6ijm',
 	});
 }

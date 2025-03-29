@@ -6,7 +6,7 @@ const layer: Layer = {
 	id: layerId,
 	type: 'fill',
 	source: sourceId,
-	'source-layer': 'Modelo2-07rfx7',
+	'source-layer': '',
 	maxzoom: 20,
 	minzoom: 7,
 	paint: {
@@ -25,7 +25,7 @@ const layer: Layer = {
 export function addModeloSource(map: Map) {
 	map.addSource(sourceId, {
 		type: 'vector',
-		url: 'mapbox://stock44.4k2z4mbr',
+		url: 'mapbox://stock44.6cae6ijm',
 	});
 }
 

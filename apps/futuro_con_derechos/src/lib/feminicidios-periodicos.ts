@@ -7,7 +7,7 @@ const layer: Layer = {
 	type: 'circle',
 
 	source: sourceId,
-	'source-layer': 'Feminicidios_de_Periodicos_ce-1wv0e9',
+	'source-layer': '.',
 	maxzoom: 20,
 	minzoom: 7,
 	paint: {
