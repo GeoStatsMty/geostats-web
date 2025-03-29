@@ -9,11 +9,16 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginDepend from "eslint-plugin-depend";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 import prettierRecommended from "eslint-plugin-prettier/recommended";
+import pluginJest from "eslint-plugin-jest";
 import { globalIgnores } from "eslint/config";
 
 export default [
   globalIgnores(["./dist/**"]),
   { languageOptions: { globals: globals.browser } },
+  {
+    files: ["test/**", "__mocks__/**", "**/*.test.ts"],
+    ...pluginJest.configs["flat/recommended"],
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginUnicorn.configs["flat/recommended"],
