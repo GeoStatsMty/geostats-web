@@ -67,7 +67,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 
 				{organization.phone && (
 					<>
-						<div
+						<button
 							onClick={() =>
 								navigator.clipboard.writeText(
 									`${organization.phone}`,
@@ -75,14 +75,9 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 							}
 						>
 							<Phone className='mx-auto fill-current' />
-						</div>
+						</button>
 						<h3
 							className='min-w-0 overflow-hidden text-ellipsis'
-							onClick={() =>
-								navigator.clipboard.writeText(
-									`${organization.phone}`,
-								)
-							}
 							style={{cursor: 'pointer'}} // Añadido para indicar que es clicable
 						>
 							{organization.phone}
@@ -174,9 +169,4 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 			</div>
 		</Paper>
 	);
-}
-
-function handleCardClick(id: number) {
-	// Lógica para navegar o realizar alguna acción al hacer clic en la tarjeta
-	console.log('Clicked organization id:', id);
 }

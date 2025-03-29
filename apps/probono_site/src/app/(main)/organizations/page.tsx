@@ -1,7 +1,7 @@
 import React from 'react';
 import {getApprovedOrganizationInfo} from '@/lib/models/organization.ts';
 import OrganizationCard from '@/app/(main)/organizations/organization-card.tsx';
-import LocationMap from './LocationMaponlyAddress';
+import LocationMap from './location-maponly-address.tsx';
 
 export default async function OrganizationsPage() {
 	const organizations = await getApprovedOrganizationInfo();

@@ -1,5 +1,5 @@
 import type z from 'zod';
-import {unbrandObjectSchema} from '@/lib/schemas/util.ts';
+import {unbrandObjectSchema} from '@/lib/schemas/utilities.ts';
 
 /**
  * Preprocesses a form value, changing empty strings into null values.

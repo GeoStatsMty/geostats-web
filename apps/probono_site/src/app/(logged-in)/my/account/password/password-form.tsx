@@ -5,7 +5,7 @@ import React, {useState} from 'react';
 import {TextField} from 'geostats-ui';
 import {SubmitButton} from '@/components/submit-button.tsx';
 import {Form, type FormState} from '@/components/form';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {
 	type PasswordUpdate,
 	passwordUpdateSchema,

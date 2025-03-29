@@ -12,7 +12,7 @@ import {useQuery} from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import {useDebounceValue} from 'usehooks-ts';
 import Done from '@material-design-icons/svg/round/done.svg';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {addressInitSchema} from '@/lib/schemas/address.ts';
 import {geocodeAddress, reverseGeocode} from '@/lib/mapbox.ts';
 import {type OrganizationUpdate} from '@/lib/schemas/organization.ts';
@@ -81,10 +81,7 @@ export default function AddressInfoForm(props: AddressInfoFormProps) {
 
 	const validate = formValidators(addressInitSchema);
 
-	const [debouncedAddress, setDebounceAddress] = useDebounceValue(
-		address,
-		2000,
-	);
+	const [debouncedAddress] = useDebounceValue(address, 2000);
 
 	useEffect(() => {
 		if (

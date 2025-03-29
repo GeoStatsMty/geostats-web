@@ -14,7 +14,7 @@ jest.mock('@/lib/prisma.ts');
 describe('OrganizationInvitation', () => {
 	test('getOrganizationInvitation', async () => {
 		await getOrganizationInvitation('__mockedInvitationId__');
-		expect(prismaMock.organizationInvitation.findUnique).toBeCalled();
+		expect(prismaMock.organizationInvitation.findUnique).toHaveBeenCalled();
 	});
 
 	test('isInvitationValid (false case)', async () => {
@@ -34,7 +34,7 @@ describe('OrganizationInvitation', () => {
 
 	test('createOrganizationInvitation', async () => {
 		await createOrganizationInvitation('__mockedRecipient__', 2, 4);
-		expect(prismaMock.organizationInvitation.create).toBeCalled();
+		expect(prismaMock.organizationInvitation.create).toHaveBeenCalled();
 	});
 
 	test('consumeOrganizationInvitation (error case)', async () => {

@@ -1,7 +1,7 @@
 // Importing the required function
 
 // Writing tests for connectId function
-import {connectId} from '@/lib/models/util.ts';
+import {connectId} from '@/lib/models/utilities.ts';
 
 test('returns object with id in connect key for non-null and non-undefined id', () => {
 	const id = 5;

@@ -43,7 +43,18 @@ export default [
           },
         },
       ],
-      // "react-redux/no-unused-prop-types": "off", // weird duplicate rule that causes false positives
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          ignoreRestSiblings: true,
+        },
+      ],
+      // "sonar-no-unused-vars": [
+      //   "error",
+      //   {
+      //     ignoreRestSiblings: true,
+      //   },
+      // ],
       "react/react-in-jsx-scope": "off",
     },
   },

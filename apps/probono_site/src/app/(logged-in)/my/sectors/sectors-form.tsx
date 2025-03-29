@@ -65,6 +65,12 @@ export default function SectorsForm(props: SectorFormProps) {
 		[sectorsList, selectedSectorKeys],
 	);
 
+	const makeOnSectorPress = (sectorId: number) => {
+		return () => {
+			setSelectedSectorKeys(previous => previous.remove(sectorId));
+		};
+	};
+
 	return (
 		<div className='grow'>
 			<div className='mb-4 flex flex-wrap items-end gap-3'>
@@ -128,14 +134,9 @@ export default function SectorsForm(props: SectorFormProps) {
 											<Button
 												variant='text'
 												className='enabled:hover:bg-stone-700'
-												onPress={() => {
-													setSelectedSectorKeys(
-														previous =>
-															previous.remove(
-																sector.id,
-															),
-													);
-												}}
+												onPress={makeOnSectorPress(
+													sector.id,
+												)}
 											>
 												<Remove className='fill-current' />
 											</Button>

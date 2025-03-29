@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import {omit, pick} from 'lodash';
 import Feed from '@material-design-icons/svg/round/feed.svg';
 import Psychology from '@material-design-icons/svg/round/psychology.svg';
 import Policy from '@material-design-icons/svg/round/policy.svg';
@@ -33,7 +32,9 @@ async function countNullModelAttributes(
 		}
 	}
 
-	for (const value of Object.values(omit(model, ['_count']))) {
+	const {_count, ...modelWithoutCount} = model;
+
+	for (const value of Object.values(modelWithoutCount)) {
 		total++;
 		if (value === null) {
 			nulls++;
@@ -63,53 +64,81 @@ export default async function MyStartPage() {
 		? await getAddress(organization.addressId)
 		: null;
 
-	const [nulls, totals] = await countNullModelAttributes(
-		omit(organization, [
-			'id',
-			'wantsToIncorporate',
-			'approved',
-			'isIncorporated',
-			'sectors',
-			'owners',
-			'workplaceTypeId',
-			'hasInvestmentAgreement',
-		]),
-	);
+	const {
+		id,
+		wantsToIncorporate,
+		approved,
+		isIncorporated,
+		sectors,
+		owners,
+		workplaceTypeId,
+		hasInvestmentAgreement,
+		...rest
+	} = organization;
 
-	const [purposeNulls, purposeTotals] = await countNullModelAttributes(
-		pick(organization, ['categoryId', 'ods', '_count']),
-	);
+	const [nulls, totals] = await countNullModelAttributes(rest);
 
-	const [generalNulls, generalTotals] = await countNullModelAttributes(
-		pick(organization, [
-			'logoUrl',
-			'name',
-			'foundingYear',
-			'phone',
-			'email',
-			'webpage',
-			'employeeCountCategoryId',
-			'volunteerCountCategoryId',
-			'incomeCategoryId',
-			'facebook',
-			'instagram',
-			'twitter',
-			'tiktok',
-			'youtube',
-			'linkedIn',
-		]),
-	);
+	const {categoryId, ods, _count} = organization;
 
-	const [legalNulls, legalTotals] = await countNullModelAttributes(
-		pick(organization, [
-			'legalConcept',
-			'corporationTypeId',
-			'rfc',
-			'incorporationYear',
-			'cluniStatus',
-			'donationAuthStatus',
-		]),
-	);
+	const [purposeNulls, purposeTotals] = await countNullModelAttributes({
+		categoryId,
+		ods,
+		_count,
+	});
+
+	const {
+		logoUrl,
+		name,
+		foundingYear,
+		phone,
+		email,
+		webpage,
+		employeeCountCategoryId,
+		volunteerCountCategoryId,
+		incomeCategoryId,
+		facebook,
+		instagram,
+		twitter,
+		tiktok,
+		youtube,
+		linkedIn,
+	} = organization;
+
+	const [generalNulls, generalTotals] = await countNullModelAttributes({
+		logoUrl,
+		name,
+		foundingYear,
+		phone,
+		email,
+		webpage,
+		employeeCountCategoryId,
+		volunteerCountCategoryId,
+		incomeCategoryId,
+		facebook,
+		instagram,
+		twitter,
+		tiktok,
+		youtube,
+		linkedIn,
+	});
+
+	const {
+		legalConcept,
+		corporationTypeId,
+		rfc,
+		incorporationYear,
+		cluniStatus,
+		donationAuthStatus,
+	} = organization;
+
+	const [legalNulls, legalTotals] = await countNullModelAttributes({
+		legalConcept,
+		corporationTypeId,
+		rfc,
+		incorporationYear,
+		cluniStatus,
+		donationAuthStatus,
+	});
 
 	return (
 		<main className='w-full'>

@@ -5,7 +5,6 @@ import {Gender} from '@prisma/client';
 import {put} from '@vercel/blob';
 import {mocked} from 'jest-mock';
 import {filetypeextension, filetypemime} from 'magic-bytes.js';
-import {pick} from 'lodash';
 import {type Organization} from '@prisma/client';
 import {
 	organizationInitSchema,
@@ -33,7 +32,7 @@ const mockOrganizationInit = {
 	foundingYear: 2000,
 	isIncorporated: true,
 	email: 'test@organization.com',
-	webpage: 'http://www.organization.com',
+	webpage: 'https://www.organization.com',
 	ageGroups: [{ageGroupId: 1, gender: Gender.male}],
 	beneficiaries: [1, 2, 3],
 	activities: [{activityId: 1, priority: 1}],
@@ -80,9 +79,9 @@ describe('createOrganization function', () => {
 		);
 
 		// Verify the transaction method calls
-		expect(prismaMock.organization.create).toBeCalled();
-		expect(prismaMock.$queryRaw).toBeCalled();
-		expect(put).toBeCalledWith(
+		expect(prismaMock.organization.create).toHaveBeenCalled();
+		expect(prismaMock.$queryRaw).toHaveBeenCalled();
+		expect(put).toHaveBeenCalledWith(
 			expect.stringContaining(`organizationLogos/${mockOrganization.id}`),
 			mockOrganizationInit.logo,
 			{access: 'public'},
@@ -124,9 +123,9 @@ describe('updateOrganization function tests', () => {
 		);
 
 		// Verify the prisma transaction method calls
-		expect(prismaMock.organization.update).toBeCalled();
-		expect(prismaMock.$queryRaw).not.toBeCalled();
-		expect(put).toBeCalledWith(
+		expect(prismaMock.organization.update).toHaveBeenCalled();
+		expect(prismaMock.$queryRaw).not.toHaveBeenCalled();
+		expect(put).toHaveBeenCalledWith(
 			expect.stringContaining(`organizationLogos/${organizationId}`),
 			update.logo,
 			{access: 'public'},
@@ -231,7 +230,7 @@ describe('getUsersDependantOrganizations()', () => {
 		// eslint-disable-next-line unicorn/consistent-function-scoping
 		const wrapper = async () => getUsersDependantOrganizations(1);
 
-		await expect(wrapper()).rejects.toThrowError('Database error');
+		await expect(wrapper()).rejects.toThrow('Database error');
 		expect(findManyMock).toHaveBeenCalledTimes(1);
 	});
 });

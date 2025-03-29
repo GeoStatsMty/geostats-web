@@ -14,55 +14,47 @@ import LinkedInLogo from 'public/logos/linkedin.png';
 import InstagramLogo from 'public/logos/instagram.png';
 import FacebookLogo from 'public/logos/facebook.png';
 import {
-	type EmployeeCountCategory,
-	type IncomeCategory,
-	type VolunteerCountCategory,
-	type Organization,
+	EmployeeCountCategory,
+	IncomeCategory,
+	Organization,
+	VolunteerCountCategory,
 } from '@prisma/client';
 import OrganizationImagePicker from '@/app/(logged-in)/my/general/organization-image-picker.tsx';
 import {
 	organizationInitSchema,
 	type OrganizationUpdate,
 } from '@/lib/schemas/organization.ts';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {formatInMxn} from '@/lib/format-mxn.ts';
 import {Form, type FormState, FormHeader} from '@/components/form';
 import {NumberField, TextField, Select, Separator} from 'geostats-ui';
 
-// Lista de dominios válidos
-const validDomains = [
-	'.com',
-	'.net',
-	'.org',
-	'.edu',
-	'.gov',
-	'.io',
-	'.co',
-	'.us',
-	'.uk',
-	'.ca',
-	'.de',
-	'.fr',
-	'.jp',
-	'.au',
-	'.cn',
-	'.in',
-	'.es',
-];
-
-function formatURL(value: string): string {
-	if (!value) return value;
-	// Verificar si ya tiene un prefijo HTTP o HTTPS
-	if (!/^https?:\/\//i.test(value)) {
-		return `https://${value}`;
+const getCategoryLabel = (category: EmployeeCountCategory) => {
+	if (category.maxCount === null) {
+		return `Mas de ${category.minCount}`;
 	}
-	return value;
-}
 
-// Función para verificar si la URL tiene un dominio válido
-function hasValidDomain(value: string): boolean {
-	return validDomains.some(domain => value.endsWith(domain));
-}
+	if (category.minCount === category.maxCount) {
+		return category.minCount.toString();
+	}
+
+	return `${category.minCount} a ${category.maxCount}`;
+};
+
+const getIncomeCategoryLabel = (incomeCategory: IncomeCategory) => {
+	if (incomeCategory.maxIncome === null) {
+		return `Mas de ${formatInMxn(incomeCategory.minIncome)}`;
+	}
+
+	const minIncomeMxn = formatInMxn(incomeCategory.minIncome);
+	const maxIncomeMxn = formatInMxn(incomeCategory.maxIncome);
+
+	if (minIncomeMxn === maxIncomeMxn) {
+		return minIncomeMxn;
+	}
+
+	return `${minIncomeMxn} a ${maxIncomeMxn}`;
+};
 
 export type GeneralInfoFormProps = {
 	readonly action: (
@@ -193,15 +185,7 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 						organization.employeeCountCategoryId ?? undefined
 					}
 				>
-					{category => (
-						<Item>
-							{category.maxCount === null
-								? `Mas de ${category.minCount}`
-								: category.minCount === category.maxCount
-									? category.minCount.toString()
-									: `${category.minCount} a ${category.maxCount}`}
-						</Item>
-					)}
+					{category => <Item>{getCategoryLabel(category)}</Item>}
 				</Select>
 				<Select
 					label='¿Cuántos voluntarios tiene tu organización?'
@@ -213,15 +197,7 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 						organization.volunteerCountCategoryId ?? undefined
 					}
 				>
-					{category => (
-						<Item>
-							{category.maxCount === null
-								? `Mas de ${category.minCount}`
-								: category.minCount === category.maxCount
-									? category.minCount.toString()
-									: `${category.minCount} a ${category.maxCount}`}
-						</Item>
-					)}
+					{category => <Item>{getCategoryLabel(category)}</Item>}
 				</Select>
 			</div>
 
@@ -237,14 +213,7 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 					}
 				>
 					{category => (
-						<Item>
-							{category.maxIncome === null
-								? `Mas de ${formatInMxn(category.minIncome)}`
-								: formatInMxn(category.minIncome) ===
-									  formatInMxn(category.maxIncome)
-									? formatInMxn(category.minIncome)
-									: `${formatInMxn(category.minIncome)} a ${formatInMxn(category.maxIncome)}`}
-						</Item>
+						<Item>{getIncomeCategoryLabel(category)}</Item>
 					)}
 				</Select>
 			</div>

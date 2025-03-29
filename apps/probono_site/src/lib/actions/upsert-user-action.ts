@@ -6,7 +6,7 @@ import {
 	userUpdateSchema,
 } from '@/lib/schemas/user.ts';
 import prisma from '@/lib/prisma.ts';
-import {decodeForm} from '@/lib/form-utils.ts';
+import {decodeForm} from '@/lib/form-utilities.ts';
 import {createUser, updateUser} from '@/lib/models/user.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
 import {FormState} from '@/components/form';
@@ -44,7 +44,7 @@ export default async function upsertUserAction(
 			await updateUser(user.id, parsedData);
 		} else {
 			const parsedData = await decodeForm(data, userInitSchema);
-			await createUser(session.user.sub as string, parsedData);
+			await createUser(session.user.sub, parsedData);
 		}
 	} catch (error) {
 		return handleActionError(state, error);

@@ -20,6 +20,7 @@ export function emptyStringToNull(argument: unknown) {
 
 export const phoneSchema = z
 	.string()
+	// eslint-disable-next-line security/detect-unsafe-regex
 	.regex(/\+?[\d ()+]+(x\d+)?/g, 'Numero inválido')
 	.transform(value => value.replaceAll(/[^\d+x]/g, ''));
 

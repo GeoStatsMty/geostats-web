@@ -5,10 +5,9 @@ import {
 	json,
 	phoneSchema,
 	urlHostnameRefinement,
-	UrlValidation,
 	hasValidDomain,
 	formatURL,
-} from '@/lib/schemas/util.ts';
+} from '@/lib/schemas/utilities.ts';
 import {addressInitSchema} from '@/lib/schemas/address.ts';
 
 const organizationSchema = z.object({

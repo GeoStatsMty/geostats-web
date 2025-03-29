@@ -7,7 +7,7 @@ import {
 	userInitSchema,
 	type UserUpdate,
 } from '@/lib/schemas/user.ts';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {TextField} from 'geostats-ui';
 import {Form, FormState} from '@/components/form';
 import {SubmitButton} from '@/components/submit-button.tsx';

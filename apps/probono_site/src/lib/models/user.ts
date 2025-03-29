@@ -1,7 +1,6 @@
-import {omit} from 'lodash';
 import {cache} from 'react';
 import {cookies} from 'next/headers';
-import {Prisma} from '@prisma/client';
+import {Prisma, User} from '@prisma/client';
 import {type UserInit, type UserUpdate} from '@/lib/schemas/user.ts';
 import prisma from '@/lib/prisma.ts';
 import {auth0, management} from '@/lib/auth0.ts';
@@ -43,7 +42,7 @@ export const getUsersActiveOrganization = cache(
 					id: organization,
 					owners: {
 						some: {
-							authId: session.user.sub as string,
+							authId: session.user.sub,
 						},
 					},
 				},
@@ -61,7 +60,7 @@ export const getUsersActiveOrganization = cache(
 			where: {
 				owners: {
 					some: {
-						authId: session.user.sub as string,
+						authId: session.user.sub,
 					},
 				},
 			},
@@ -105,7 +104,7 @@ export const getUserFromSession = cache(async () => {
 
 	return prisma.user.findUnique({
 		where: {
-			authId: session.user.sub as string,
+			authId: session.user.sub,
 		},
 		include: {
 			_count: {
@@ -133,7 +132,7 @@ export const getCurrentUserOrganizations = cache(async () => {
 
 	const user = prisma.user.findUniqueOrThrow({
 		where: {
-			authId: session.user.sub as string,
+			authId: session.user.sub,
 		},
 		select: {
 			organizations: {
@@ -157,7 +156,10 @@ export const getCurrentUserOrganizations = cache(async () => {
  *
  * @return {Promise<User>} - A promise that resolves with the created user object.
  */
-export async function createUser(authId: string, init: UserInit) {
+export async function createUser(
+	authId: string,
+	init: UserInit,
+): Promise<User> {
 	return prisma.$transaction(async tx => {
 		const user = await management.users.get({
 			id: authId,
@@ -234,7 +236,10 @@ export async function deleteUser(id: number): Promise<void> {
  * @param {string} [update.password] - The new password for the user.
  * @returns {Promise<void>} - A Promise that resolves when the user is updated.
  */
-export async function updateUser(id: number, update: UserUpdate) {
+export async function updateUser(
+	id: number,
+	update: UserUpdate,
+): Promise<void> {
 	await prisma.$transaction(async tx => {
 		const {authId} = await tx.user.findUniqueOrThrow({
 			where: {
@@ -260,7 +265,7 @@ export async function updateUser(id: number, update: UserUpdate) {
 			where: {
 				id,
 			},
-			data: omit(update, ['password']),
+			data: update,
 		});
 	});
 }

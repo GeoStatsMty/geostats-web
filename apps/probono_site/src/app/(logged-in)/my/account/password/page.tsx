@@ -5,7 +5,7 @@ import {
 	type PasswordUpdate,
 	passwordUpdateSchema,
 } from '@/lib/schemas/password.ts';
-import {decodeForm} from '@/lib/form-utils.ts';
+import {decodeForm} from '@/lib/form-utilities.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
 import {auth0, authentication, management} from '@/lib/auth0.ts';
 import {FormState} from '@/components/form';
@@ -37,7 +37,7 @@ export default async function AccountPage() {
 
 			await management.users.update(
 				{
-					id: session.user.sub as string,
+					id: session.user.sub,
 				},
 				{
 					password: parsedData.password,

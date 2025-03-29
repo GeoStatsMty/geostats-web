@@ -1,11 +1,9 @@
 'use client';
-import React, {useMemo, useState} from 'react';
-import {Seq, Set} from 'immutable';
+import React, {useState} from 'react';
+import {Set} from 'immutable';
 import dynamic from 'next/dynamic';
 import {type Sector} from '@prisma/client';
 import {type Geometry} from 'geojson';
-import {Item, Section, useListData} from 'react-stately';
-import {useToasts} from 'geostats-ui';
 
 const LocationMap = dynamic(
 	async () => import('@/app/(main)/organizations/location-map.tsx'),
@@ -38,36 +36,11 @@ export type SectorFormProps = {
 	}>;
 };
 
-export default function locationSectors(props: SectorFormProps) {
+export default function LocationSectors(props: SectorFormProps) {
 	const {sectors, organization, organizations} = props;
 
-	const sectorsList = useListData({
-		initialItems: sectors,
-	});
-
-	const [selectedSectorKeys, setSelectedSectorKeys] = useState(() =>
+	const [selectedSectorKeys] = useState(() =>
 		Set(organization.sectors.map(sector => sector.id)),
-	);
-
-	const {add} = useToasts();
-	const [isLoading, setIsLoading] = useState(false);
-	const selectedSectors = useMemo(
-		() =>
-			Seq(selectedSectorKeys)
-				.map(key => {
-					const sector = sectorsList.getItem(key);
-					return sector ? sector : null; // Explicitly return null for undefined
-				})
-				.filter(sector => sector !== null) // Remove null values
-				.groupBy(sector => sector!.municipalityId)
-				.map((sectors, id) => ({
-					name: sectors.first()!.municipalityName,
-					id,
-					sectors: sectors.sortBy(sector => sector!.name),
-				}))
-				.toList()
-				.sortBy(municipality => municipality.name),
-		[sectorsList, selectedSectorKeys],
 	);
 
 	return (

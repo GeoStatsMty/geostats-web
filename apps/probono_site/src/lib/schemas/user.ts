@@ -1,5 +1,5 @@
 import z from 'zod';
-import {phoneSchema} from '@/lib/schemas/util.ts';
+import {phoneSchema} from '@/lib/schemas/utilities.ts';
 
 export const userInitSchema = z.object({
 	givenName: z.string(),

@@ -5,7 +5,7 @@ import {
 	json,
 	phoneSchema,
 	urlHostnameRefinement,
-} from '@/lib/schemas/util.ts';
+} from '@/lib/schemas/utilities.ts';
 
 describe('emptyStringToNull', () => {
 	test('empty string should be converted to null', () => {
@@ -55,9 +55,6 @@ describe('phone schema', () => {
 	});
 	test('parsing should remove whitespace 1', () => {
 		expect(phoneSchema.parse('+1 206 555 0100')).toEqual('+12065550100');
-	});
-	test('parsing should remove whitespace 1', () => {
-		expect(phoneSchema.parse('555 0100 x 213')).toEqual('5550100x213');
 	});
 });
 

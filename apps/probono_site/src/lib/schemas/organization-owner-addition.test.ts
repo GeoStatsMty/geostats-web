@@ -11,17 +11,14 @@ describe('Organization Owner Addition Schema', () => {
 
 	test('should fail if the email is not valid', () => {
 		const testEmail = {email: 'wrongemail'};
-		expect(() =>
-			organizationOwnerAdditionSchema.parse(testEmail),
-		).toThrowError('Ingresa un correo válido');
+		expect(() => organizationOwnerAdditionSchema.parse(testEmail)).toThrow(
+			'Ingresa un correo válido',
+		);
 	});
 
 	test('should fail if the email missing', () => {
 		const testEmail = {};
-		const error = '\n  {\n    "email": "Required"\n  }\n';
-		expect(() =>
-			organizationOwnerAdditionSchema.parse(testEmail),
-		).toThrowError(
+		expect(() => organizationOwnerAdditionSchema.parse(testEmail)).toThrow(
 			new z.ZodError([
 				{
 					code: 'invalid_type',
