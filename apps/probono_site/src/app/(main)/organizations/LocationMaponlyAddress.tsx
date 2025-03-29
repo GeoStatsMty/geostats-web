@@ -12,12 +12,12 @@ const LocationMarker = dynamic(
 );
 
 const MapContainer = dynamic(
-	() => import('react-leaflet').then(mod => mod.MapContainer),
+	() => import('react-leaflet').then(module_ => module_.MapContainer),
 	{ssr: false},
 );
 
 const TileLayer = dynamic(
-	() => import('react-leaflet').then(mod => mod.TileLayer),
+	() => import('react-leaflet').then(module_ => module_.TileLayer),
 	{ssr: false},
 );
 

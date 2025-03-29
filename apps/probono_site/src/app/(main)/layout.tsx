@@ -63,7 +63,7 @@ export default function MainLayout(props: MainLayoutProps) {
 					</div>
 				</SidebarTrigger>
 			</TopBar>
-			<div className='min-h-[calc(100vh-theme(spacing.16))] w-full'>
+			<div className='min-h-[calc(100vh-(--spacing(16)))] w-full'>
 				{children}
 			</div>
 			<Footer />

@@ -17,7 +17,7 @@ const SectorsMap = dynamic(
 		ssr: false,
 		loading() {
 			return (
-				<div className='mb-4 h-[32rem] grow animate-pulse rounded bg-stone-900' />
+				<div className='mb-4 h-[32rem] grow animate-pulse rounded-sm bg-stone-900' />
 			);
 		},
 	},

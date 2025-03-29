@@ -41,12 +41,12 @@ export function TextField(props: TextFieldProps) {
 				</label>
 			)}
 
-			<div className='flex items-center gap-2 rounded border border-stone-700 px-2 shadow-stone-800 transition-all group-focus-within:border-stone-50 group-focus-within:glow-sm group-data-[disabled=true]:border-stone-800'>
+			<div className='flex items-center gap-2 rounded-xs border border-stone-700 px-2 shadow-stone-800 transition-all group-focus-within:border-stone-50 group-focus-within:glow-sm group-data-[disabled=true]:border-stone-800'>
 				{icon}
 				<input
 					{...inputProps}
 					ref={inputRef}
-					className='min-w-0 grow bg-transparent py-2 text-stone-100 outline-none placeholder:text-stone-500 disabled:cursor-not-allowed disabled:text-stone-600'
+					className='min-w-0 grow bg-transparent py-2 text-stone-100 outline-hidden placeholder:text-stone-500 disabled:cursor-not-allowed disabled:text-stone-600'
 				/>
 			</div>
 			{description === undefined ? null : (

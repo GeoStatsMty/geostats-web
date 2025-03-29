@@ -136,7 +136,7 @@ export default function Home() {
 				</div>
 			</div>
 			<div className='relative flex h-[600px] items-center justify-center border-stone-700 p-8'>
-				<div className='absolute inset-0 -z-10 overflow-hidden bg-gradient-to-b from-stone-950 to-transparent brightness-50'>
+				<div className='absolute inset-0 -z-10 overflow-hidden bg-linear-to-b from-stone-950 to-transparent brightness-50'>
 					<Image
 						src={map}
 						alt='Background map'

@@ -57,7 +57,7 @@ export default function SectorsMap(props: SectorsMapProps) {
 			center={[25.68, -100.31]}
 			zoom={11}
 			className={cx(
-				'rounded border border-stone-800 glow-2xl',
+				'rounded-sm border border-stone-800 glow-2xl',
 				className,
 			)}
 		>

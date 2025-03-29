@@ -96,7 +96,7 @@ export function FileDropZone(props: FileDropZoneProps) {
 			role='button'
 			tabIndex={0}
 			className={cx(
-				'rounded border border-dashed border-stone-500 p-4 text-stone-500 hover:bg-stone-800 outline-none flex flex-col justify-center items-center text-center',
+				'rounded-xs border border-dashed border-stone-500 p-4 text-stone-500 hover:bg-stone-800 outline-hidden flex flex-col justify-center items-center text-center',
 				isDropTarget && 'bg-stone-800',
 				isFocusVisible && 'border-stone-50',
 				className,

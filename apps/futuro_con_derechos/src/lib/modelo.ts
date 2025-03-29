@@ -1,4 +1,4 @@
-import mapboxgl, {type Map, type Layer, MapMouseEvent} from 'mapbox-gl';
+import {type Map, type Layer} from 'mapbox-gl';
 
 const sourceId = 'modelo-source';
 const layerId = 'modelo-layer';
@@ -14,9 +14,9 @@ const layer: Layer = {
 			'interpolate',
 			['linear'],
 			['get', 'Predicció'],
-			0.12767753609,
+			0.127_677_536_09,
 			'rgba(0, 0, 0, 0)',
-			10.2578771996,
+			10.257_877_199_6,
 			'#e30d0d',
 		],
 	},

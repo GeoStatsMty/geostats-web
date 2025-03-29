@@ -49,7 +49,7 @@ const OrganizationImagePicker = forwardRef(function OrganizationImagePicker(
 					<AddPhotoAlternate className='fill-current' />
 				</Button>
 			) : (
-				<div className='group relative flex-none rounded'>
+				<div className='group relative flex-none rounded-sm'>
 					<ImageButton
 						{...triggerProps}
 						src={organization.logoUrl}

@@ -47,7 +47,7 @@ export default function InvitationList(props: InvitationListProps) {
 	return (
 		<div
 			className={cx(
-				'border border-stone-700 rounded min-h-48 text-stone-300 overflow-y-auto',
+				'border border-stone-700 rounded-sm min-h-48 text-stone-300 overflow-y-auto',
 				className,
 			)}
 		>

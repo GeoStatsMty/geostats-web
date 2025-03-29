@@ -1,7 +1,8 @@
 'use client';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import mapboxgl, {Map, MapMouseEvent, Popup} from 'mapbox-gl';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import mapboxgl, {Map, MapMouseEvent} from 'mapbox-gl';
+import type {Feature} from 'geojson';
+import {useEffect, useRef, useState} from 'react';
 import {
 	addSitiosDeApoyoLayer,
 	addSitiosDeApoyoSource,
@@ -48,7 +49,7 @@ const monterreyLat = 25.67;
 const monterreyLng = -100.32;
 const initialZoom = 10.5;
 
-export default function MapScreen(props: MainMapProps) {
+export default function MapScreen(properties: MainMapProps) {
 	const {
 		className,
 		showFiscalia,
@@ -56,22 +57,20 @@ export default function MapScreen(props: MainMapProps) {
 		showRezagoSocial,
 		showSitiosDeApoyo,
 		showModelo,
-	} = props;
+	} = properties;
 
-	const mapContainerRef = useRef<HTMLDivElement | null>(null);
+	const mapContainerReference = useRef<HTMLDivElement | null>(null);
 
 	const [isLoaded, setIsLoaded] = useState(false);
 
-	const mapRef = useRef<Map | null>(null);
-
-	const xd = true;
+	const mapReference = useRef<Map | null>(null);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
+		if (!mapReference.current || !isLoaded) {
 			return;
 		}
 
-		const map = mapRef.current;
+		const map = mapReference.current;
 		const popup = new mapboxgl.Popup({
 			closeButton: false,
 			closeOnClick: false,
@@ -89,139 +88,136 @@ export default function MapScreen(props: MainMapProps) {
 			},
 		];
 
-		function handleMouseEnter(
-			e: mapboxgl.MapMouseEvent & {
-				features?: mapboxgl.MapboxGeoJSONFeature[];
+		const onMouseEnter = (
+			event: mapboxgl.MapMouseEvent & {
+				features?: Feature[];
 			},
-			defaultText: string,
-		) {
-			if (e.features && e.features.length > 0) {
-				const feature = e.features[0];
-				const numPoints = feature.properties?.NUMPOINTS || defaultText;
-				const municipio =
-					feature.properties?.MUNICIPIO || 'NoMunicipio';
+		) => {
+			if (event.features && event.features.length > 0) {
+				const feature = event.features[0];
+				const numberPoints = feature.properties?.NUMPOINTS;
 				popup
-					.setLngLat(e.lngLat)
+					.setLngLat(event.lngLat)
 					.setHTML(
-						`<div style="color:black">Número de siniestros: ${numPoints}</div>`,
+						`<div style="color:black">Número de siniestros: ${numberPoints}</div>`,
 					)
 					.addTo(map);
 			}
-		}
+		};
 
 		function handleMouseLeave() {
 			popup.remove();
 		}
 
 		// Vincular eventos de mouse a las capas
-		layers.forEach(({id, defaultText}) => {
-			map.on('mouseenter', id, e => handleMouseEnter(e, defaultText));
+		for (const {id} of layers) {
+			map.on('mouseenter', id, onMouseEnter);
 			map.on('mouseleave', id, handleMouseLeave);
-		});
+		}
 
 		// Limpiar eventos al desmontar
 		return () => {
-			layers.forEach(({id}) => {
-				map.off('mouseenter', id, handleMouseEnter as any);
+			for (const {id} of layers) {
+				map.off('mouseenter', id, onMouseEnter);
 				map.off('mouseleave', id, handleMouseLeave);
-			});
+			}
 			popup.remove();
 		};
 	}, [isLoaded]);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
+		if (!mapReference.current || !isLoaded) {
 			return;
 		}
 
 		if (showFiscalia) {
-			addFeminicidiosFiscaliaLayer(mapRef.current);
+			addFeminicidiosFiscaliaLayer(mapReference.current);
 			return () => {
-				if (mapRef.current) {
-					removeFeminicidiosFiscaliaLayer(mapRef.current);
+				if (mapReference.current) {
+					removeFeminicidiosFiscaliaLayer(mapReference.current);
 				}
 			};
 		}
 
-		addFeminicidiosPeriodicosLayer(mapRef.current);
+		addFeminicidiosPeriodicosLayer(mapReference.current);
 
 		return () => {
-			if (mapRef.current) {
-				removeFeminicidiosPeriodicosLayer(mapRef.current);
+			if (mapReference.current) {
+				removeFeminicidiosPeriodicosLayer(mapReference.current);
 			}
 		};
 	}, [showFiscalia, isLoaded]);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
+		if (!mapReference.current || !isLoaded) {
 			return;
 		}
 
 		if (showCubrimientoDeSitio) {
-			addAreaSinCubrimientoDeSitioLayer(mapRef.current);
+			addAreaSinCubrimientoDeSitioLayer(mapReference.current);
 		}
 
 		return () => {
-			if (mapRef.current) {
-				removeAreaSinCubrimientoDeSitioLayer(mapRef.current);
+			if (mapReference.current) {
+				removeAreaSinCubrimientoDeSitioLayer(mapReference.current);
 			}
 		};
 	}, [showCubrimientoDeSitio, isLoaded]);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
+		if (!mapReference.current || !isLoaded) {
 			return;
 		}
 
 		if (showRezagoSocial) {
-			addResagoSocialLayer(mapRef.current);
+			addResagoSocialLayer(mapReference.current);
 		}
 
 		return () => {
-			if (mapRef.current) {
-				removeResagoSocialLayer(mapRef.current);
+			if (mapReference.current) {
+				removeResagoSocialLayer(mapReference.current);
 			}
 		};
 	}, [showRezagoSocial, isLoaded]);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
+		if (!mapReference.current || !isLoaded) {
 			return;
 		}
 
 		if (showSitiosDeApoyo) {
-			addSitiosDeApoyoLayer(mapRef.current);
+			addSitiosDeApoyoLayer(mapReference.current);
 		}
 
 		return () => {
-			if (mapRef.current) {
-				removeSitiosDeApoyoLayer(mapRef.current);
+			if (mapReference.current) {
+				removeSitiosDeApoyoLayer(mapReference.current);
 			}
 		};
 	}, [showSitiosDeApoyo, isLoaded]);
 
 	useEffect(() => {
-		if (!mapRef.current || !isLoaded || !showModelo) {
+		if (!mapReference.current || !isLoaded || !showModelo) {
 			return;
 		}
 
-		const map = mapRef.current;
+		const map = mapReference.current;
 
 		const modeloPopup = new mapboxgl.Popup({
 			closeButton: false,
 			closeOnClick: false,
 		});
 
-		addModeloLayer(mapRef.current);
+		addModeloLayer(mapReference.current);
 
-		const handleMouseEnterModeloLayer = (e: MapMouseEvent) => {
-			if (e.features && e.features.length > 0) {
-				const properties = e.features[0].properties!;
+		const handleMouseEnterModeloLayer = (event: MapMouseEvent) => {
+			if (event.features && event.features.length > 0) {
+				const properties = event.features[0].properties!;
 				const predictedCount = properties['Predicció'];
 				const total = properties['FemTot'];
 				const probability = properties['ProbAtLe'];
 				modeloPopup
-					.setLngLat(e.lngLat)
+					.setLngLat(event.lngLat)
 					.setHTML(
 						`<div style="color:black">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</div>`,
 					)
@@ -239,18 +235,18 @@ export default function MapScreen(props: MainMapProps) {
 		map.on('mouseleave', layerId, handleMouseLeaveModeloLayer);
 
 		return () => {
-			if (mapRef.current) {
+			if (mapReference.current) {
 				map.on('mousemove', layerId, handleMouseEnterModeloLayer);
 				map.on('mouseleave', layerId, handleMouseLeaveModeloLayer);
-				removeModeloLayer(mapRef.current);
+				removeModeloLayer(mapReference.current);
 			}
 		};
 	}, [showModelo, isLoaded]);
 
 	useEffect(() => {
-		if (mapContainerRef.current) {
-			mapRef.current = new Map({
-				container: mapContainerRef.current,
+		if (mapContainerReference.current) {
+			mapReference.current = new Map({
+				container: mapContainerReference.current,
 				style: 'mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4',
 				center: [monterreyLng, monterreyLat],
 				maxBounds: [
@@ -260,7 +256,7 @@ export default function MapScreen(props: MainMapProps) {
 				zoom: initialZoom,
 			});
 
-			const map = mapRef.current;
+			const map = mapReference.current;
 
 			map.on('load', () => {
 				addResagoSocialSource(map);
@@ -293,5 +289,5 @@ export default function MapScreen(props: MainMapProps) {
 			return () => map.remove();
 		}
 	}, []);
-	return <div ref={mapContainerRef} className={className} />;
+	return <div ref={mapContainerReference} className={className} />;
 }

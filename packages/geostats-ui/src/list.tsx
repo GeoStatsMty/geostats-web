@@ -36,7 +36,7 @@ export function List<T extends Record<string, unknown>>(props: ListProps<T>) {
 			{...gridProps}
 			ref={listRef}
 			className={cx(
-				'border border-stone-700 divide-y divide-stone-700 rounded',
+				'border border-stone-700 divide-y divide-stone-700 rounded-xs',
 				className,
 			)}
 		>

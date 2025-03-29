@@ -44,7 +44,7 @@ export function BaseDropdown(props: BaseDropdownProps) {
 	return (
 		<div
 			className={cx(
-				'overflow-hidden rounded border border-stone-800',
+				'overflow-hidden rounded-xs border border-stone-800',
 				className,
 			)}
 		>

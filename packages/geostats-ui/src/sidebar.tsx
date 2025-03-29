@@ -22,7 +22,7 @@ export function Sidebar(props: SidebarProps) {
 		<Overlay>
 			{/** @ts-expect-error react-aria doesn't use animation props **/}
 			<motion.div
-				className='fixed inset-0 z-[1200] flex flex-row-reverse'
+				className='fixed inset-0 z-1200 flex flex-row-reverse'
 				animate={{
 					background: 'rgba(0,0,0,0.5)',
 				}}

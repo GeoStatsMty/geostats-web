@@ -198,7 +198,7 @@ export default async function MyStartPage() {
 				>
 					{address ? (
 						<>
-							<div className='overflow-hidden rounded'>
+							<div className='overflow-hidden rounded-sm'>
 								<LocationMap
 									location={address.location}
 									className='mb-4 h-48'

@@ -31,7 +31,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 			flex-1 flex-col gap-4'
 		>
 			<div className='mb-4 flex items-center gap-4'>
-				<div className='size-16 flex-none rounded border border-stone-800 p-4'>
+				<div className='size-16 flex-none rounded-sm border border-stone-800 p-4'>
 					{organization.logoUrl && (
 						<div className='flex size-full items-center justify-center overflow-hidden'>
 							<Image
@@ -58,7 +58,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 						</div>
 						<a
 							href={`mailto:${organization.email}`}
-							className='text-ellipsis min-w-0 overflow-hidden'
+							className='min-w-0 overflow-hidden text-ellipsis'
 						>
 							{organization.email}
 						</a>
@@ -77,7 +77,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 							<Phone className='mx-auto fill-current' />
 						</div>
 						<h3
-							className='text-ellipsis min-w-0 overflow-hidden'
+							className='min-w-0 overflow-hidden text-ellipsis'
 							onClick={() =>
 								navigator.clipboard.writeText(
 									`${organization.phone}`,
@@ -99,7 +99,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 							href={organization.webpage}
 							target='_blank'
 							rel='noopener noreferrer'
-							className='underline text-ellipsis min-w-0 overflow-hidden'
+							className='min-w-0 overflow-hidden text-ellipsis underline'
 						>
 							{organization.webpage}
 						</a>
@@ -176,7 +176,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 	);
 }
 
-function handleCardClick(id: Number) {
+function handleCardClick(id: number) {
 	// Lógica para navegar o realizar alguna acción al hacer clic en la tarjeta
 	console.log('Clicked organization id:', id);
 }

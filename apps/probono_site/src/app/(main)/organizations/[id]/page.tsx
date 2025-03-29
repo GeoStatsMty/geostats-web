@@ -47,7 +47,7 @@ export default async function OrganizationDetailsPage({ params }: { params: { id
 	const sectors = await getAllSectors();
 
 	return (
-		<main className='mx-auto min-h-screen max-w-screen-xl px-4 py-16'>
+		<main className='mx-auto min-h-screen max-w-(--breakpoint-xl) px-4 py-16'>
 			<h1 className='mb-6 mt-4 text-4xl text-stone-50'>Organizaciones</h1>
 			<div className='mb-8 h-96 w-full overflow-hidden rounded-md glow-2xl'>
 				<SectorsForm

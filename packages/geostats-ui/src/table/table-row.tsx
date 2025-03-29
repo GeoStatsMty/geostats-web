@@ -23,7 +23,7 @@ export function TableRow<T>(props: TableRowProps<T>) {
 			{...rowProps}
 			ref={rowRef}
 			className={cx(
-				'outline-none cursor-default',
+				'outline-hidden cursor-default',
 				isSelected && 'text-stone-50 bg-stone-900',
 			)}
 		>

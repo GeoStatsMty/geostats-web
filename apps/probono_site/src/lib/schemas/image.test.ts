@@ -3,7 +3,7 @@ import imageSchema from '@/lib/schemas/image.ts';
 
 // Mock Blob class
 // @ts-expect-error Not all properties needed for tests
-global.Blob = class {
+globalThis.Blob = class {
 	size: number;
 	parts: [ArrayBuffer];
 

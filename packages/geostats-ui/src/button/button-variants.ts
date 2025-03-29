@@ -2,7 +2,7 @@ import {type VariantProps} from 'cva';
 import {cva} from '@/cva.ts';
 
 export const buttonVariants = cva({
-	base: 'flex size-fit items-center gap-1 truncate rounded fill-current font-bold transition-colors disabled:cursor-default',
+	base: 'flex size-fit items-center gap-1 truncate rounded-xs fill-current font-bold transition-colors disabled:cursor-default',
 	variants: {
 		size: {
 			xs: 'text-xs',

@@ -90,7 +90,7 @@ function Tag<T>(props: TagProps<T>) {
 		>
 			<div
 				{...gridCellProps}
-				className='flex items-center gap-2 rounded border border-stone-700 px-2 text-stone-300'
+				className='flex items-center gap-2 rounded-xs border border-stone-700 px-2 text-stone-300'
 			>
 				{item.rendered}
 				{allowsRemoving && (

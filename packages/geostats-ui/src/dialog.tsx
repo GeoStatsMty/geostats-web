@@ -20,7 +20,7 @@ export function Dialog(props: DialogProps) {
 		<div
 			{...dialogProps}
 			ref={ref}
-			className={cx('outline-none text-stone-300', className)}
+			className={cx('outline-hidden text-stone-300', className)}
 		>
 			{title === undefined ? null : (
 				<h3 {...titleProps} className='mb-2 text-2xl font-bold'>

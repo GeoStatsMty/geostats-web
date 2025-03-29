@@ -23,7 +23,7 @@ export function Switch(props: SwitchProps) {
 				className,
 			)}
 		>
-			<div className='me-2 w-[calc(theme(spacing.8)+4px)] rounded-full border border-stone-300 p-px transition-colors group-data-[selected=true]:border-stone-50 group-data-[selected=true]:bg-neutral-50'>
+			<div className='me-2 w-[calc(--spacing(8)+4px)] rounded-full border border-stone-300 p-px transition-colors group-data-[selected=true]:border-stone-50 group-data-[selected=true]:bg-neutral-50'>
 				<div className='size-4 rounded-full bg-stone-100 transition-all group-data-[selected=true]:translate-x-full group-data-[selected=true]:bg-stone-900' />
 			</div>
 			{label}

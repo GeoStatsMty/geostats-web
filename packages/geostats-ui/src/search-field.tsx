@@ -35,12 +35,12 @@ export function SearchField(props: SearchFieldProps) {
 			>
 				{label}
 			</label>
-			<div className='flex items-center gap-1 rounded border border-stone-700 px-1 group-focus-within:border-stone-50'>
+			<div className='flex items-center gap-1 rounded-xs border border-stone-700 px-1 group-focus-within:border-stone-50'>
 				<Search className='fill-stone-500 group-focus-within:fill-stone-50' />
 				<input
 					{...inputProps}
 					ref={inputRef}
-					className='grow bg-transparent py-1 text-stone-200 outline-none'
+					className='grow bg-transparent py-1 text-stone-200 outline-hidden'
 				/>
 				{state.value === '' ? null : (
 					<Button {...clearButtonProps} variant='text'>

@@ -18,8 +18,8 @@ export default async function NewOrganizationPage() {
 					Cerrar sesión
 				</NextLinkButton>
 			</TopBar>
-			<div className='min-h-[calc(100vh-theme(spacing.16))]'>
-				<div className='m-auto mt-16 w-fit rounded border-stone-700 p-8 md:mt-24 md:border'>
+			<div className='min-h-[calc(100vh-(--spacing(16)))]'>
+				<div className='m-auto mt-16 w-fit rounded-sm border-stone-700 p-8 md:mt-24 md:border'>
 					<h1 className='mb-4 text-2xl text-stone-300'>
 						Nueva organización
 					</h1>

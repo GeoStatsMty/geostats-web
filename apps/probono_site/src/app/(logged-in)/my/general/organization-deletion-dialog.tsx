@@ -14,7 +14,7 @@ export default function OrganizationDeletionDialog(props: OrganizationDeletionDi
 
 	const deleteOrganizationHandler = async () => {
 		await deleteOrganization();
-		window.location.href = '/my';
+		globalThis.location.href = '/my';
 	};
 
 	return (
@@ -25,7 +25,7 @@ export default function OrganizationDeletionDialog(props: OrganizationDeletionDi
 					Cancelar
 				</Button>
 				<Button
-					variant='outlined' className='text-red-400 font-bold' onPress={deleteOrganizationHandler}>
+					variant='outlined' className='font-bold text-red-400' onPress={deleteOrganizationHandler}>
 					Confirmar
 				</Button>
 			</div>

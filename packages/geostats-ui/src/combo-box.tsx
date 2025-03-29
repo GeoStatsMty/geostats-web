@@ -76,7 +76,7 @@ export function BaseComboBox<T extends Record<string, unknown>>(
 			>
 				{props.label}
 			</label>
-			<div className='flex w-full rounded border border-stone-700 bg-stone-950 text-stone-300 transition-all group-focus-within:border-stone-50 group-focus-within:shadow-stone-800 group-focus-within:glow-sm'>
+			<div className='flex w-full rounded-xs border border-stone-700 bg-stone-950 text-stone-300 transition-all group-focus-within:border-stone-50 group-focus-within:shadow-stone-800 group-focus-within:glow-sm'>
 				{icon}
 				<input
 					{...inputProps}

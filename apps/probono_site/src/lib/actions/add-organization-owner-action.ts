@@ -118,7 +118,7 @@ export default async function addOrganizationOwnerAction(
 					subject: `Invitación a ${organization.name}`,
 					html,
 				});
-			} catch (error) {
+			} catch {
 				await prisma.organizationInvitation.delete({
 					where: {
 						id: invite.id,

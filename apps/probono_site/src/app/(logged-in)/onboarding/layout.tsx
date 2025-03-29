@@ -25,7 +25,7 @@ export default async function OnboardingLayout(props: OnboardingLayoutProps) {
 					Cerrar sesión
 				</NextLinkButton>
 			</TopBar>
-			<div className='mt-16 min-h-[calc(100vh-theme(spacing.16))] md:pt-16'>
+			<div className='mt-16 min-h-[calc(100vh-(--spacing(16)))] md:pt-16'>
 				<OnboardingClientLayout isOrganizationTabDisabled={!user}>
 					{children}
 				</OnboardingClientLayout>

@@ -72,7 +72,7 @@ function Toast(props: ToastProps) {
 			exit='exiting'
 			variants={toastVariants}
 			className={cx(
-				'rounded flex p-2 items-center gap-2 relative max-w-2xl',
+				'rounded-xs flex p-2 items-center gap-2 relative max-w-2xl',
 				variant === 'success' && 'bg-green-400',
 				variant === 'error' && 'bg-red-400',
 				variant === 'warn' && 'bg-yellow-400',
@@ -132,7 +132,7 @@ function ToastRegion(props: ToastRegionProps) {
 			])}
 			ref={ref}
 			layout
-			className='fixed bottom-4 right-4 z-[1050] flex flex-col gap-4 outline-none'
+			className='fixed bottom-4 right-4 z-1050 flex flex-col gap-4 outline-hidden'
 		>
 			<AnimatePresence>
 				{state.visibleToasts.map(toast => (

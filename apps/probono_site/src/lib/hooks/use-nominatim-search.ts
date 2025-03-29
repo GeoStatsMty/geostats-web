@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import z from 'zod';
 
-/* eslint-disable @typescript-eslint/naming-convention */
+ 
 export const osmResultSchema = z
 	.object({
 		osm_id: z.number(),
@@ -27,7 +27,7 @@ export const osmResultSchema = z
 		countryCode: address.country_code,
 		number: address.house_number,
 	}));
-/* eslint-enable @typescript-eslint/naming-convention */
+ 
 
 export type InputOsmResult = z.input<typeof osmResultSchema>;
 export type OsmResult = z.infer<typeof osmResultSchema>;
@@ -91,7 +91,7 @@ export function useNominatimSearch(query?: AddressQuery) {
 
 			const result = (await response.json()) as InputOsmResult[];
 			if (result.length === 0) {
-				return undefined;
+				return;
 			}
 
 			return osmResultSchema.parse(result[0]);

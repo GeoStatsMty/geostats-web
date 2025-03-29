@@ -84,7 +84,7 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 				description="Datos básicos sobre tu organización, como información de contacto y redes sociales."
 			/>
 			<div className="flex w-full flex-wrap items-center gap-x-4">
-				<div className="mb-4 flex w-full items-center justify-center rounded border border-stone-700 lg:w-auto">
+				<div className="mb-4 flex w-full items-center justify-center rounded-sm border border-stone-700 lg:w-auto">
 					<OrganizationImagePicker
 						action={action}
 						organization={organization}

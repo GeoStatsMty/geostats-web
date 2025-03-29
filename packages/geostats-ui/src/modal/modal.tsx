@@ -22,7 +22,7 @@ export function Modal(props: ModalProps) {
 				<div
 					{...modalProps}
 					ref={ref}
-					className='rounded border border-stone-800 bg-stone-950 p-4'
+					className='rounded-xs border border-stone-800 bg-stone-950 p-4'
 				>
 					{children}
 				</div>
