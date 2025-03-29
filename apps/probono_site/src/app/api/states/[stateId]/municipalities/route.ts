@@ -1,7 +1,6 @@
 import {type NextRequest, NextResponse} from 'next/server';
 import {getMunicipalitiesByState} from '@/lib/models/municipality.ts';
 
- 
 export const GET = async (
 	request: NextRequest,
 	{

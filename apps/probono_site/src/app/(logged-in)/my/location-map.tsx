@@ -9,9 +9,12 @@ const MapContainer = dynamic(
 	{ssr: false},
 );
 
-const Marker = dynamic(() => import('react-leaflet').then(module_ => module_.Marker), {
-	ssr: false,
-});
+const Marker = dynamic(
+	() => import('react-leaflet').then(module_ => module_.Marker),
+	{
+		ssr: false,
+	},
+);
 
 const TileLayer = dynamic(
 	() => import('react-leaflet').then(module_ => module_.TileLayer),

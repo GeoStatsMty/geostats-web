@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React, {useMemo, useState} from 'react';
 import {Seq, Set} from 'immutable';
 import dynamic from 'next/dynamic';
@@ -22,9 +22,9 @@ const LocationMap = dynamic(
 export type SectorFormProps = {
 	readonly sectors: Array<
 		Sector & {
-		geom: Geometry;
-		municipalityName: string;
-	}
+			geom: Geometry;
+			municipalityName: string;
+		}
 	>;
 	readonly organization: {
 		sectors: Array<{
@@ -48,7 +48,7 @@ export default function locationSectors(props: SectorFormProps) {
 	const [selectedSectorKeys, setSelectedSectorKeys] = useState(() =>
 		Set(organization.sectors.map(sector => sector.id)),
 	);
-    
+
 	const {add} = useToasts();
 	const [isLoading, setIsLoading] = useState(false);
 	const selectedSectors = useMemo(
@@ -71,13 +71,13 @@ export default function locationSectors(props: SectorFormProps) {
 	);
 
 	return (
-        <div className='mb-8 h-96 w-full overflow-hidden rounded-md glow-2xl'>
-				<LocationMap
-					sectors={sectors}
-                    selectedKeys={selectedSectorKeys}
-					organizations={organizations}
-					className='size-full'
-				/>
-			</div>
-    );
+		<div className='mb-8 h-96 w-full overflow-hidden rounded-md glow-2xl'>
+			<LocationMap
+				sectors={sectors}
+				selectedKeys={selectedSectorKeys}
+				organizations={organizations}
+				className='size-full'
+			/>
+		</div>
+	);
 }

@@ -3,7 +3,6 @@ import {notFound} from 'next/navigation';
 import {getUsersDependantOrganizations} from '@/lib/models/organization.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
 
- 
 export const GET = async (request: NextRequest) => {
 	const searchParameters = request.nextUrl.searchParams;
 

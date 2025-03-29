@@ -35,7 +35,7 @@ export default function AddressMap(props: AddressMapProps) {
 			ref={mapRef}
 			center={initialCoords}
 			zoom={initialZoom}
-			className="my-8 h-96 rounded-sm border border-stone-800 glow-2xl"
+			className='my-8 h-96 rounded-sm border border-stone-800 glow-2xl'
 		>
 			<TileLayer
 				attribution='© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'

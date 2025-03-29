@@ -7,7 +7,6 @@ import {
 	ReauthenticationExpiredError,
 } from '@/lib/models/user-reauthentication.ts';
 
- 
 export const GET = async () => {
 	const user = await getUserFromSession();
 

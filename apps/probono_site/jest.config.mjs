@@ -31,16 +31,18 @@ const config = {
 
 // Overrides transformIgnorePatterns of generated values by next-jest
 export default async function configFun(...args) {
-	const fn = createJestConfig(config);
-	const result = await fn(...args);
+	const function_ = createJestConfig(config);
+	const result = await function_(...args);
 
-	result.transformIgnorePatterns = result.transformIgnorePatterns.map(pattern => {
-		if (pattern === '/node_modules/') {
-			return '/node_modules(?!/file-type|/token-types|/strtok3|/peek-readable)/';
-		}
+	result.transformIgnorePatterns = result.transformIgnorePatterns.map(
+		pattern => {
+			if (pattern === '/node_modules/') {
+				return '/node_modules(?!/file-type|/token-types|/strtok3|/peek-readable)/';
+			}
 
-		return pattern;
-	});
+			return pattern;
+		},
+	);
 
 	return result;
 }
