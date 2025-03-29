@@ -50,9 +50,14 @@ export function BaseDropdown(props: BaseDropdownProps) {
 		>
 			<div
 				className='flex cursor-pointer border-b border-stone-800 p-2 font-bold text-stone-50 transition-colors hover:bg-stone-900'
+				onKeyDown={() => {
+					onToggle(!isOpen);
+				}}
 				onClick={() => {
 					onToggle(!isOpen);
 				}}
+				role='button'
+				tabIndex={0}
 			>
 				<div className='grow'>{label}</div>
 				{isOpen ? (

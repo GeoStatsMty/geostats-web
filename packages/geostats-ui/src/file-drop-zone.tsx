@@ -9,7 +9,6 @@ import React, {
 import {type FileDropItem, mergeProps, useDrop, useFocusRing} from 'react-aria';
 import {type FormValidationProps, useFormValidation} from '@react-aria/form';
 import {useFormValidationState} from '@react-stately/form';
-import {omit} from 'lodash';
 import {cx} from './cva.ts';
 
 export type FileDropZoneProps = {
@@ -29,7 +28,15 @@ const imageMimeTypes = new Set<string>([
 ]);
 
 export function FileDropZone(props: FileDropZoneProps) {
-	const {label, className, acceptedMimeTypes, error} = props;
+	// Extraemos las props que NO queremos pasar al input
+	const {
+		label,
+		className,
+		acceptedMimeTypes,
+		error,
+
+		...inputProps
+	} = props;
 
 	const [file, setFile] = useState<File>();
 
@@ -40,15 +47,12 @@ export function FileDropZone(props: FileDropZoneProps) {
 	});
 
 	const {commitValidation} = state;
-
 	const {isInvalid, validationErrors} = state.displayValidation;
 
 	const inputRef = useRef<HTMLInputElement>(null);
-
 	useFormValidation<File>(props, state, inputRef);
 
 	const ref = useRef<HTMLDivElement>(null);
-
 	const {isFocusVisible, focusProps} = useFocusRing();
 
 	const {dropProps, isDropTarget} = useDrop({
@@ -102,14 +106,10 @@ export function FileDropZone(props: FileDropZoneProps) {
 				className,
 			)}
 			onClick={dropZoneClickHandler}
+			onKeyDown={dropZoneClickHandler}
 		>
 			<input
-				{...omit(props, [
-					'className',
-					'acceptedMimeTypes',
-					'label',
-					'error',
-				])}
+				{...inputProps}
 				ref={inputRef}
 				type='file'
 				className='hidden'
@@ -119,7 +119,7 @@ export function FileDropZone(props: FileDropZoneProps) {
 			{!isInvalid && file && imageMimeTypes.has(file.type) && (
 				<img
 					src={URL.createObjectURL(file)}
-					alt='Submitted image'
+					alt='Submitted'
 					height={128}
 					width={128}
 				/>
