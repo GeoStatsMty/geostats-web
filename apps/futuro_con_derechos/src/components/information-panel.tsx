@@ -13,41 +13,47 @@ export type InformationPanelProps = {
 };
 
 const markdownComponents: Components = {
-	h1: properties => (
-		<h1 className='mt-4 text-3xl font-bold' {...properties} />
+	h1: ({children, ...props}) => (
+		<h1 className='mt-4 text-3xl font-bold' {...props}>
+			{children}
+		</h1>
 	),
-	h2: properties => (
-		<h2 className='mt-4 text-2xl font-semibold' {...properties} />
+	h2: ({children, ...props}) => (
+		<h2 className='mt-4 text-2xl font-semibold' {...props}>
+			{children}
+		</h2>
 	),
-	h3: properties => (
-		<h3 className='mt-4 text-xl font-medium' {...properties} />
+	h3: ({children, ...props}) => (
+		<h3 className='mt-4 text-xl font-medium' {...props}>
+			{children}
+		</h3>
 	),
-	h4: properties => (
-		<h4 className='mt-4 text-lg font-medium' {...properties} />
+	h4: ({children, ...props}) => (
+		<h4 className='mt-4 text-lg font-medium' {...props}>
+			{children}
+		</h4>
 	),
-	h5: properties => (
-		<h5 className='mt-4 text-base font-medium' {...properties} />
+	h5: ({children, ...props}) => (
+		<h5 className='mt-4 text-base font-medium' {...props}>
+			{children}
+		</h5>
 	),
-	h6: properties => (
-		<h6 className='mt-4 text-sm font-medium' {...properties} />
+	h6: ({children, ...props}) => (
+		<h6 className='mt-4 text-sm font-medium' {...props}>
+			{children}
+		</h6>
 	),
-	blockquote: properties => (
+	blockquote: props => (
 		<blockquote
 			className='border-l-4 pl-4 italic text-gray-300'
-			{...properties}
+			{...props}
 		/>
 	),
-	ul: properties => (
-		<ul
-			className='list-inside space-y-2 pl-6 text-gray-200'
-			{...properties}
-		/>
+	ul: props => (
+		<ul className='list-inside space-y-2 pl-6 text-gray-200' {...props} />
 	),
-	ol: properties => (
-		<ol
-			className='list-decimal space-y-2 pl-6 text-gray-200'
-			{...properties}
-		/>
+	ol: props => (
+		<ol className='list-decimal space-y-2 pl-6 text-gray-200' {...props} />
 	),
 	li: properties => <li className='text-gray-200' {...properties} />,
 };
