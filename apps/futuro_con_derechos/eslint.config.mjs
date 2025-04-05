@@ -1,1 +1,1 @@
-export {default} from 'eslint-config-geostats/base.eslint.config.mjs';
+export {default} from 'eslint-config-geostats/nextjs.eslint.config.mjs';
