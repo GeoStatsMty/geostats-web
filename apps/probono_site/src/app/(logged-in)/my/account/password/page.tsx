@@ -7,8 +7,9 @@ import {
 } from '@/lib/schemas/password.ts';
 import {decodeForm} from '@/lib/form-utilities.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
-import {auth0, authentication, management} from '@/lib/auth0.ts';
+import {auth0} from '@/lib/auth0.ts';
 import {FormState} from '@/components/form';
+import {authentication, management} from '@/lib/auth0-server';
 
 export default async function AccountPage() {
 	const action = async (

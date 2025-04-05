@@ -3,12 +3,13 @@ import {cookies} from 'next/headers';
 import {Prisma, User} from '@prisma/client';
 import {type UserInit, type UserUpdate} from '@/lib/schemas/user.ts';
 import prisma from '@/lib/prisma.ts';
-import {auth0, management} from '@/lib/auth0.ts';
+import {auth0} from '@/lib/auth0.ts';
 import {
 	deleteOrganizations,
 	getUsersDependantOrganizations,
 } from '@/lib/models/organization.ts';
 import OrganizationGetPayload = Prisma.OrganizationGetPayload;
+import {management} from '../auth0-server';
 
 /**
  * Retrieves the active organization for the current user.
