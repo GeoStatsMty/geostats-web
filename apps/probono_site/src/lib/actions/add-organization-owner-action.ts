@@ -8,7 +8,7 @@ import {
 	organizationOwnerAdditionSchema,
 } from '@/lib/schemas/organization-owner-addition.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
-import {decodeForm} from '@/lib/form-utils.ts';
+import {decodeForm} from '@/lib/form-utilities.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
 import prisma from '@/lib/prisma.ts';
 import {userAuthorizedForOrganization} from '@/lib/models/organization.ts';
@@ -103,7 +103,7 @@ export default async function addOrganizationOwnerAction(
 				},
 			});
 
-			const html = render(
+			const html = await render(
 				createElement(OrganizationInvitationEmail, {
 					organizationLogoUrl: organization.logoUrl ?? '',
 					organizationName: organization.name,
@@ -118,13 +118,13 @@ export default async function addOrganizationOwnerAction(
 					subject: `Invitación a ${organization.name}`,
 					html,
 				});
-			} catch (error) {
+			} catch {
 				await prisma.organizationInvitation.delete({
 					where: {
 						id: invite.id,
 					},
 				});
-				throw error;
+				console.error('Failed to delete organization invitation.');
 			}
 		}
 	} catch (error) {

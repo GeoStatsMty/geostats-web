@@ -1,14 +1,11 @@
 import React from 'react';
 
-import {Separator} from 'geostats-ui';
-
 export default function Terms() {
 	return (
 		<main className='mx-auto mt-16 w-full max-w-4xl px-4 text-stone-50'>
 			<h1 className='mx-auto mb-6 text-4xl font-bold lg:mx-0'>
 				Términos y condiciones
 			</h1>
-			<Separator />
 			<p className='text-justify'>
 				{' '}
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
@@ -42,7 +39,8 @@ export default function Terms() {
 				quis varius lectus velit nec orci. Mauris blandit bibendum
 				justo, in feugiat tellus varius finibus. Vivamus mattis
 				tincidunt odio eget malesuada. Maecenas nisl orci, sagittis sit
-				amet commodo in, placerat ut lectus. Praesent et viverra quam.{' '}
+				amet commodo in, placerat ut lectus. Praesent et viverra
+				quam.{' '}
 			</p>
 		</main>
 	);

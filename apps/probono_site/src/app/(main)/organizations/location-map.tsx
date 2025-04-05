@@ -1,14 +1,12 @@
 'use client';
 
 import React, {type Key, useMemo} from 'react';
-import {GeoJSON, MapContainer, Tooltip} from 'react-leaflet';
+import {GeoJSON, MapContainer, TileLayer, Tooltip} from 'react-leaflet';
 import {type Set} from 'immutable';
 import {type Geometry} from 'geojson';
 import {type Sector} from '@prisma/client';
 
 import LocationMarker from '@/components/location-marker.tsx';
-
-import {GeostatsTileLayer} from 'geostats-ui';
 
 type SectorProps = {
 	readonly isSelected: boolean;
@@ -53,7 +51,14 @@ export default function LocationMap(props: LocationMapProps) {
 	const time = useMemo(() => Date.now(), []);
 
 	return (
-		<MapContainer key={time} scrollWheelZoom worldCopyJump center={[25.68, -100.31]} className={className} zoom={12}>
+		<MapContainer
+			key={time}
+			scrollWheelZoom
+			worldCopyJump
+			center={[25.68, -100.31]}
+			className={className}
+			zoom={12}
+		>
 			{organizations.map(organization => (
 				<LocationMarker
 					key={organization.id}
@@ -61,7 +66,10 @@ export default function LocationMap(props: LocationMapProps) {
 					popup={organization.name}
 				/>
 			))}
-			<GeostatsTileLayer />
+			<TileLayer
+				attribution='© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
+				url={`https://api.mapbox.com/styles/v1/stock44/clp78x4lm013d01ns32akem9o/tiles/{z}/{x}/{y}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`}
+			/>
 			{sectors.map(sector => (
 				<SectorDisplay
 					key={sector.id}

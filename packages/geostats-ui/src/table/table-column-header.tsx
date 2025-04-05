@@ -1,3 +1,4 @@
+'use client';
 import type {GridNode} from '@react-types/grid';
 import type {TableState} from 'react-stately';
 import React, {useRef} from 'react';
@@ -29,7 +30,7 @@ export function TableColumnHeader<T>(props: TableColumnHeaderProps<T>) {
 			ref={headerRef}
 			colSpan={column.colspan}
 			className={cx(
-				'p-4 outline-none cursor-default',
+				'p-4 outline-hidden cursor-default',
 				isFocusVisible && 'shadow-stone-50',
 				(column.colspan ?? 0) > 1 ? 'text-center' : 'text-left',
 			)}

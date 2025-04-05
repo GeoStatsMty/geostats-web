@@ -17,12 +17,16 @@ import OdsSelector from '@/app/(logged-in)/my/purpose/ods-selector.tsx';
 import AgeGenderGroupSelector from '@/app/(logged-in)/my/purpose/age-gender-group-selector.tsx';
 import ActivityPrioritySelector from '@/app/(logged-in)/my/purpose/activity-priority-selector.tsx';
 import useSearchableListData from '@/lib/hooks/use-searchable-list-data.ts';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {
 	organizationInitSchema,
 	type OrganizationUpdate,
 } from '@/lib/schemas/organization.ts';
-import {Select, ComboBoxTagMultiSelect, useImmutableListData} from 'geostats-ui';
+import {
+	Select,
+	ComboBoxTagMultiSelect,
+	useImmutableListData,
+} from 'geostats-ui';
 import {Form, FormHeader, FormState} from '@/components/form';
 
 export type PurposeInfoFormProps = {

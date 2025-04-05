@@ -1,3 +1,4 @@
+'use client';
 import React, {type ForwardedRef, forwardRef} from 'react';
 import {
 	type AriaPopoverProps,
@@ -42,7 +43,7 @@ const Popover = forwardRef(function Popover(
 			<div
 				{...popoverProps}
 				ref={popoverRef}
-				className='scroll-smooth rounded border border-stone-500 bg-stone-900 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-stone-50 scrollbar-thumb-rounded'
+				className='scroll-smooth rounded-xs border border-stone-500 bg-stone-900 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-stone-50 scrollbar-thumb-rounded'
 			>
 				<svg
 					{...arrowProps}

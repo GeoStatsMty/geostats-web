@@ -4,7 +4,7 @@ import {type OverlayTriggerProps, useOverlayTriggerState} from 'react-stately';
 import {useOverlayTrigger} from 'react-aria';
 import {Modal, type ModalProps} from '@/modal/modal.tsx';
 import {Button} from '@/button/button.tsx';
-import {type ButtonVariantProps} from '@/button/button-variants.tsx';
+import {type ButtonVariantProps} from '@/button/button-variants.ts';
 import {modalContext} from '@/modal/modal-context.ts';
 
 export type ModalTriggerProps = {

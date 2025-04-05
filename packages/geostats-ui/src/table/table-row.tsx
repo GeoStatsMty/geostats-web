@@ -1,3 +1,4 @@
+'use client';
 import React, {type ReactNode, useRef} from 'react';
 import {type GridNode} from '@react-types/grid';
 import {type TableState} from 'react-stately';
@@ -22,7 +23,7 @@ export function TableRow<T>(props: TableRowProps<T>) {
 			{...rowProps}
 			ref={rowRef}
 			className={cx(
-				'outline-none cursor-default',
+				'outline-hidden cursor-default',
 				isSelected && 'text-stone-50 bg-stone-900',
 			)}
 		>

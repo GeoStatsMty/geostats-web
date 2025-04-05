@@ -1,3 +1,4 @@
+'use client';
 import {useEffect, useRef} from 'react';
 import {type List} from 'immutable';
 import type Fuse from 'fuse.js';
@@ -17,7 +18,7 @@ export function useFuse<T>(
 	items: List<T>,
 	options?: IFuseOptions<T>,
 ): Fuse<T> | undefined {
-	const fuseRef = useRef<Fuse<T>>();
+	const fuseRef = useRef<Fuse<T>>(undefined);
 
 	useEffect(() => {
 		void (async () => {

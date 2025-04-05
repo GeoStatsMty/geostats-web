@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import React from 'react';
 import {type Address, type Organization} from '@prisma/client';
 import Image from 'next/image';
@@ -13,7 +13,8 @@ import LinkedInLogo from 'public/logos/linkedin.png';
 import YoutubeLogo from 'public/logos/youtube.png';
 import Public from '@material-design-icons/svg/round/public.svg';
 
-import {SocialLink, Paper} from 'geostats-ui';
+import {SocialLink} from '@/components/social-link.tsx';
+import {Paper} from 'geostats-ui';
 import Link from 'next/link';
 
 export type OrganizationCardProps = {
@@ -30,7 +31,7 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 			flex-1 flex-col gap-4'
 		>
 			<div className='mb-4 flex items-center gap-4'>
-				<div className='size-16 flex-none rounded border border-stone-800 p-4'>
+				<div className='size-16 flex-none rounded-sm border border-stone-800 p-4'>
 					{organization.logoUrl && (
 						<div className='flex size-full items-center justify-center overflow-hidden'>
 							<Image
@@ -44,9 +45,9 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 					)}
 				</div>
 				<Link href={`/organizations/${organization.id}`}>
-				<h2 className='flex-1 truncate text-2xl font-bold'>
-					{organization.name}
-				</h2>
+					<h2 className='flex-1 truncate text-2xl font-bold'>
+						{organization.name}
+					</h2>
 				</Link>
 			</div>
 			<div className='grid grow grid-cols-[64px_minmax(0,1fr)] gap-4 '>
@@ -55,34 +56,46 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 						<div>
 							<Email className='mx-auto fill-current' />
 						</div>
-						<a href={`mailto:${organization.email}`} className='text-ellipsis min-w-0 overflow-hidden'>
+						<a
+							href={`mailto:${organization.email}`}
+							className='min-w-0 overflow-hidden text-ellipsis'
+						>
 							{organization.email}
 						</a>
 					</>
 				)}
 
-				{organization.phone && ( 
-				<>
-					<div onClick={() => navigator.clipboard.writeText(`${organization.phone}`)}>
-					<Phone className='mx-auto fill-current' />
-					</div>
-					<h3 
-					className='text-ellipsis min-w-0 overflow-hidden' 
-					onClick={() => navigator.clipboard.writeText(`${organization.phone}`)}
-					style={{ cursor: 'pointer' }}  // Añadido para indicar que es clicable
-					>
-					{organization.phone}
-					</h3>
-				</>
+				{organization.phone && (
+					<>
+						<button
+							onClick={() =>
+								navigator.clipboard.writeText(
+									`${organization.phone}`,
+								)
+							}
+						>
+							<Phone className='mx-auto fill-current' />
+						</button>
+						<h3
+							className='min-w-0 overflow-hidden text-ellipsis'
+							style={{cursor: 'pointer'}} // Añadido para indicar que es clicable
+						>
+							{organization.phone}
+						</h3>
+					</>
 				)}
-
 
 				{organization.webpage && (
 					<>
 						<div>
 							<Public className='mx-auto fill-current' />
 						</div>
-						<a href={organization.webpage} target="_blank" rel="noopener noreferrer" className='underline text-ellipsis min-w-0 overflow-hidden'>
+						<a
+							href={organization.webpage}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='min-w-0 overflow-hidden text-ellipsis underline'
+						>
 							{organization.webpage}
 						</a>
 					</>
@@ -156,9 +169,4 @@ export default function OrganizationCard(props: OrganizationCardProps) {
 			</div>
 		</Paper>
 	);
-}
-
-function handleCardClick(id: Number) {
-	// Lógica para navegar o realizar alguna acción al hacer clic en la tarjeta
-	console.log('Clicked organization id:', id);
 }

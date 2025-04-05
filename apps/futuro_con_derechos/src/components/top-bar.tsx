@@ -9,11 +9,11 @@ import {cx} from 'geostats-ui';
 
 export type TopBarProps = {
 	readonly children?: ReactNode;
-	className?: string; // Agregar 'className' a las props
+	readonly className?: string; // Agregar 'className' a las props
 };
 
-export default function TopBar(props: TopBarProps) {
-	const {children} = props;
+export default function TopBar(properties: TopBarProps) {
+	const {children} = properties;
 
 	const [showBar, setShowBar] = useState(true);
 
@@ -35,8 +35,8 @@ export default function TopBar(props: TopBarProps) {
 	return (
 		<motion.header
 			className={cx(
-				'fixed z-[1100] backdrop-blur right-0 left-0 w-full h-16 border-b border-stone-800 px-12 bg-black/40',
-				props.className // Aplicar className de las props aquí
+				'fixed z-1100 backdrop-blur-xs right-0 left-0 w-full h-16 border-b border-stone-800 px-12 bg-black/40',
+				properties.className, // Aplicar className de las props aquí
 			)}
 			animate={{
 				top: showBar ? 0 : -64,
@@ -48,7 +48,7 @@ export default function TopBar(props: TopBarProps) {
 			<div className='mx-auto flex h-full items-center justify-between gap-2'>
 				<Link
 					href='/'
-					className="flex items-center gap-2 font-bold text-stone-50 text-xs sm:text-sm md:text-base lg:text-lg" // Cambio de tamaño de texto
+					className='flex items-center gap-2 text-xs font-bold text-stone-50 sm:text-sm md:text-base lg:text-lg' // Cambio de tamaño de texto
 				>
 					<Image
 						src={GeoStatsLogoMark}

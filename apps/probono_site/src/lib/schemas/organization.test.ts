@@ -8,7 +8,7 @@ test('should validate a valid organization object', () => {
 		foundingYear: 2000,
 		isIncorporated: true,
 		email: 'test@organization.com',
-		webpage: 'http://www.organization.com',
+		webpage: 'https://www.organization.com',
 		ageGroups: JSON.stringify([{ageGroupId: 1, gender: Gender.male}]),
 		beneficiaries: JSON.stringify([1, 2, 3]),
 		activities: JSON.stringify([{activityId: 1, priority: 1}]),
@@ -31,7 +31,7 @@ test('should fail validation for an invalid organization object', () => {
 		foundingYear: 2000,
 		isIncorporated: true,
 		email: 'test@organization.com',
-		webpage: 'http://www.organization.com',
+		webpage: 'https://www.organization.com',
 		ageGroups: JSON.stringify([{ageGroupId: 1, gender: Gender.male}]),
 		beneficiaries: JSON.stringify([1, 2, 3]),
 		activities: JSON.stringify([{activityId: 1, priority: 1}]),
@@ -94,7 +94,7 @@ test('should throw on invalid JSON', () => {
 		foundingYear: 2000,
 		isIncorporated: true,
 		email: 'test@organization.com',
-		webpage: 'http://www.organization.com',
+		webpage: 'https://www.organization.com',
 		ageGroups: 'Not a JSON', // Invalid JSON
 	};
 
@@ -109,7 +109,7 @@ test('should throw on incorrect Age Group JSON', () => {
 		foundingYear: 2000,
 		isIncorporated: true,
 		email: 'test@organization.com',
-		webpage: 'http://www.organization.com',
+		webpage: 'https://www.organization.com',
 		ageGroups: '[{"ageGroupId": "should be number", "gender": 1}]',
 	};
 

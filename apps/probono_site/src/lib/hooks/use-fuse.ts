@@ -13,15 +13,19 @@ import {type IFuseOptions} from 'fuse.js';
  *
  * @returns {Fuse<T> | undefined} - The initialized Fuse instance, or undefined if the Fuse instance is not yet available.
  */
-export default function useFuse<T>(items: List<T>, options?: IFuseOptions<T>): Fuse<T> | undefined {
-	const fuseRef = useRef<Fuse<T>>();
+export default function useFuse<T>(
+	items: List<T>,
+	options?: IFuseOptions<T>,
+): Fuse<T> | undefined {
+	const fuseRef = useRef<Fuse<T>>(undefined);
 
 	useEffect(() => {
 		void (async () => {
-			const fuse = (await import('fuse.js'));
+			const fuse = await import('fuse.js');
 			fuseRef.current = new fuse.default<T>(items.toArray(), options);
 		})();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [items]);
+
 	return fuseRef.current;
 }

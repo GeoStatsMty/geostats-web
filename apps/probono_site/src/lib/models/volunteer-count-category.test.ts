@@ -19,11 +19,13 @@ describe('getAllVolunteerCountCategories', () => {
 
 		const result = await getAllVolunteerCountCategories();
 
-		expect(prismaMock.volunteerCountCategory.findMany).toBeCalledWith({
-			orderBy: {
-				minCount: 'asc',
+		expect(prismaMock.volunteerCountCategory.findMany).toHaveBeenCalledWith(
+			{
+				orderBy: {
+					minCount: 'asc',
+				},
 			},
-		});
+		);
 		expect(result).toEqual(dummyData);
 	});
 });

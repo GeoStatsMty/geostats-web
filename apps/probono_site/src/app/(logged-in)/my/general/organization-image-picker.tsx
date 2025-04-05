@@ -1,9 +1,4 @@
-import React, {
-	type ForwardedRef,
-	forwardRef,
-	type ReactNode,
-	useState,
-} from 'react';
+import {type ReactNode, useState} from 'react';
 import {useOverlayTriggerState} from 'react-stately';
 import {useOverlayTrigger} from 'react-aria';
 import {type Organization} from '@prisma/client';
@@ -29,10 +24,7 @@ export type OrganizationImagePickerProps = {
 	) => Promise<FormState<OrganizationUpdate>>;
 };
 
-const OrganizationImagePicker = forwardRef(function OrganizationImagePicker(
-	props: OrganizationImagePickerProps,
-	ref: ForwardedRef<HTMLImageElement>,
-) {
+function OrganizationImagePicker(props: OrganizationImagePickerProps) {
 	const {label, organization, action} = props;
 	const state = useOverlayTriggerState({});
 	const {triggerProps, overlayProps} = useOverlayTrigger(
@@ -49,7 +41,7 @@ const OrganizationImagePicker = forwardRef(function OrganizationImagePicker(
 					<AddPhotoAlternate className='fill-current' />
 				</Button>
 			) : (
-				<div className='group relative flex-none rounded'>
+				<div className='group relative flex-none rounded-sm'>
 					<ImageButton
 						{...triggerProps}
 						src={organization.logoUrl}
@@ -127,6 +119,6 @@ const OrganizationImagePicker = forwardRef(function OrganizationImagePicker(
 			)}
 		</>
 	);
-});
+}
 
 export default OrganizationImagePicker;

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 import {type Organization} from '@prisma/client';
 import {
 	Dialog,
@@ -19,16 +19,16 @@ export default function AccountDeletionDialog(
 ) {
 	const {userId} = props;
 	const closeModal = useCloseModal();
-	const {data} = useQuery<Organization[]>(
-		[userId, 'dependant-organizations'],
-		async () => {
+	const {data} = useQuery<Organization[]>({
+		queryKey: [userId, 'dependant-organizations'],
+		queryFn: async () => {
 			const response = await fetch(
 				`/api/users/${userId}/dependant-organizations`,
 			);
 
 			return response.json();
 		},
-	);
+	});
 
 	return (
 		<Dialog title={<span className='text-red-400'>Borrar mi cuenta</span>}>

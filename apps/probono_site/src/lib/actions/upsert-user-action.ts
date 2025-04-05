@@ -1,5 +1,4 @@
 'use server';
-import {getSession} from '@auth0/nextjs-auth0';
 import {
 	type UserInit,
 	userInitSchema,
@@ -7,16 +6,17 @@ import {
 	userUpdateSchema,
 } from '@/lib/schemas/user.ts';
 import prisma from '@/lib/prisma.ts';
-import {decodeForm} from '@/lib/form-utils.ts';
+import {decodeForm} from '@/lib/form-utilities.ts';
 import {createUser, updateUser} from '@/lib/models/user.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
 import {FormState} from '@/components/form';
+import {auth0} from '@/lib/auth0.ts';
 
 export default async function upsertUserAction(
 	state: FormState<UserInit | UserUpdate>,
 	data: FormData,
 ): Promise<FormState<UserInit | UserUpdate>> {
-	const session = await getSession();
+	const session = await auth0.getSession();
 	if (!session) {
 		return {
 			...state,
@@ -28,7 +28,7 @@ export default async function upsertUserAction(
 	try {
 		const user = await prisma.user.findUnique({
 			where: {
-				authId: session.user.sub as string,
+				authId: session.user.sub,
 			},
 			include: {
 				_count: {
@@ -44,7 +44,7 @@ export default async function upsertUserAction(
 			await updateUser(user.id, parsedData);
 		} else {
 			const parsedData = await decodeForm(data, userInitSchema);
-			await createUser(session.user.sub as string, parsedData);
+			await createUser(session.user.sub, parsedData);
 		}
 	} catch (error) {
 		return handleActionError(state, error);

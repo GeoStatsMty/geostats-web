@@ -17,7 +17,7 @@ const SectorsMap = dynamic(
 		ssr: false,
 		loading() {
 			return (
-				<div className='mb-4 h-[32rem] grow animate-pulse rounded bg-stone-900' />
+				<div className='mb-4 h-[32rem] grow animate-pulse rounded-sm bg-stone-900' />
 			);
 		},
 	},
@@ -64,6 +64,12 @@ export default function SectorsForm(props: SectorFormProps) {
 				.sortBy(municipality => municipality.name),
 		[sectorsList, selectedSectorKeys],
 	);
+
+	const makeOnSectorPress = (sectorId: number) => {
+		return () => {
+			setSelectedSectorKeys(previous => previous.remove(sectorId));
+		};
+	};
 
 	return (
 		<div className='grow'>
@@ -128,14 +134,9 @@ export default function SectorsForm(props: SectorFormProps) {
 											<Button
 												variant='text'
 												className='enabled:hover:bg-stone-700'
-												onPress={() => {
-													setSelectedSectorKeys(
-														previous =>
-															previous.remove(
-																sector.id,
-															),
-													);
-												}}
+												onPress={makeOnSectorPress(
+													sector.id,
+												)}
 											>
 												<Remove className='fill-current' />
 											</Button>

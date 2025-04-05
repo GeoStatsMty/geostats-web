@@ -1,5 +1,5 @@
 const react = jest.createMockFromModule('react');
 
-react.cache = (func) => func;
+react.cache = function_ => function_;
 
-module.exports = react;
+export default react;

@@ -32,7 +32,11 @@ export default function Home() {
 				<picture className='flex h-[500px] min-h-[500px] w-auto justify-center overflow-hidden lg:h-[800px] lg:min-h-[800px]'>
 					<source media='(min-width: 1024px)' srcSet={desktop} />
 					<source srcSet={mobile} />
-					<img {...rest} className='h-full w-auto max-w-none' />
+					<img
+						{...rest}
+						alt='LabNL'
+						className='h-full w-auto max-w-none'
+					/>
 				</picture>
 
 				<div className='-mt-16 flex flex-col justify-end px-4 text-center text-stone-50 lg:absolute  lg:inset-0 lg:z-10 lg:mt-0 lg:justify-center lg:text-left'>
@@ -136,7 +140,7 @@ export default function Home() {
 				</div>
 			</div>
 			<div className='relative flex h-[600px] items-center justify-center border-stone-700 p-8'>
-				<div className='absolute inset-0 -z-10 overflow-hidden bg-gradient-to-b from-stone-950 to-transparent brightness-50'>
+				<div className='absolute inset-0 -z-10 overflow-hidden bg-linear-to-b from-stone-950 to-transparent brightness-50'>
 					<Image
 						src={map}
 						alt='Background map'

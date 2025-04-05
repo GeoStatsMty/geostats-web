@@ -2,5 +2,8 @@
 	"extends": "tsconfig-geostats/base.json",
 	"exclude": [
 		"node_modules"
-	]
+	],
+	"compilerOptions": {
+		"esModuleInterop": true
+	}
 }

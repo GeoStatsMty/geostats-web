@@ -1,37 +1,31 @@
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 import z from 'zod';
 
-/* eslint-disable @typescript-eslint/naming-convention */
-export const osmResultSchema = z.object({
-	osm_id: z.number(),
-	display_name: z.string(),
-	lat: z.coerce.number(),
-	lon: z.coerce.number(),
-	address: z.object({
-		road: z.string().optional(),
-		city: z.string().optional(),
-		state: z.string().optional(),
-		postcode: z.string().optional(),
-		country: z.string().optional(),
-		country_code: z.string().optional(),
-		house_number: z.coerce.number().optional(),
-	}),
-}).transform(({
-	osm_id,
-	display_name,
-	lat,
-	lon,
-	address,
-}) => ({
-	id: osm_id,
-	displayName: display_name,
-	lat,
-	lng: lon,
-	...address,
-	countryCode: address.country_code,
-	number: address.house_number,
-}));
-/* eslint-enable @typescript-eslint/naming-convention */
+export const osmResultSchema = z
+	.object({
+		osm_id: z.number(),
+		display_name: z.string(),
+		lat: z.coerce.number(),
+		lon: z.coerce.number(),
+		address: z.object({
+			road: z.string().optional(),
+			city: z.string().optional(),
+			state: z.string().optional(),
+			postcode: z.string().optional(),
+			country: z.string().optional(),
+			country_code: z.string().optional(),
+			house_number: z.coerce.number().optional(),
+		}),
+	})
+	.transform(({osm_id, display_name, lat, lon, address}) => ({
+		id: osm_id,
+		displayName: display_name,
+		lat,
+		lng: lon,
+		...address,
+		countryCode: address.country_code,
+		number: address.house_number,
+	}));
 
 export type InputOsmResult = z.input<typeof osmResultSchema>;
 export type OsmResult = z.infer<typeof osmResultSchema>;
@@ -49,48 +43,57 @@ export type AddressQuery = {
 };
 
 export function useNominatimSearch(query?: AddressQuery) {
-	const {data: searchResult} = useQuery<OsmResult | undefined>(['nominatim_search', query], async () => {
-		const parameters = new URLSearchParams({
-			countrycodes: 'mx',
-			addressdetails: '1',
-			limit: '1',
-			layer: 'address',
-			format: 'jsonv2',
-			zoom: '18',
-		});
+	const {data: searchResult} = useQuery<OsmResult | undefined>({
+		queryKey: ['nominatim_search', query],
+		queryFn: async () => {
+			const parameters = new URLSearchParams({
+				countrycodes: 'mx',
+				addressdetails: '1',
+				limit: '1',
+				layer: 'address',
+				format: 'jsonv2',
+				zoom: '18',
+			});
 
-		let fullStreet = query!.street ?? '';
+			let fullStreet = query!.street ?? '';
 
-		if (!Number.isNaN(query!.number)) {
-			fullStreet = query!.number.toString() + ', ' + fullStreet;
-		}
+			if (!Number.isNaN(query!.number)) {
+				fullStreet = query!.number.toString() + ', ' + fullStreet;
+			}
 
-		parameters.append('street', fullStreet);
+			parameters.append('street', fullStreet);
 
-		if (query!.municipality !== undefined) {
-			parameters.append('county', query!.municipality);
-		}
+			if (query!.municipality !== undefined) {
+				parameters.append('county', query!.municipality);
+			}
 
-		if (query!.state !== undefined) {
-			parameters.append('state', query!.state);
-		}
+			if (query!.state !== undefined) {
+				parameters.append('state', query!.state);
+			}
 
-		if (query!.postalCode !== undefined && !Number.isNaN(query!.postalCode)) {
-			parameters.append('postalcode', query!.postalCode.toString());
-		}
+			if (
+				query!.postalCode !== undefined &&
+				!Number.isNaN(query!.postalCode)
+			) {
+				parameters.append('postalcode', query!.postalCode.toString());
+			}
 
-		const response = await fetch('https://nominatim.openstreetmap.org/search?' + parameters.toString(), {
-			method: 'GET',
-			headers,
-		});
+			const response = await fetch(
+				'https://nominatim.openstreetmap.org/search?' +
+					parameters.toString(),
+				{
+					method: 'GET',
+					headers,
+				},
+			);
 
-		const result = await response.json() as InputOsmResult[];
-		if (result.length === 0) {
-			return undefined;
-		}
+			const result = (await response.json()) as InputOsmResult[];
+			if (result.length === 0) {
+				return;
+			}
 
-		return osmResultSchema.parse(result[0]);
-	}, {
+			return osmResultSchema.parse(result[0]);
+		},
 		staleTime: Number.POSITIVE_INFINITY,
 		enabled: query !== undefined,
 	});

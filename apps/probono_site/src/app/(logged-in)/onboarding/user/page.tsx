@@ -1,4 +1,3 @@
-import {getSession} from '@auth0/nextjs-auth0';
 import React from 'react';
 import {redirect} from 'next/navigation';
 import UserForm from '@/app/(logged-in)/onboarding/user/user-onboarding-form.tsx';
@@ -7,6 +6,7 @@ import {AnimatedLayoutContainer} from 'geostats-ui';
 import upsertUserAction from '@/lib/actions/upsert-user-action.ts';
 import {type UserInit, type UserUpdate} from '@/lib/schemas/user.ts';
 import {FormState} from '@/components/form';
+import {auth0} from '@/lib/auth0';
 
 export type UserOnboardingPageProps = {
 	readonly searchParams: {
@@ -18,12 +18,16 @@ export default async function UserOnboardingPage(
 	props: UserOnboardingPageProps,
 ) {
 	const {searchParams} = props;
-	const session = (await getSession())!;
+	const session = await auth0.getSession();
+
+	if (!session) {
+		throw new Error('Could not retrieve auth0 session.');
+	}
 
 	const user = session
 		? await prisma.user.findUnique({
 				where: {
-					authId: session.user.sub as string,
+					authId: session.user.sub,
 				},
 			})
 		: null;

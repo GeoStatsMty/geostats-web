@@ -12,7 +12,7 @@ import {
 	getCurrentUserOrganizations,
 	getUsersActiveOrganization,
 } from '@/lib/models/user.ts';
-import {SocialLink} from 'geostats-ui';
+import {SocialLink} from '@/components/social-link.tsx';
 
 export type LoggedInLayoutProps = {
 	readonly children: ReactNode;
@@ -50,7 +50,7 @@ export default async function LoggedInLayout(props: LoggedInLayoutProps) {
 					<AccountButton />
 				</div>
 			</header>
-			<div className='min-h-[calc(100vh-theme(spacing.16))] px-4 pb-32 pt-8'>
+			<div className='min-h-[calc(100vh-(--spacing(16)))] px-4 pb-32 pt-8'>
 				{children}
 			</div>
 			<footer className='border-t border-stone-800 px-4'>

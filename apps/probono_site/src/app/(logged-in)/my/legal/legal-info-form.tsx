@@ -13,7 +13,7 @@ import {
 	organizationInitSchema,
 	type OrganizationUpdate,
 } from '@/lib/schemas/organization.ts';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 
 import {Select, NumberField, Checkbox, TextField} from 'geostats-ui';
 import {Form, FormHeader, FormState} from '@/components/form';

@@ -1,3 +1,4 @@
+'use client';
 import React, {type ReactElement, type ReactNode} from 'react';
 import {type OverlayTriggerProps, useOverlayTriggerState} from 'react-stately';
 import {mergeProps, type Placement, useOverlayTrigger} from 'react-aria';
@@ -16,7 +17,7 @@ export type PopoverButtonTriggerProps = {
 
 export function PopoverButtonTrigger(props: PopoverButtonTriggerProps) {
 	const {label, children, placement} = props;
-	const buttonRef = React.useRef<HTMLButtonElement>(null);
+	const buttonRef = React.useRef<HTMLButtonElement>(null!);
 	const state = useOverlayTriggerState(props);
 	const {triggerProps, overlayProps} = useOverlayTrigger(
 		{type: 'dialog'},

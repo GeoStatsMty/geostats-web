@@ -1,3 +1,4 @@
+'use client';
 import {type ReactNode, type RefObject} from 'react';
 import {
 	type AriaNumberFieldProps,
@@ -62,14 +63,14 @@ export function NumberField(props: NumberFieldProps) {
 
 			<div
 				{...groupProps}
-				className='flex w-full items-center gap-2 rounded border border-stone-700 ps-2 shadow-stone-800 transition-all group-focus-within:border-stone-50 group-focus-within:glow-sm group-data-[disabled=true]:border-stone-800'
+				className='flex w-full items-center gap-2 rounded-xs border border-stone-700 ps-2 shadow-stone-800 transition-all group-focus-within:border-stone-50 group-focus-within:glow-sm group-data-[disabled=true]:border-stone-800'
 			>
 				{icon}
 				<input
 					{...inputProps}
 					ref={inputRef}
 					name={name}
-					className='min-w-0 grow bg-transparent py-2 text-stone-200 outline-none disabled:cursor-not-allowed disabled:text-stone-600'
+					className='min-w-0 grow bg-transparent py-2 text-stone-200 outline-hidden disabled:cursor-not-allowed disabled:text-stone-600'
 				/>
 				<div className='flex-none basis-4 flex-col items-center justify-around fill-stone-400'>
 					<Button {...incrementButtonProps} variant='text' size='xs'>

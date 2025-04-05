@@ -1,27 +1,38 @@
 import z from 'zod';
 import {DonationAuthStatus, CluniStatus, Gender} from '@prisma/client';
 import imageSchema from './image.ts';
-import {json, phoneSchema, urlHostnameRefinement, UrlValidation, hasValidDomain, formatURL} from '@/lib/schemas/util.ts';
+import {
+	json,
+	phoneSchema,
+	urlHostnameRefinement,
+	hasValidDomain,
+	formatURL,
+} from '@/lib/schemas/utilities.ts';
 import {addressInitSchema} from '@/lib/schemas/address.ts';
 
 const organizationSchema = z.object({
 	logo: imageSchema(400).nullish(),
-	// eslint-disable-next-line @typescript-eslint/naming-convention
+
 	name: z.string({invalid_type_error: 'Campo requerido'}),
 	foundingYear: z.coerce
 		.number()
 		.int()
 		.lte(new Date().getFullYear(), 'Fecha futura'),
 	email: z.string().email('Correo inválido').nullish(),
-	webpage: z.preprocess((val) => {
-		if (typeof val === "string") {
-		  return formatURL(val);
-		}
-		return val;
-	  }, z.string().refine(hasValidDomain, {
-		message: "Dirección inválida. Asegúrate de que la URL tenga un dominio válido",
-	  }))
-	  .nullish(),
+	webpage: z
+		.preprocess(
+			value => {
+				if (typeof value === 'string') {
+					return formatURL(value);
+				}
+				return value;
+			},
+			z.string().refine(hasValidDomain, {
+				message:
+					'Dirección inválida. Asegúrate de que la URL tenga un dominio válido',
+			}),
+		)
+		.nullish(),
 	phone: phoneSchema.nullish(),
 	hasInvestmentAgreement: z.coerce.boolean().nullish(),
 	logoUrl: z.string().nullish(),

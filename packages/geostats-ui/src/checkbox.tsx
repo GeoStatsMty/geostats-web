@@ -1,3 +1,4 @@
+'use client';
 import React, {useRef} from 'react';
 import {
 	type AriaCheckboxProps,
@@ -29,7 +30,7 @@ export function Checkbox(props: CheckboxProps) {
 				<input {...mergeProps(inputProps, focusProps)} ref={ref} />
 			</VisuallyHidden>
 			<div
-				className='size-6 cursor-pointer rounded border border-stone-700 p-1'
+				className='size-6 cursor-pointer rounded-xs border border-stone-700 p-1'
 				aria-hidden='true'
 			>
 				<svg

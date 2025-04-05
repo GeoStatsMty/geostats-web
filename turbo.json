@@ -3,6 +3,7 @@
 	"tasks": {
 		"build": {
 			"dependsOn": [
+				"db:generate",
 				"^build"
 			],
 			"env": [

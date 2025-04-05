@@ -23,17 +23,15 @@ export default function LocationMarker(props: LocationMarkerProps) {
 		<Marker
 			position={position}
 			icon={locationIcon}
-			eventHandlers={
-				{
-					click: () => onClick?.(), // Manejamos el evento click
-					// Mouseover(event) {
-					// 	event.target.openPopup();
-					// },
-					// mouseout(event) {
-					// 	event.target.closePopup();
-					// },
-				}
-			}
+			eventHandlers={{
+				click: () => onClick?.(), // Manejamos el evento click
+				// Mouseover(event) {
+				// 	event.target.openPopup();
+				// },
+				// mouseout(event) {
+				// 	event.target.closePopup();
+				// },
+			}}
 		>
 			{popup && (
 				<Tooltip offset={[-2, -28]} direction='top'>
@@ -43,4 +41,3 @@ export default function LocationMarker(props: LocationMarkerProps) {
 		</Marker>
 	);
 }
-

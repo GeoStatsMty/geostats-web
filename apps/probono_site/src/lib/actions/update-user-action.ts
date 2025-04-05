@@ -1,7 +1,7 @@
 'use server';
 import {revalidatePath} from 'next/cache';
 import {type UserUpdate, userUpdateSchema} from '@/lib/schemas/user.ts';
-import {decodeForm} from '@/lib/form-utils.ts';
+import {decodeForm} from '@/lib/form-utilities.ts';
 import {getUserFromSession, updateUser} from '@/lib/models/user.ts';
 import {handleActionError} from '@/lib/handle-action-error.ts';
 import {FormState} from '@/components/form';

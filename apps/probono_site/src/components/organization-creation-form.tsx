@@ -7,7 +7,7 @@ import {
 	type OrganizationInit,
 	organizationInitSchema,
 } from '@/lib/schemas/organization.ts';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {Form, FormState} from '@/components/form';
 import {SubmitButton} from '@/components/submit-button.tsx';
 

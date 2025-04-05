@@ -1,6 +1,6 @@
-import {getSession} from '@auth0/nextjs-auth0';
 import prisma from '@/lib/prisma.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
+import {auth0} from '@/lib/auth0.ts';
 
 const reauthTime = 180; // 3 mins max for reauthentication
 
@@ -20,7 +20,7 @@ export class NoReauthenticationRequestedError extends Error {}
  * @returns {Promise<void>} A Promise that resolves when the user reauthentication record is created successfully.
  */
 export async function requestUserReauthentication() {
-	const session = await getSession();
+	const session = await auth0.getSession();
 
 	if (!session) {
 		throw new Error('Not authenticated');
@@ -56,7 +56,7 @@ export async function requestUserReauthentication() {
  * @returns {Promise<void>} - Returns a promise that resolves when the reauthentication request is successfully consumed.
  */
 export async function consumeUserReauthentication(): Promise<void> {
-	const session = await getSession();
+	const session = await auth0.getSession();
 
 	if (!session) {
 		throw new Error('Not authenticated');

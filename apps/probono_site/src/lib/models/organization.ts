@@ -1,4 +1,3 @@
-import {omit} from 'lodash';
 import {del, put} from '@vercel/blob';
 import {filetypeextension} from 'magic-bytes.js';
 import {type Organization, type Prisma, type User} from '@prisma/client';
@@ -15,7 +14,7 @@ export async function getApprovedOrganizationLocations() {
         from "Organization" as o
                  join "Address" as a on o."addressId" = a.id
         where o.approved = true;
-    `;
+	`;
 
 	return result as Array<{
 		id: number;
@@ -52,12 +51,12 @@ export async function getApprovedOrganizationInfo() {
  *
  * @param {number} organizationId - The ID of the organization to check authorization for.
  * @param {number} userId - The ID of the user to check authorization for.
- * @returns {boolean} - True if the user is authorized for the organization, otherwise false.
+ * @returns {Promise<boolean>} - True if the user is authorized for the organization, otherwise false.
  */
 export async function userAuthorizedForOrganization(
 	userId: number,
 	organizationId: number,
-) {
+): Promise<boolean> {
 	const authorized = await prisma.organization.findFirst({
 		where: {
 			id: organizationId,
@@ -88,10 +87,39 @@ export async function createOrganization(
 	init: OrganizationInit,
 ): Promise<Organization> {
 	const organization = await prisma.$transaction(async tx => {
+		const {
+			logo,
+			employeeCountCategoryId,
+			volunteerCountCategoryId,
+			incomeCategoryId,
+			corporationTypeId,
+			categoryId,
+			...withoutLogo
+		} = init;
 		const organization = await tx.organization.create({
-			// @ts-expect-error type mismatched when using ids directly and at the same time using create to connect records
 			data: {
-				...omit(init, ['logo']),
+				...withoutLogo,
+				employeeCountCategory: employeeCountCategoryId
+					? {
+							connect: {
+								id: employeeCountCategoryId,
+							},
+						}
+					: undefined,
+				volunteerCountCategory: volunteerCountCategoryId
+					? {
+							connect: {
+								id: volunteerCountCategoryId,
+							},
+						}
+					: undefined,
+				incomeCategory: incomeCategoryId
+					? {connect: {id: incomeCategoryId}}
+					: undefined,
+				corporationType: corporationTypeId
+					? {connect: {id: corporationTypeId}}
+					: undefined,
+				category: categoryId ? {connect: {id: categoryId}} : undefined,
 				address: init.address
 					? {
 							create: init.address,
@@ -130,9 +158,9 @@ export async function createOrganization(
 
 		if (init.address) {
 			await tx.$queryRaw`update "Address"
-                         set location=point(${init.address.location[0]}, ${init.address.location[1]})
-                         from "Organization" as o
-                         where (o."addressId" = ${organization.addressId} and o.id = ${organization.id})`;
+                               set location=point(${init.address.location[0]}, ${init.address.location[1]})
+                               from "Organization" as o
+                               where (o."addressId" = ${organization.addressId} and o.id = ${organization.id})`;
 		}
 
 		return organization;
@@ -170,6 +198,41 @@ export async function createOrganization(
 	return organization;
 }
 
+async function updateOrganizationLogo(
+	logo: Blob,
+	logoUrl: string | null,
+	organizationId: number,
+) {
+	const fileStart = new Uint8Array(await logo.slice(0, 100).arrayBuffer());
+
+	const extensions = filetypeextension(fileStart);
+
+	if (extensions.length === 0) {
+		throw new Error("Can't find correct extension for file.");
+	}
+
+	if (logoUrl) {
+		await del(logoUrl);
+	}
+
+	const result = await put(
+		`organizationLogos/${organizationId}-${Date.now().valueOf()}.${extensions[0]}`,
+		logo,
+		{
+			access: 'public',
+		},
+	);
+
+	await prisma.organization.update({
+		where: {
+			id: organizationId,
+		},
+		data: {
+			logoUrl: result.url,
+		},
+	});
+}
+
 /**
  * Updates an [organizationId] with the provided ID and update object.
  *
@@ -181,14 +244,24 @@ export async function createOrganization(
 export async function updateOrganization(
 	organizationId: number,
 	update: OrganizationUpdate,
-) {
+): Promise<void> {
+	const {
+		logo,
+		employeeCountCategoryId,
+		volunteerCountCategoryId,
+		incomeCategoryId,
+		categoryId,
+		corporationTypeId,
+		...withoutLogo
+	} = update;
+
 	const organization = await prisma.organization.findUniqueOrThrow({
 		where: {
 			id: organizationId,
 		},
 	});
 
-	const operations: Array<Prisma.PrismaPromise<any>> = [];
+	const operations: Array<Prisma.PrismaPromise<unknown>> = [];
 
 	if (update.ageGroups) {
 		operations.push(
@@ -210,22 +283,47 @@ export async function updateOrganization(
 		);
 	}
 
+	const {location, ...addressWithoutLocation} = update.address ?? {
+		location: undefined,
+		number: undefined,
+	};
+
 	operations.push(
 		prisma.organization.update({
 			where: {
 				id: organizationId,
 			},
-			// @ts-expect-error type mismatched when using ids directly and at the same time using create to connect records
 			data: {
-				...omit(update, ['logo']),
-				address: update.address
+				...withoutLogo,
+				address: addressWithoutLocation.number
 					? {
 							upsert: {
-								update: omit(update.address, 'location'),
-								create: omit(update.address, 'location'),
+								update: addressWithoutLocation,
+								create: addressWithoutLocation,
 							},
 						}
 					: undefined,
+				employeeCountCategory: employeeCountCategoryId
+					? {
+							connect: {
+								id: employeeCountCategoryId,
+							},
+						}
+					: undefined,
+				volunteerCountCategory: volunteerCountCategoryId
+					? {
+							connect: {
+								id: volunteerCountCategoryId,
+							},
+						}
+					: undefined,
+				incomeCategory: incomeCategoryId
+					? {connect: {id: incomeCategoryId}}
+					: undefined,
+				corporationType: corporationTypeId
+					? {connect: {id: corporationTypeId}}
+					: undefined,
+				category: categoryId ? {connect: {id: categoryId}} : undefined,
 				ageGroups: update.ageGroups
 					? {
 							createMany: {
@@ -260,44 +358,19 @@ export async function updateOrganization(
 	if (update.address) {
 		console.log(`updating organization ${organization.id}`);
 		operations.push(prisma.$queryRaw`update "Address" as a
-                                     set location=point(${update.address.location[0]}, ${update.address.location[1]})
-                                     from "Organization" as o
-                                     where (o."addressId" = a.id and o.id = ${organization.id})`);
+                                         set location=point(${update.address.location[0]}, ${update.address.location[1]})
+                                         from "Organization" as o
+                                         where (o."addressId" = a.id and o.id = ${organization.id})`);
 	}
 
 	await prisma.$transaction(operations);
 
 	if (update.logo) {
-		const fileStart = new Uint8Array(
-			await update.logo.slice(0, 100).arrayBuffer(),
-		);
-
-		const extensions = filetypeextension(fileStart);
-
-		if (extensions.length === 0) {
-			throw new Error("Can't find correct extension for file.");
-		}
-
-		if (organization.logoUrl) {
-			await del(organization.logoUrl);
-		}
-
-		const result = await put(
-			`organizationLogos/${organizationId}-${Date.now().valueOf()}.${extensions[0]}`,
+		await updateOrganizationLogo(
 			update.logo,
-			{
-				access: 'public',
-			},
+			organization.logoUrl,
+			organization.id,
 		);
-
-		await prisma.organization.update({
-			where: {
-				id: organizationId,
-			},
-			data: {
-				logoUrl: result.url,
-			},
-		});
 	}
 }
 

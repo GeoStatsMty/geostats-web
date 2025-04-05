@@ -13,6 +13,9 @@ export type InvitationListProps = {
 	readonly className?: string;
 };
 
+const formatIsActiveColumn = (active: boolean) =>
+	active ? 'Activa' : 'Inactiva';
+
 export default function InvitationList(props: InvitationListProps) {
 	const {activeInvites, expiredInvites, className} = props;
 
@@ -47,7 +50,7 @@ export default function InvitationList(props: InvitationListProps) {
 	return (
 		<div
 			className={cx(
-				'border border-stone-700 rounded min-h-48 text-stone-300 overflow-y-auto',
+				'border border-stone-700 rounded-sm min-h-48 text-stone-300 overflow-y-auto',
 				className,
 			)}
 		>
@@ -61,9 +64,7 @@ export default function InvitationList(props: InvitationListProps) {
 							{columnKey => (
 								<Cell>
 									{columnKey === 'active'
-										? item.active
-											? 'Activa'
-											: 'Inactiva'
+										? formatIsActiveColumn(item.active)
 										: item[columnKey as 'recipient']}
 								</Cell>
 							)}

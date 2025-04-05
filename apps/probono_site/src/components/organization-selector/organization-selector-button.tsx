@@ -60,7 +60,7 @@ export default function OrganizationSelectorButton(
 							const id = Number.parseInt(key as string, 10);
 							if (!Number.isNaN(id)) {
 								await updateActiveOrganization(id);
-								window.location.href = '/my';
+								globalThis.location.href = '/my';
 							}
 						}}
 					>
@@ -69,7 +69,7 @@ export default function OrganizationSelectorButton(
 								<Item key={organization.organization.id}>
 									<div
 										className={cx(
-											'w-full p-2 text-stone-300 rounded border-b border-stone-700 max-w-64 truncate',
+											'w-full p-2 text-stone-300 rounded-sm border-b border-stone-700 max-w-64 truncate',
 											organization.organization.id ===
 												currentOrganization.id &&
 												'font-bold',
@@ -80,7 +80,7 @@ export default function OrganizationSelectorButton(
 								</Item>
 							) : (
 								<Item key='new' href='/new-organization'>
-									<div className='flex justify-between rounded p-2 text-stone-300 hover:bg-stone-800'>
+									<div className='flex justify-between rounded-sm p-2 text-stone-300 hover:bg-stone-800'>
 										Nueva organización
 										<Add className='ml-1 fill-current' />
 									</div>

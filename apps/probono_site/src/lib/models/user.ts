@@ -1,17 +1,15 @@
-import {omit} from 'lodash';
-import {getSession} from '@auth0/nextjs-auth0';
 import {cache} from 'react';
 import {cookies} from 'next/headers';
-import {type NextRequest, type NextResponse} from 'next/server';
-import {Prisma} from '@prisma/client';
+import {Prisma, User} from '@prisma/client';
 import {type UserInit, type UserUpdate} from '@/lib/schemas/user.ts';
 import prisma from '@/lib/prisma.ts';
-import {management} from '@/lib/auth0.ts';
+import {auth0} from '@/lib/auth0.ts';
 import {
 	deleteOrganizations,
 	getUsersDependantOrganizations,
 } from '@/lib/models/organization.ts';
 import OrganizationGetPayload = Prisma.OrganizationGetPayload;
+import {management} from '../auth0-server';
 
 /**
  * Retrieves the active organization for the current user.
@@ -26,13 +24,13 @@ export const getUsersActiveOrganization = cache(
 	async <Args extends Omit<Prisma.OrganizationDefaultArgs, 'where'>>(
 		args?: Args,
 	): Promise<OrganizationGetPayload<Args>> => {
-		const session = await getSession();
+		const session = await auth0.getSession();
 
 		if (!session) {
 			throw new Error('Not authenticated');
 		}
 
-		const cookieStore = cookies();
+		const cookieStore = await cookies();
 
 		const organizationId = cookieStore.get('organizationId');
 
@@ -45,7 +43,7 @@ export const getUsersActiveOrganization = cache(
 					id: organization,
 					owners: {
 						some: {
-							authId: session.user.sub as string,
+							authId: session.user.sub,
 						},
 					},
 				},
@@ -63,14 +61,13 @@ export const getUsersActiveOrganization = cache(
 			where: {
 				owners: {
 					some: {
-						authId: session.user.sub as string,
+						authId: session.user.sub,
 					},
 				},
 			},
 		})) as OrganizationGetPayload<Args>;
 	},
 );
-
 
 export const getOrganizationById = cache(
 	async <Args extends Omit<Prisma.OrganizationDefaultArgs, 'where'>>(
@@ -85,10 +82,11 @@ export const getOrganizationById = cache(
 		});
 
 		// Retornar null si no se encuentra la organización
-		return organization ? (organization as OrganizationGetPayload<Args>) : null;
+		return organization
+			? (organization as OrganizationGetPayload<Args>)
+			: null;
 	},
 );
-
 
 /**
  * Retrieve user information from Auth0 session.
@@ -98,28 +96,26 @@ export const getOrganizationById = cache(
  * @param {Array} args - The optional NextRequest and NextResponse objects to be used for getSession, if available.
  * @returns {Promise<User | null>} - The user object if session exists, otherwise null.
  */
-export const getUserFromSession = cache(
-	async (...args: [] | [NextRequest, NextResponse]) => {
-		const session = await getSession(...args);
+export const getUserFromSession = cache(async () => {
+	const session = await auth0.getSession();
 
-		if (!session) {
-			return null;
-		}
+	if (!session) {
+		return null;
+	}
 
-		return prisma.user.findUnique({
-			where: {
-				authId: session.user.sub as string,
-			},
-			include: {
-				_count: {
-					select: {
-						organizations: true,
-					},
+	return prisma.user.findUnique({
+		where: {
+			authId: session.user.sub,
+		},
+		include: {
+			_count: {
+				select: {
+					organizations: true,
 				},
 			},
-		});
-	},
-);
+		},
+	});
+});
 
 /**
  * Fetches the organizations associated with the current user.
@@ -130,14 +126,14 @@ export const getUserFromSession = cache(
  * @throws {Error} - If the user cannot be found or if an error occurs during the database query.
  */
 export const getCurrentUserOrganizations = cache(async () => {
-	const session = await getSession();
+	const session = await auth0.getSession();
 	if (!session) {
 		return null;
 	}
 
 	const user = prisma.user.findUniqueOrThrow({
 		where: {
-			authId: session.user.sub as string,
+			authId: session.user.sub,
 		},
 		select: {
 			organizations: {
@@ -161,7 +157,10 @@ export const getCurrentUserOrganizations = cache(async () => {
  *
  * @return {Promise<User>} - A promise that resolves with the created user object.
  */
-export async function createUser(authId: string, init: UserInit) {
+export async function createUser(
+	authId: string,
+	init: UserInit,
+): Promise<User> {
 	return prisma.$transaction(async tx => {
 		const user = await management.users.get({
 			id: authId,
@@ -238,7 +237,10 @@ export async function deleteUser(id: number): Promise<void> {
  * @param {string} [update.password] - The new password for the user.
  * @returns {Promise<void>} - A Promise that resolves when the user is updated.
  */
-export async function updateUser(id: number, update: UserUpdate) {
+export async function updateUser(
+	id: number,
+	update: UserUpdate,
+): Promise<void> {
 	await prisma.$transaction(async tx => {
 		const {authId} = await tx.user.findUniqueOrThrow({
 			where: {
@@ -264,7 +266,7 @@ export async function updateUser(id: number, update: UserUpdate) {
 			where: {
 				id,
 			},
-			data: omit(update, ['password']),
+			data: update,
 		});
 	});
 }

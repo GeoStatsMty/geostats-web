@@ -3,11 +3,12 @@ import {redirect} from 'next/navigation';
 import Key from '@material-design-icons/svg/round/key.svg';
 import Delete from '@material-design-icons/svg/round/delete.svg';
 import dynamic from 'next/dynamic';
-import {getSession} from '@auth0/nextjs-auth0';
 import AccountForm from '@/app/(logged-in)/my/account/account-form.tsx';
 import updateUserAction from '@/lib/actions/update-user-action.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
-import {Separator, LinkButton, ModalTrigger, HashSpyToaster} from 'geostats-ui';
+import {Separator, ModalTrigger, HashSpyToaster} from 'geostats-ui';
+import {auth0} from '@/lib/auth0.ts';
+import {NextLinkButton} from '@/components/next-link-button';
 
 const AccountDeletionDialog = dynamic(
 	async () =>
@@ -17,7 +18,7 @@ const AccountDeletionDialog = dynamic(
 export default async function AccountPage() {
 	const user = await getUserFromSession();
 
-	const session = await getSession();
+	const session = await auth0.getSession();
 	const sessionType = session?.user?.sub.split('|')[0] as string;
 
 	if (!user) {
@@ -35,7 +36,7 @@ export default async function AccountPage() {
 			<div className='flex-row gap-10'>
 				{sessionType === 'auth0' ? (
 					<>
-						<LinkButton
+						<NextLinkButton
 							className='mb-4'
 							variant='outlined'
 							href='/my/account/password'
@@ -43,7 +44,7 @@ export default async function AccountPage() {
 						>
 							<Key className='me-1 fill-current' />
 							Cambiar contraseña
-						</LinkButton>
+						</NextLinkButton>
 						<Separator />
 					</>
 				) : null}

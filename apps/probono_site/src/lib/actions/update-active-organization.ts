@@ -33,6 +33,7 @@ export default async function updateActiveOrganization(id: number) {
 			},
 		}));
 
-	cookies().set('organizationId', organization.id.toString());
+	const cookieStore = await cookies();
+	cookieStore.set('organizationId', organization.id.toString());
 	revalidatePath('/my');
 }

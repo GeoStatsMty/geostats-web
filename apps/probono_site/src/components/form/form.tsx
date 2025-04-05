@@ -84,7 +84,7 @@ export function Form<T>(props: FormProps<T>) {
 			))}
 
 			{formErrors.length > 0 && (
-				<div className='mb-4 rounded bg-red-400 p-4 text-stone-50'>
+				<div className='mb-4 rounded-sm bg-red-400 p-4 text-stone-50'>
 					{formErrors.join(' ')}
 				</div>
 			)}

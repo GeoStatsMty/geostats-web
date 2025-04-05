@@ -24,7 +24,7 @@ export function HashSpyToaster(props: HashSpyToasterProps): null {
 	const toasts = useToasts();
 
 	useEffect(() => {
-		const hashes = window.location.hash.slice(1).split(',');
+		const hashes = globalThis.location.hash.slice(1).split(',');
 		if (hashes.includes(hash)) {
 			toasts.add(toast);
 		}

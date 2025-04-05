@@ -8,9 +8,7 @@ export type AnimatedLayoutContainerProps = {
 	readonly className?: string;
 };
 
-export function AnimatedLayoutContainer(
-	props: AnimatedLayoutContainerProps,
-) {
+export function AnimatedLayoutContainer(props: AnimatedLayoutContainerProps) {
 	const {children, className} = props;
 	return (
 		<motion.div layout className={className}>

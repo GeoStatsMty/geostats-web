@@ -13,13 +13,13 @@
 	},
 	"private": true,
 	"devDependencies": {
-		"eslint": "^9.21.0",
-		"prettier": "^3.5.2",
-		"turbo": "^2.4.2"
+		"eslint": "^9.23.0",
+		"prettier": "^3.5.3",
+		"turbo": "^2.4.4"
 	},
 	"dependencies": {
 		"esbuild-plugin-alias": "^0.2.1",
-		"react-markdown": "^9.1.0",
+		"react-markdown": "^10.1.0",
 		"remark-abbr": "^1.4.2",
 		"remark-gfm": "^4.0.1"
 	},

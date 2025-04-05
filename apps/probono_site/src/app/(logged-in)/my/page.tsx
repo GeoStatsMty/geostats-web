@@ -1,7 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import {omit, pick} from 'lodash';
-import dynamic from 'next/dynamic';
 import Feed from '@material-design-icons/svg/round/feed.svg';
 import Psychology from '@material-design-icons/svg/round/psychology.svg';
 import Policy from '@material-design-icons/svg/round/policy.svg';
@@ -15,16 +13,7 @@ import SectorsList from '@/app/(logged-in)/my/sectors-list.tsx';
 import MembersList from '@/app/(logged-in)/my/members-list.tsx';
 
 import {Paper} from 'geostats-ui';
-
-const LocationMap = dynamic(
-	async () => import('@/app/(logged-in)/my/location-map.tsx'),
-	{
-		ssr: false,
-		loading() {
-			return <div className='mb-2 h-48 animate-pulse bg-stone-800' />;
-		},
-	},
-);
+import LocationMap from './location-map';
 
 async function countNullModelAttributes(
 	model: Record<string, unknown> & {
@@ -43,7 +32,9 @@ async function countNullModelAttributes(
 		}
 	}
 
-	for (const value of Object.values(omit(model, ['_count']))) {
+	const {_count, ...modelWithoutCount} = model;
+
+	for (const value of Object.values(modelWithoutCount)) {
 		total++;
 		if (value === null) {
 			nulls++;
@@ -73,53 +64,81 @@ export default async function MyStartPage() {
 		? await getAddress(organization.addressId)
 		: null;
 
-	const [nulls, totals] = await countNullModelAttributes(
-		omit(organization, [
-			'id',
-			'wantsToIncorporate',
-			'approved',
-			'isIncorporated',
-			'sectors',
-			'owners',
-			'workplaceTypeId',
-			'hasInvestmentAgreement',
-		]),
-	);
+	const {
+		id,
+		wantsToIncorporate,
+		approved,
+		isIncorporated,
+		sectors,
+		owners,
+		workplaceTypeId,
+		hasInvestmentAgreement,
+		...rest
+	} = organization;
 
-	const [purposeNulls, purposeTotals] = await countNullModelAttributes(
-		pick(organization, ['categoryId', 'ods', '_count']),
-	);
+	const [nulls, totals] = await countNullModelAttributes(rest);
 
-	const [generalNulls, generalTotals] = await countNullModelAttributes(
-		pick(organization, [
-			'logoUrl',
-			'name',
-			'foundingYear',
-			'phone',
-			'email',
-			'webpage',
-			'employeeCountCategoryId',
-			'volunteerCountCategoryId',
-			'incomeCategoryId',
-			'facebook',
-			'instagram',
-			'twitter',
-			'tiktok',
-			'youtube',
-			'linkedIn',
-		]),
-	);
+	const {categoryId, ods, _count} = organization;
 
-	const [legalNulls, legalTotals] = await countNullModelAttributes(
-		pick(organization, [
-			'legalConcept',
-			'corporationTypeId',
-			'rfc',
-			'incorporationYear',
-			'cluniStatus',
-			'donationAuthStatus',
-		]),
-	);
+	const [purposeNulls, purposeTotals] = await countNullModelAttributes({
+		categoryId,
+		ods,
+		_count,
+	});
+
+	const {
+		logoUrl,
+		name,
+		foundingYear,
+		phone,
+		email,
+		webpage,
+		employeeCountCategoryId,
+		volunteerCountCategoryId,
+		incomeCategoryId,
+		facebook,
+		instagram,
+		twitter,
+		tiktok,
+		youtube,
+		linkedIn,
+	} = organization;
+
+	const [generalNulls, generalTotals] = await countNullModelAttributes({
+		logoUrl,
+		name,
+		foundingYear,
+		phone,
+		email,
+		webpage,
+		employeeCountCategoryId,
+		volunteerCountCategoryId,
+		incomeCategoryId,
+		facebook,
+		instagram,
+		twitter,
+		tiktok,
+		youtube,
+		linkedIn,
+	});
+
+	const {
+		legalConcept,
+		corporationTypeId,
+		rfc,
+		incorporationYear,
+		cluniStatus,
+		donationAuthStatus,
+	} = organization;
+
+	const [legalNulls, legalTotals] = await countNullModelAttributes({
+		legalConcept,
+		corporationTypeId,
+		rfc,
+		incorporationYear,
+		cluniStatus,
+		donationAuthStatus,
+	});
 
 	return (
 		<main className='w-full'>
@@ -208,7 +227,7 @@ export default async function MyStartPage() {
 				>
 					{address ? (
 						<>
-							<div className='overflow-hidden rounded'>
+							<div className='overflow-hidden rounded-sm'>
 								<LocationMap
 									location={address.location}
 									className='mb-4 h-48'

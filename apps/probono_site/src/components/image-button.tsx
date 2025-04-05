@@ -25,7 +25,7 @@ export default forwardRef(function ImageButton(
 		<button
 			{...buttonProps}
 			ref={buttonRef}
-			className={cx('hover:brightness-75 rounded relative', className)}
+			className={cx('hover:brightness-75 rounded-sm relative', className)}
 		>
 			<Image
 				fill

@@ -14,40 +14,47 @@ import LinkedInLogo from 'public/logos/linkedin.png';
 import InstagramLogo from 'public/logos/instagram.png';
 import FacebookLogo from 'public/logos/facebook.png';
 import {
-	type EmployeeCountCategory,
-	type IncomeCategory,
-	type VolunteerCountCategory,
-	type Organization,
+	EmployeeCountCategory,
+	IncomeCategory,
+	Organization,
+	VolunteerCountCategory,
 } from '@prisma/client';
 import OrganizationImagePicker from '@/app/(logged-in)/my/general/organization-image-picker.tsx';
 import {
 	organizationInitSchema,
 	type OrganizationUpdate,
 } from '@/lib/schemas/organization.ts';
-import {formValidators} from '@/lib/form-utils.ts';
+import {formValidators} from '@/lib/form-utilities.ts';
 import {formatInMxn} from '@/lib/format-mxn.ts';
 import {Form, type FormState, FormHeader} from '@/components/form';
 import {NumberField, TextField, Select, Separator} from 'geostats-ui';
 
-// Lista de dominios válidos
-const validDomains = [
-	'.com', '.net', '.org', '.edu', '.gov', '.io', '.co', '.us',
-	'.uk', '.ca', '.de', '.fr', '.jp', '.au', '.cn', '.in', '.es',
-];
-
-function formatURL(value: string): string {
-	if (!value) return value;
-	// Verificar si ya tiene un prefijo HTTP o HTTPS
-	if (!/^https?:\/\//i.test(value)) {
-		return `https://${value}`;
+const getCategoryLabel = (category: EmployeeCountCategory) => {
+	if (category.maxCount === null) {
+		return `Mas de ${category.minCount}`;
 	}
-	return value;
-}
 
-// Función para verificar si la URL tiene un dominio válido
-function hasValidDomain(value: string): boolean {
-	return validDomains.some(domain => value.endsWith(domain));
-}
+	if (category.minCount === category.maxCount) {
+		return category.minCount.toString();
+	}
+
+	return `${category.minCount} a ${category.maxCount}`;
+};
+
+const getIncomeCategoryLabel = (incomeCategory: IncomeCategory) => {
+	if (incomeCategory.maxIncome === null) {
+		return `Mas de ${formatInMxn(incomeCategory.minIncome)}`;
+	}
+
+	const minIncomeMxn = formatInMxn(incomeCategory.minIncome);
+	const maxIncomeMxn = formatInMxn(incomeCategory.maxIncome);
+
+	if (minIncomeMxn === maxIncomeMxn) {
+		return minIncomeMxn;
+	}
+
+	return `${minIncomeMxn} a ${maxIncomeMxn}`;
+};
 
 export type GeneralInfoFormProps = {
 	readonly action: (
@@ -70,8 +77,8 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 	} = props;
 
 	const validate = formValidators(organizationInitSchema);
-	
-		return (
+
+	return (
 		<Form
 			successToast={{
 				title: 'Se han guardado los cambios.',
@@ -80,24 +87,24 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 			action={action}
 		>
 			<FormHeader
-				title="Información general"
-				description="Datos básicos sobre tu organización, como información de contacto y redes sociales."
+				title='Información general'
+				description='Datos básicos sobre tu organización, como información de contacto y redes sociales.'
 			/>
-			<div className="flex w-full flex-wrap items-center gap-x-4">
-				<div className="mb-4 flex w-full items-center justify-center rounded border border-stone-700 lg:w-auto">
+			<div className='flex w-full flex-wrap items-center gap-x-4'>
+				<div className='mb-4 flex w-full items-center justify-center rounded-sm border border-stone-700 lg:w-auto'>
 					<OrganizationImagePicker
 						action={action}
 						organization={organization}
-						label="Selecciona un nuevo logo para tu organización"
+						label='Selecciona un nuevo logo para tu organización'
 					/>
 				</div>
-				<div className="grow">
-					<div className="block grow flex-wrap gap-x-4 lg:flex">
+				<div className='grow'>
+					<div className='block grow flex-wrap gap-x-4 lg:flex'>
 						<TextField
 							isRequired
-							label="Nombre de la organización"
-							className="mb-4 grow"
-							name="name"
+							label='Nombre de la organización'
+							className='mb-4 grow'
+							name='name'
 							validate={validate.name}
 							defaultValue={organization.name}
 						/>
@@ -105,153 +112,130 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 							isRequired
 							icon={
 								<CalendarMonth
-									viewBox="0 0 24 24"
-									className="size-4 fill-stone-600 group-focus-within:fill-stone-50"
+									viewBox='0 0 24 24'
+									className='size-4 fill-stone-600 group-focus-within:fill-stone-50'
 								/>
 							}
-							label="Año de fundación"
+							label='Año de fundación'
 							formatOptions={{
 								useGrouping: false,
 								maximumFractionDigits: 0,
 							}}
 							minValue={1900}
 							defaultValue={organization.foundingYear}
-							className="mb-4 basis-2/12"
+							className='mb-4 basis-2/12'
 							validate={validate.foundingYear}
 						/>
 					</div>
 					<TextField
-						label="Teléfono de contacto"
-						name="phone"
+						label='Teléfono de contacto'
+						name='phone'
 						icon={
 							<Phone
-								viewBox="0 0 24 24"
-								className="size-4 fill-stone-600 group-focus-within:fill-stone-50"
+								viewBox='0 0 24 24'
+								className='size-4 fill-stone-600 group-focus-within:fill-stone-50'
 							/>
 						}
-						type="tel"
-						className="mb-4 flex-initial grow basis-full"
+						type='tel'
+						className='mb-4 flex-initial grow basis-full'
 						validate={validate.phone}
 						defaultValue={organization.phone ?? ''}
 					/>
 				</div>
 			</div>
 
-			<div className="flex-none items-end gap-x-4 lg:flex">
+			<div className='flex-none items-end gap-x-4 lg:flex'>
 				<TextField
-					label="Correo eléctronico de contacto"
+					label='Correo eléctronico de contacto'
 					icon={
 						<Email
-							viewBox="0 0 24 24"
-							className="size-4 fill-stone-600 group-focus-within:fill-stone-50"
+							viewBox='0 0 24 24'
+							className='size-4 fill-stone-600 group-focus-within:fill-stone-50'
 						/>
 					}
-					name="email"
-					type="email"
-					className="mb-4 flex-initial grow basis-5/12"
+					name='email'
+					type='email'
+					className='mb-4 flex-initial grow basis-5/12'
 					validate={validate.email}
 					defaultValue={organization.email ?? ''}
 				/>
 				<TextField
-					label="Página web"
-					name="webpage"
+					label='Página web'
+					name='webpage'
 					icon={
 						<Public
-							viewBox="0 0 24 24"
-							className="size-4 fill-stone-600 group-focus-within:fill-stone-50"
+							viewBox='0 0 24 24'
+							className='size-4 fill-stone-600 group-focus-within:fill-stone-50'
 						/>
 					}
-					className="mb-4 grow basis-5/12"
+					className='mb-4 grow basis-5/12'
 					validate={validate.webpage}
 					defaultValue={organization.webpage ?? ''}
 				/>
 			</div>
 
-			<div className="flex-none items-end gap-4 lg:flex">
+			<div className='flex-none items-end gap-4 lg:flex'>
 				<Select
-					label="¿Cuántos empleados remunerados economicamente tiene tu organización?"
-					name="employeeCountCategoryId"
+					label='¿Cuántos empleados remunerados economicamente tiene tu organización?'
+					name='employeeCountCategoryId'
 					items={employeeCountCategories}
-					className="mb-4 w-full flex-1"
+					className='mb-4 w-full flex-1'
 					validate={validate.employeeCountCategoryId}
 					defaultSelectedKey={
 						organization.employeeCountCategoryId ?? undefined
 					}
 				>
-					{category => (
-						<Item>
-							{category.maxCount === null
-								? `Mas de ${category.minCount}`
-								: category.minCount === category.maxCount
-									? category.minCount.toString()
-									: `${category.minCount} a ${category.maxCount}`}
-						</Item>
-					)}
+					{category => <Item>{getCategoryLabel(category)}</Item>}
 				</Select>
 				<Select
-					label="¿Cuántos voluntarios tiene tu organización?"
-					name="volunteerCountCategoryId"
+					label='¿Cuántos voluntarios tiene tu organización?'
+					name='volunteerCountCategoryId'
 					items={volunteerCountCategories}
-					className="mb-4 w-full flex-1"
+					className='mb-4 w-full flex-1'
 					validate={validate.volunteerCountCategoryId}
 					defaultSelectedKey={
 						organization.volunteerCountCategoryId ?? undefined
 					}
 				>
-					{category => (
-						<Item>
-							{category.maxCount === null
-								? `Mas de ${category.minCount}`
-								: category.minCount === category.maxCount
-									? category.minCount.toString()
-									: `${category.minCount} a ${category.maxCount}`}
-						</Item>
-					)}
+					{category => <Item>{getCategoryLabel(category)}</Item>}
 				</Select>
 			</div>
 
-			<div className="flex items-end gap-x-4">
+			<div className='flex items-end gap-x-4'>
 				<Select
-					label="¿Cuáles son los ingresos anuales de la organización?"
-					name="incomeCategoryId"
+					label='¿Cuáles son los ingresos anuales de la organización?'
+					name='incomeCategoryId'
 					items={incomeCategories}
-					className="flex-1"
+					className='flex-1'
 					validate={validate.incomeCategoryId}
 					defaultSelectedKey={
 						organization.incomeCategoryId ?? undefined
 					}
 				>
 					{category => (
-						<Item>
-							{category.maxIncome === null
-								? `Mas de ${formatInMxn(category.minIncome)}`
-								: formatInMxn(category.minIncome) ===
-								formatInMxn(category.maxIncome)
-									? formatInMxn(category.minIncome)
-									: `${formatInMxn(category.minIncome)} a ${formatInMxn(category.maxIncome)}`}
-						</Item>
+						<Item>{getIncomeCategoryLabel(category)}</Item>
 					)}
 				</Select>
 			</div>
 
 			<Separator />
 
-			<h2 className="mb-4 text-lg text-stone-200">Redes sociales</h2>
-			<div className="flex-none flex-wrap gap-x-4 md:flex">
+			<h2 className='mb-4 text-lg text-stone-200'>Redes sociales</h2>
+			<div className='flex-none flex-wrap gap-x-4 md:flex'>
 				<TextField
-					label="Facebook"
-					name="facebook"
+					label='Facebook'
+					name='facebook'
 					icon={
 						<Image
 							src={FacebookLogo}
-							alt="Facebook logo"
+							alt='Facebook logo'
 							height={16}
 							width={16}
-							className="brightness-50 group-focus-within:brightness-100"
+							className='brightness-50 group-focus-within:brightness-100'
 						/>
 					}
-					type="url"
-					className="mb-4 grow basis-full sm:basis-5/12"
+					type='url'
+					className='mb-4 grow basis-full sm:basis-5/12'
 					validate={validate.facebook}
 					defaultValue={
 						organization.facebook
@@ -260,19 +244,19 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 					}
 				/>
 				<TextField
-					label="Instagram"
-					name="instagram"
+					label='Instagram'
+					name='instagram'
 					icon={
 						<Image
 							src={InstagramLogo}
-							alt="Instagram logo"
+							alt='Instagram logo'
 							height={16}
 							width={16}
-							className="brightness-50 group-focus-within:brightness-100"
+							className='brightness-50 group-focus-within:brightness-100'
 						/>
 					}
-					type="url"
-					className="mb-4 grow basis-full sm:basis-5/12"
+					type='url'
+					className='mb-4 grow basis-full sm:basis-5/12'
 					validate={validate.instagram}
 					defaultValue={
 						organization.instagram
@@ -281,19 +265,19 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 					}
 				/>
 				<TextField
-					label="X (anteriormente Twitter)"
-					name="twitter"
+					label='X (anteriormente Twitter)'
+					name='twitter'
 					icon={
 						<Image
 							src={XLogo}
-							alt="X logo"
+							alt='X logo'
 							height={16}
 							width={16}
-							className="brightness-50 group-focus-within:brightness-100"
+							className='brightness-50 group-focus-within:brightness-100'
 						/>
 					}
-					type="url"
-					className="mb-4 grow basis-full sm:basis-5/12"
+					type='url'
+					className='mb-4 grow basis-full sm:basis-5/12'
 					validate={validate.twitter}
 					defaultValue={
 						organization.twitter
@@ -302,19 +286,19 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 					}
 				/>
 				<TextField
-					label="TikTok"
-					name="tiktok"
+					label='TikTok'
+					name='tiktok'
 					icon={
 						<Image
 							src={TikTokLogo}
-							alt="TikTok logo"
+							alt='TikTok logo'
 							height={16}
 							width={16}
-							className="brightness-50 group-focus-within:brightness-100"
+							className='brightness-50 group-focus-within:brightness-100'
 						/>
 					}
-					type="url"
-					className="mb-4 grow basis-full sm:basis-5/12"
+					type='url'
+					className='mb-4 grow basis-full sm:basis-5/12'
 					validate={validate.tiktok}
 					defaultValue={
 						organization.tiktok
@@ -323,19 +307,19 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 					}
 				/>
 				<TextField
-					label="YouTube"
-					name="youtube"
+					label='YouTube'
+					name='youtube'
 					icon={
 						<Image
 							src={YoutubeLogo}
-							alt="Youtube logo"
+							alt='Youtube logo'
 							height={16}
 							width={16}
-							className="brightness-50 group-focus-within:brightness-100"
+							className='brightness-50 group-focus-within:brightness-100'
 						/>
 					}
-					type="url"
-					className="mb-4 flex-auto"
+					type='url'
+					className='mb-4 flex-auto'
 					validate={validate.youtube}
 					defaultValue={
 						organization.youtube
@@ -344,19 +328,19 @@ export default function GeneralInfoForm(props: GeneralInfoFormProps) {
 					}
 				/>
 				<TextField
-					label="LinkedIn"
-					name="linkedIn"
+					label='LinkedIn'
+					name='linkedIn'
 					icon={
 						<Image
 							src={LinkedInLogo}
-							alt="LinkedIn logo"
+							alt='LinkedIn logo'
 							height={16}
 							width={16}
-							className="brightness-50 group-focus-within:brightness-100"
+							className='brightness-50 group-focus-within:brightness-100'
 						/>
 					}
-					type="url"
-					className="mb-4 flex-auto"
+					type='url'
+					className='mb-4 flex-auto'
 					validate={validate.linkedIn}
 					defaultValue={
 						organization.linkedIn

@@ -1,3 +1,4 @@
+'use client';
 import React, {type ReactNode, useRef} from 'react';
 import {type AriaComboBoxProps, useComboBox} from 'react-aria';
 import {
@@ -51,10 +52,10 @@ export function BaseComboBox<T extends Record<string, unknown>>(
 ) {
 	const {icon, state, className} = props;
 
-	const buttonObjectRef = useRef<HTMLButtonElement>(null);
-	const inputObjectRef = useRef<HTMLInputElement>(null);
-	const listBoxObjectRef = useRef<HTMLUListElement>(null);
-	const popoverObjectRef = useRef<HTMLDivElement>(null);
+	const buttonObjectRef = useRef<HTMLButtonElement>(null!);
+	const inputObjectRef = useRef<HTMLInputElement>(null!);
+	const listBoxObjectRef = useRef<HTMLUListElement>(null!);
+	const popoverObjectRef = useRef<HTMLDivElement>(null!);
 
 	const {buttonProps, inputProps, listBoxProps, labelProps} = useComboBox<T>(
 		{
@@ -75,7 +76,7 @@ export function BaseComboBox<T extends Record<string, unknown>>(
 			>
 				{props.label}
 			</label>
-			<div className='flex w-full rounded border border-stone-700 bg-stone-950 text-stone-300 transition-all group-focus-within:border-stone-50 group-focus-within:shadow-stone-800 group-focus-within:glow-sm'>
+			<div className='flex w-full rounded-xs border border-stone-700 bg-stone-950 text-stone-300 transition-all group-focus-within:border-stone-50 group-focus-within:shadow-stone-800 group-focus-within:glow-sm'>
 				{icon}
 				<input
 					{...inputProps}
@@ -99,7 +100,7 @@ export function BaseComboBox<T extends Record<string, unknown>>(
 						triggerRef={inputObjectRef}
 						placement='bottom start'
 					>
-						{/* @ts-expect-error children prop is passed in by react-aria */}
+						{/* @ts-expect-error react-aria passes in children prop */}
 						<BaseListBox
 							{...listBoxProps}
 							listBoxRef={listBoxObjectRef}

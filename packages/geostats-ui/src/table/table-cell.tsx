@@ -1,3 +1,4 @@
+'use client';
 import React, {useRef} from 'react';
 import {type GridNode} from '@react-types/grid';
 import {type TableState} from 'react-stately';
@@ -23,7 +24,7 @@ export function TableCell<T>(props: TableCellProps<T>) {
 			{...mergeProps(gridCellProps, focusProps)}
 			ref={cellRef}
 			className={cx(
-				'p-4 outline-none border-y border-stone-800',
+				'p-4 outline-hidden border-y border-stone-800',
 				isFocusVisible && 'shadow-stone-500',
 			)}
 		>

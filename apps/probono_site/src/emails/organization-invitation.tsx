@@ -44,7 +44,7 @@ export default function OrganizationInvitationEmail(
 			<Tailwind>
 				<Body className='bg-stone-950 text-stone-300'>
 					<Container className='mt-8 max-w-md'>
-						<Section className='rounded border border-solid border-stone-800 p-8'>
+						<Section className='rounded-sm border border-solid border-stone-800 p-8'>
 							<Img
 								src={`${baseUrl}/logos/geostats.png`}
 								width={64}
@@ -80,7 +80,7 @@ export default function OrganizationInvitationEmail(
 							</Text>
 							<Section className='mb-12 text-center'>
 								<Button
-									className='mx-auto rounded bg-stone-50 p-2 text-sm font-bold text-stone-950'
+									className='mx-auto rounded-sm bg-stone-50 p-2 text-sm font-bold text-stone-950'
 									target='_blank'
 									href={`${baseUrl}/invite/${inviteId}`}
 								>

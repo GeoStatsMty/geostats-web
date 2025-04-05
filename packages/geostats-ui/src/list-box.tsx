@@ -67,7 +67,7 @@ export function BaseListBox<T extends Record<string, unknown>>(
 				{...listBoxProps}
 				ref={listBoxRef}
 				className={twMerge(
-					'rounded overflow-y-auto scroll-smooth scrollbar-track-transparent scrollbar-thumb-stone-50 scrollbar-thin scrollbar-thumb-rounded',
+					'rounded-xs overflow-y-auto scroll-smooth scrollbar-track-transparent scrollbar-thumb-stone-50 scrollbar-thin scrollbar-thumb-rounded',
 					className,
 				)}
 			>
@@ -152,7 +152,7 @@ function Option<T extends Record<string, unknown>>(props: OptionProps<T>) {
 			{...mergeProps(optionProps, focusProps)}
 			ref={ref}
 			className={cx(
-				'text-stone-300 p-2 border rounded border-transparent outline-none cursor-pointer data-[focus-visible=true]:border-stone-50',
+				'text-stone-300 p-2 border rounded-xs border-transparent outline-hidden cursor-pointer data-[focus-visible=true]:border-stone-50',
 				isSelected && 'bg-stone-50 text-stone-800',
 				allowsSelection && !isSelected && 'hover:bg-stone-800',
 				allowsSelection && isFocused && !isSelected && 'bg-stone-900',

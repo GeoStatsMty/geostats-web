@@ -3,8 +3,8 @@ import OrganizationCreationForm from '@/components/organization-creation-form.ts
 import createOrganizationAction from '@/lib/actions/create-organization-action.ts';
 import {getUserFromSession} from '@/lib/models/user.ts';
 import TopBar from '@/components/top-bar.tsx';
-import {LinkButton} from 'geostats-ui';
 import Footer from '@/components/footer.tsx';
+import {NextLinkButton} from '@/components/next-link-button';
 
 export default async function NewOrganizationPage() {
 	const user = await getUserFromSession();
@@ -14,12 +14,12 @@ export default async function NewOrganizationPage() {
 	return (
 		<div>
 			<TopBar>
-				<LinkButton href='/api/auth/logout' variant='secondary'>
+				<NextLinkButton href='/api/auth/logout' variant='secondary'>
 					Cerrar sesión
-				</LinkButton>
+				</NextLinkButton>
 			</TopBar>
-			<div className='min-h-[calc(100vh-theme(spacing.16))]'>
-				<div className='m-auto mt-16 w-fit rounded border-stone-700 p-8 md:mt-24 md:border'>
+			<div className='min-h-[calc(100vh-(--spacing(16)))]'>
+				<div className='m-auto mt-16 w-fit rounded-sm border-stone-700 p-8 md:mt-24 md:border'>
 					<h1 className='mb-4 text-2xl text-stone-300'>
 						Nueva organización
 					</h1>

@@ -42,7 +42,8 @@ export default function Terms() {
 				quis varius lectus velit nec orci. Mauris blandit bibendum
 				justo, in feugiat tellus varius finibus. Vivamus mattis
 				tincidunt odio eget malesuada. Maecenas nisl orci, sagittis sit
-				amet commodo in, placerat ut lectus. Praesent et viverra quam.{' '}
+				amet commodo in, placerat ut lectus. Praesent et viverra
+				quam.{' '}
 			</p>
 		</main>
 	);

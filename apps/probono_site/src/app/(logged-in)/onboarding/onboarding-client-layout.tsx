@@ -28,10 +28,10 @@ export default function OnboardingClientLayout(props: LayoutContainerProps) {
 	const selectedSegment = useSelectedLayoutSegment();
 
 	return (
-		<div className='mx-auto flex place-items-start justify-center  justify-items-start bg-stone-950  text-stone-200 md:max-w-md'>
+		<div className='mx-auto flex place-items-start justify-center  bg-stone-950 text-stone-200  md:max-w-md'>
 			<motion.div
 				layout
-				className='mb-16 h-fit w-full overflow-hidden rounded border-stone-800 bg-stone-950 md:border md:p-8'
+				className='mb-16 h-fit w-full overflow-hidden rounded-sm border-stone-800 bg-stone-950 md:border md:p-8'
 			>
 				<motion.div layout className='mb-4 flex'>
 					{[

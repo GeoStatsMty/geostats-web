@@ -86,14 +86,14 @@ function OdsRadio(props: OdsRadioProps) {
 			<div
 				aria-hidden='true'
 				className={cx(
-					'relative group rounded transition-all',
+					'relative group rounded-sm transition-all',
 					isFocusVisible && 'ring-2 ring-stone-50',
 					isSelected && 'glow-xl shadow-stone-50/20',
 				)}
 			>
 				<Image
 					className={cx(
-						'transition-all rounded',
+						'transition-all rounded-sm',
 						isSelected && 'brightness-90 scale-[101%]',
 						!isSelected &&
 							'brightness-75 saturate-50 group-hover:brightness-90',

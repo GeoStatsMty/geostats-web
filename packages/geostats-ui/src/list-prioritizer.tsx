@@ -1,3 +1,4 @@
+'use client';
 import React, {useMemo, useState} from 'react';
 import {Map, Seq} from 'immutable';
 import {type Key} from 'react-stately';
@@ -124,7 +125,7 @@ export function ListPrioritizer<T extends Record<string, unknown>>(
 	return (
 		<div
 			className={cx(
-				'grow basis-5/12 border border-stone-700 rounded divide-stone-700 divide-y',
+				'grow basis-5/12 border border-stone-700 rounded-xs divide-stone-700 divide-y',
 				className,
 			)}
 		>
@@ -152,7 +153,7 @@ export function ListPrioritizer<T extends Record<string, unknown>>(
 								'absolute z-10 bg-stone-900 w-full border-y border-stone-700',
 							draggedActivity === undefined &&
 								'hover:bg-stone-900',
-							'flex items-center gap-4 rounded grow text-stone-200 p-2 group select-none left-0',
+							'flex items-center gap-4 rounded-xs grow text-stone-200 p-2 group select-none left-0',
 						)}
 						style={{
 							top:

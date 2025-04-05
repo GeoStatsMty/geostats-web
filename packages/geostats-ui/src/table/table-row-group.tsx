@@ -1,3 +1,4 @@
+'use client';
 import React, {type ReactNode} from 'react';
 import {useTableRowGroup} from 'react-aria';
 import {cx} from '@/cva.ts';

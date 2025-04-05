@@ -4,7 +4,7 @@
 	"type": "module",
 	"devDependencies": {
 		"prettier-config-geostats": "workspace:*",
-		"tailwind-scrollbar": "^3.1.0",
-		"tailwindcss": "^3.4.3"
+		"tailwind-scrollbar": "^4.0.2",
+		"tailwindcss": "^4.0.17"
 	}
 }

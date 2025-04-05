@@ -1,6 +1,6 @@
 import {type ReactNode} from 'react';
-import {getSession} from '@auth0/nextjs-auth0';
 import {redirect} from 'next/navigation';
+import {auth0} from '@/lib/auth0';
 
 export type LoggedInLayoutProps = {
 	readonly children: ReactNode;
@@ -10,12 +10,12 @@ export type LoggedInLayoutProps = {
 export default async function LoggedInLayout(props: LoggedInLayoutProps) {
 	const {children} = props;
 
-	const session = await getSession();
+	const session = await auth0.getSession();
 
 	if (!session) {
 		redirect('/');
 	}
 
 	// Solves type compilation issue
-	return children as JSX.Element;
+	return children;
 }

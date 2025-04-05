@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import GeostatsLogo from 'public/logos/geostats.png';
 import {SpinningHexagons} from '@/components/spinning-hexagons.tsx';
-import NavLink, {ALinkButton} from 'geostats-ui';
+import {ALinkButton} from 'geostats-ui';
 
 export default function Home() {
 	return (
 		<main className='min-h-screen flex-col items-center justify-between bg-stone-950'>
 			<div className='relative w-full overflow-hidden'>
-				<div className='absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-b from-transparent to-stone-950' />
+				<div className='absolute inset-x-0 bottom-0 z-10 h-24 bg-linear-to-b from-transparent to-stone-950' />
 				<div className='inset-0 flex  flex-col items-center justify-center py-24'>
 					<Image
 						src={GeostatsLogo}

@@ -4,7 +4,7 @@ import {
 	type OrganizationUpdate,
 	organizationUpdateSchema,
 } from '@/lib/schemas/organization.ts';
-import {decodeForm} from '@/lib/form-utils.ts';
+import {decodeForm} from '@/lib/form-utilities.ts';
 import {
 	updateOrganization,
 	userAuthorizedForOrganization,

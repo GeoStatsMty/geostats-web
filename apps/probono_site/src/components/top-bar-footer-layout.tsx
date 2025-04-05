@@ -6,7 +6,7 @@ import GeoStatsLogoMark from 'public/logos/geostats-logomark.png';
 import FacebookLogo from 'public/logos/facebook.png';
 import InstagramLogo from 'public/logos/instagram.png';
 import LinkedinLogo from 'public/logos/linkedin.png';
-import {SocialLink} from 'geostats-ui';
+import {SocialLink} from '@/components/social-link.tsx';
 
 export type TopBarFooterLayoutProps = {
 	readonly children: ReactNode;
@@ -35,7 +35,7 @@ export default function TopBarFooterLayout(props: TopBarFooterLayoutProps) {
 					{topBarItems}
 				</div>
 			</header>
-			<div className='min-h-[calc(100vh-theme(spacing.16))] px-4 pb-32 pt-8'>
+			<div className='min-h-[calc(100vh-(--spacing(16)))] px-4 pb-32 pt-8'>
 				{children}
 			</div>
 			<footer className='border-t border-stone-800 px-4'>

@@ -22,7 +22,7 @@ export default function OrganizationSelectorItem(
 		<ElementType
 			{...menuItemProps}
 			ref={ref}
-			className='w-full cursor-pointer outline-none hover:bg-stone-800'
+			className='w-full cursor-pointer outline-hidden hover:bg-stone-800'
 		>
 			{item.rendered}
 		</ElementType>

@@ -2,12 +2,12 @@
 import React, {type ReactNode, type RefObject} from 'react';
 import {type AriaButtonOptions, useButton, useObjectRef} from 'react-aria';
 import {type VariantProps} from '@/cva.ts';
-import {buttonVariants} from '@/button/button-variants.tsx';
+import {buttonVariants} from '@/button/button-variants.ts';
 
 export type ButtonProps = {
 	readonly children?: ReactNode;
 	readonly className?: string;
-	readonly buttonRef?: RefObject<HTMLButtonElement>;
+	readonly buttonRef?: RefObject<HTMLButtonElement | null>;
 } & AriaButtonOptions<'button'> &
 	VariantProps<typeof buttonVariants>;
 

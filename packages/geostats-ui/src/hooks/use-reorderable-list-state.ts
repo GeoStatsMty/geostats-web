@@ -1,3 +1,4 @@
+'use client';
 import {Key, ListProps, useListState} from 'react-stately';
 
 export type ReorderableListStateProps<T extends Record<string, unknown>> = {

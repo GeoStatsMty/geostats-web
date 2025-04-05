@@ -8,10 +8,9 @@ import {
 	useToastRegion,
 } from '@react-aria/toast';
 import {AnimatePresence, motion, type Variants} from 'framer-motion';
-import {omit} from 'lodash';
 // @ts-expect-error bad typings
 import Close from '@material-design-icons/svg/round/close.svg';
-import {Button} from './button/button.tsx';
+import {Button} from '@/button';
 import {cx} from './cva.ts';
 
 export type ToastContent = {
@@ -51,29 +50,31 @@ const toastVariants: Variants = {
 
 function Toast(props: ToastProps) {
 	const {state, toast} = props;
-	const {animation, content} = toast;
+	const {content} = toast;
 	const {title, description, icon, variant = 'success'} = content;
 	const ref = useRef<HTMLDivElement>(null);
 	const {toastProps, titleProps, descriptionProps, closeButtonProps} =
 		useToast(props, state, ref);
 
+	const {
+		onAnimationEnd,
+		onAnimationStart,
+		onDragStart,
+		onDragEnd,
+		onDrag,
+		...restOfToastProps
+	} = toastProps;
+
 	return (
 		<motion.div
-			{...omit(toastProps, [
-				'onAnimationEnd',
-				'onAnimationStart',
-				'onDragStart',
-				'onDragEnd',
-				'onDrag',
-			])}
+			{...restOfToastProps}
 			ref={ref}
 			layout
-			initial={animation === 'queued' ? 'initialQueued' : 'initial'}
 			animate='entering'
 			exit='exiting'
 			variants={toastVariants}
 			className={cx(
-				'rounded flex p-2 items-center gap-2 relative max-w-2xl',
+				'rounded-xs flex p-2 items-center gap-2 relative max-w-2xl',
 				variant === 'success' && 'bg-green-400',
 				variant === 'error' && 'bg-red-400',
 				variant === 'warn' && 'bg-yellow-400',
@@ -122,18 +123,22 @@ function ToastRegion(props: ToastRegionProps) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	const {regionProps} = useToastRegion(props, state, ref);
+
+	const {
+		onAnimationEnd,
+		onAnimationStart,
+		onDragStart,
+		onDragEnd,
+		onDrag,
+		...restOfRegionProps
+	} = regionProps;
+
 	return (
 		<motion.div
-			{...omit(regionProps, [
-				'onAnimationEnd',
-				'onAnimationStart',
-				'onDragStart',
-				'onDragEnd',
-				'onDrag',
-			])}
+			{...restOfRegionProps}
 			ref={ref}
 			layout
-			className='fixed bottom-4 right-4 z-[1050] flex flex-col gap-4 outline-none'
+			className='fixed bottom-4 right-4 z-1050 flex flex-col gap-4 outline-hidden'
 		>
 			<AnimatePresence>
 				{state.visibleToasts.map(toast => (

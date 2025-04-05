@@ -1,6 +1,7 @@
 import React from 'react';
 import NavigateNext from '@material-design-icons/svg/round/navigate_next.svg';
-import {LinkButton, AnimatedLayoutContainer} from 'geostats-ui';
+import {AnimatedLayoutContainer} from 'geostats-ui';
+import {NextLinkButton} from '@/components/next-link-button';
 
 export type OnboardingPageProps = {
 	readonly searchParams: {
@@ -37,9 +38,9 @@ export default function OnboardingPage(props: OnboardingPageProps) {
 				Antes de nada, queremos conocer más sobre ti y tu organización.
 			</p>
 
-			<LinkButton href={nextHref} className='ms-auto'>
+			<NextLinkButton href={nextHref} className='ms-auto'>
 				Continuar <NavigateNext />
-			</LinkButton>
+			</NextLinkButton>
 		</AnimatedLayoutContainer>
 	);
 }
