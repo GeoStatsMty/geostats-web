@@ -6,7 +6,7 @@ const layer: Layer = {
 	id: layerId,
 	type: 'fill',
 	source: sourceId,
-	'source-layer': 'Grado_de_resago_social_nl_1-2k7zy0',
+	'source-layer': '.',
 	maxzoom: 20,
 	minzoom: 7,
 	paint: {

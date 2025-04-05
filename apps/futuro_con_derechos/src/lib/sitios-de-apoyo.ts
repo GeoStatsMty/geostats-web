@@ -13,7 +13,7 @@ const layer: Layer = {
 		'text-color': '#ffffff',
 	},
 	source: sourceId,
-	'source-layer': 'Sitios_de_Apoyo-dc4v8t',
+	'source-layer': '.',
 	layout: {
 		'text-size': [
 			'interpolate',
