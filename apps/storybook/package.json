@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "storybook dev -p 6006",
-    "build": "storybook build"
+    "dev": "storybook dev -p 6006"
   },
   "dependencies": {
     "geostats-ui": "workspace:*",
