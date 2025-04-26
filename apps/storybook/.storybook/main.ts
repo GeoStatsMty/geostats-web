@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import svgr from "vite-plugin-svgr";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
@@ -6,6 +7,7 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding",
     "@storybook/addon-essentials",
     "@chromatic-com/storybook",
+    "@storybook/addon-actions",
   ],
   core: {
     builder: "@storybook/builder-vite",
@@ -13,6 +15,11 @@ const config: StorybookConfig = {
   framework: {
     name: "@storybook/react-vite",
     options: {},
+  },
+
+  async viteFinal(viteConfig) {
+    (viteConfig.plugins ??= []).push(svgr());
+    return viteConfig;
   },
 };
 

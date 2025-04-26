@@ -2,7 +2,7 @@ import { Button } from "geostats-ui";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Button> = {
-  title: "UI/Button/Button",
+  title: "Components/Button/Button",
   component: Button,
   parameters: {
     layout: "centered",
