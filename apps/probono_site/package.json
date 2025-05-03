@@ -91,6 +91,7 @@
 		"sharp": "^0.33.5",
 		"tailwind-scrollbar": "^4.0.2",
 		"ts-node": "^10.9.2",
-		"tsconfig-geostats": "workspace:*"
+		"tsconfig-geostats": "workspace:*",
+		"tailwind-config-geostats": "workspace:*"
 	}
 }

@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+
+:root {
+    --tw-gradient-stops: #ffffff, #000000;
+    --tw-shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes big-spin {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes spin-path {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+.animate-spin-path {
+    animation: spin-path 1.5s ease-in-out infinite;
+}
+
+.animate-big-spin {
+    animation: big-spin 35s linear infinite;
+}
+
+.stroke-3 {
+    stroke-width: 6px;
+}
+
+.stroke-4 {
+    stroke-width: 8px;
+}
+
+.transition-height {
+    transition-property: max-height;
+}
+
+.border-1 {
+    border-width: 1px;
+}
+
+.bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+.bg-gradient-conic {
+    background-image: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
+}
+
+.glow-sm {
+    box-shadow: 0px 0px 32px 8px var(--tw-shadow-color, #1c1917);
+}
+
+.glow {
+    box-shadow: 0px 0px 40px 8px var(--tw-shadow-color, #1c1917);
+}
+
+.glow-lg {
+    box-shadow: 0px 0px 48px 8px var(--tw-shadow-color, #292524);
+}
+
+.glow-xl {
+    box-shadow: 0px 0px 56px 8px var(--tw-shadow-color, #292524);
+}
+
+.glow-2xl {
+    box-shadow: 0px 0px 64px 8px var(--tw-shadow-color, #292524);
+}
+
+[type="search"]::-webkit-search-decoration { display: none; }
+[type="search"]::-webkit-search-cancel-button { display: none; }
+[type="search"]::-webkit-search-results-button { display: none; }
+[type="search"]::-webkit-search-results-decoration { display: none; }
+
+.scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0.25rem;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 0.25rem;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.25rem;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
