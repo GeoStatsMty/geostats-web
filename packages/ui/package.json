@@ -1,0 +1,26 @@
+{
+	"name": "ui",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./styles.css": "./dist/styles.css"
+	},
+	"scripts": {
+		"build": "tailwindcss -i src/styles/index.css -o ./dist/styles.css",
+		"lint": "eslint .",
+		"dev": "tailwindcss -i src/styles/index.css -o ./dist/styles.css --watch"
+	},
+	"dependencies": {
+		"tailwind-merge": "^3.3.0",
+		"tailwindcss": "^4.1.7",
+		"tsconfig": "workspace:*",
+		"react": "catalog:"
+	},
+	"devDependencies": {
+		"eslint-config": "workspace:*",
+		"prettier-config": "workspace:*",
+		"typescript": "catalog:",
+		"tailwind-config": "workspace:*"
+	}
+}
