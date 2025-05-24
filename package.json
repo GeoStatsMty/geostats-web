@@ -1,28 +1,28 @@
 {
-	"name": "geostats",
-	"version": "1.0.0",
-	"description": "",
-	"scripts": {
-		"dev": "turbo watch dev",
-        "lint": "turbo lint",
-		"build": "turbo build",
-		"test": "turbo test"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Stock44/probono_site.git"
-	},
-	"private": true,
-	"devDependencies": {
-		"eslint": "^9.23.0",
-		"prettier": "^3.5.3",
-		"turbo": "^2.4.4"
-	},
-	"dependencies": {
-		"esbuild-plugin-alias": "^0.2.1",
-		"react-markdown": "^10.1.0",
-		"remark-abbr": "^1.4.2",
-		"remark-gfm": "^4.0.1"
-	},
-	"packageManager": "pnpm@9.0.0"
+  "name": "geostats",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "build": "turbo build",
+    "test": "turbo test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Stock44/probono_site.git"
+  },
+  "private": true,
+  "devDependencies": {
+    "eslint": "^9.27.0",
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.3"
+  },
+  "dependencies": {
+    "esbuild-plugin-alias": "^0.2.1",
+    "react-markdown": "^10.1.0",
+    "remark-abbr": "^1.4.2",
+    "remark-gfm": "^4.0.1"
+  },
+  "packageManager": "pnpm@10.10.0"
 }

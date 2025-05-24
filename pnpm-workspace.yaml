@@ -1,3 +1,10 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+catalog:
+  react:
+    ^19
+
+  typescript:
+    ^5
