@@ -4,8 +4,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
-      ]
+        "./src/*",
+        "../../packages/ui/src/*"
+      ],
+
     },
     "lib": [
       "dom",

@@ -1,26 +1,34 @@
 {
-	"name": "ui",
-	"private": true,
-	"type": "module",
-	"exports": {
-		".": "./src/index.ts",
-		"./styles.css": "./dist/styles.css"
-	},
-	"scripts": {
-		"build": "tailwindcss -i src/styles/index.css -o ./dist/styles.css",
-		"lint": "eslint .",
-		"dev": "tailwindcss -i src/styles/index.css -o ./dist/styles.css --watch"
-	},
-	"dependencies": {
-		"tailwind-merge": "^3.3.0",
-		"tailwindcss": "^4.1.7",
-		"tsconfig": "workspace:*",
-		"react": "catalog:"
-	},
-	"devDependencies": {
-		"eslint-config": "workspace:*",
-		"prettier-config": "workspace:*",
-		"typescript": "catalog:",
-		"tailwind-config": "workspace:*"
-	}
+  "name": "ui",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./dist/styles.css"
+  },
+  "scripts": {
+    "build": "tailwindcss -i src/index.css -o ./dist/styles.css",
+    "lint": "eslint .",
+    "dev": "tailwindcss -i src/index.css -o ./dist/styles.css --watch"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.511.0",
+    "react": "catalog:",
+    "tailwind-merge": "^3.3.0",
+    "tsconfig": "workspace:*",
+    "tw-animate-css": "^1.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.7",
+    "@types/react": "^19.1.4",
+    "eslint-config": "workspace:*",
+    "prettier-config": "workspace:*",
+    "tailwind-config": "workspace:*",
+    "tailwindcss": "^4.1.7",
+    "typescript": "catalog:"
+  }
 }
