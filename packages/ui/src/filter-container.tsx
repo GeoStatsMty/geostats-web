@@ -1,21 +1,15 @@
-import { X } from "lucide-react";
-import { useState } from "react";
-import { FilterItem, FilterCategory } from "./filter-item";
-import { Button } from "ui";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle
-} from "./dialog";
+import {X} from 'lucide-react';
+import {useState} from 'react';
+import {FilterItem, FilterCategory} from './filter-item';
+import {Button} from 'ui';
 
-const FILTER_ITEMS: { category: FilterCategory }[] = [
-	{ category: "Fiscalia" },
-	{ category: "Periodico" },
-	{ category: "Periodico" },
-	{ category: "Fiscalia" },
-	{ category: "Fiscalia" },
-	{ category: "Fiscalia" },
+const FILTER_ITEMS: {category: FilterCategory}[] = [
+	{category: 'Fiscalia'},
+	{category: 'Periodico'},
+	{category: 'Periodico'},
+	{category: 'Fiscalia'},
+	{category: 'Fiscalia'},
+	{category: 'Fiscalia'},
 ];
 
 interface FiltersContainerProps {
@@ -25,19 +19,17 @@ interface FiltersContainerProps {
 }
 
 export function FiltersContainer({
-									 open,
-									 onOpenChange,
-									 onApplyFilters
-								 }: FiltersContainerProps) {
+	open,
+	onOpenChange,
+	onApplyFilters,
+}: FiltersContainerProps) {
 	const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
 
 	const toggleFilter = (index: number) => {
-		setSelectedFilters(prev => {
-			if (prev.includes(index)) {
-				return prev.filter(item => item !== index);
-			} else {
-				return [...prev, index];
-			}
+		setSelectedFilters(previous => {
+			return previous.includes(index)
+				? previous.filter(item => item !== index)
+				: [...previous, index];
 		});
 	};
 
@@ -48,23 +40,25 @@ export function FiltersContainer({
 		onOpenChange(false);
 	};
 
-	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-[500px]">
-				<DialogHeader className="flex flex-row items-center justify-between">
-					<DialogTitle className="text-xl font-bold">Filtros</DialogTitle>
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={() => onOpenChange(false)}
-						className="rounded-full h-8 w-8 p-0"
-					>
-						<X className="h-4 w-4" />
-						<span className="sr-only">Close</span>
-					</Button>
-				</DialogHeader>
+	if (!open) return null;
 
-				<div className="grid grid-cols-3 sm:grid-cols-6 gap-4 py-4">
+	return (
+		<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
+			<div className='bg-neutral-900 rounded-lg shadow-lg sm:max-w-[500px] w-full mx-4 p-6 relative'>
+				<div className='flex flex-row items-center justify-between mb-4'>
+					<span className="font-['Inter'] text-[#A3A3A3] text-2xl">Filtros</span>
+					<Button
+						variant='ghost'
+						size='icon'
+						onClick={() => onOpenChange(false)}
+						className='rounded-full h-8 w-8 p-0 text-[#A3A3A3]'
+					>
+						<X className='h-4 w-4' />
+						<span className='sr-only text-[#A3A3A3]'>Close</span>
+					</Button>
+				</div>
+
+				<div className='grid grid-cols-3 sm:grid-cols-6 gap-4 py-4 text-[#A3A3A3]'>
 					{FILTER_ITEMS.map((item, index) => (
 						<FilterItem
 							key={index}
@@ -75,18 +69,16 @@ export function FiltersContainer({
 					))}
 				</div>
 
-				<div className="flex justify-end mt-4 gap-2">
+				<div className='flex justify-end mt-4 gap-2 text-[#A3A3A3]'>
 					<Button
-						variant="outline"
+						variant='outline'
 						onClick={() => setSelectedFilters([])}
 					>
 						Clear
 					</Button>
-					<Button onClick={handleApply}>
-						Apply Filters
-					</Button>
+					<Button onClick={handleApply}>Apply Filters</Button>
 				</div>
-			</DialogContent>
-		</Dialog>
+			</div>
+		</div>
 	);
 }

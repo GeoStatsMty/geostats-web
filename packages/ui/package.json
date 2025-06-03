@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.511.0",
+    "mapbox-gl": "^3.12.0",
     "react": "catalog:",
     "tailwind-merge": "^3.3.0",
     "tsconfig": "workspace:*",
