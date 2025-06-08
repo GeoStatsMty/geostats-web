@@ -1,44 +1,115 @@
-import {X} from 'lucide-react';
-import {useState} from 'react';
-import {FilterItem, FilterCategory} from './filter-item';
-import {Button} from 'ui';
+import { X } from 'lucide-react';
+import { useState } from 'react';
+import { FilterItem, FilterCategory } from './filter-item';
+import { Button } from 'ui';
 
-const FILTER_ITEMS: {category: FilterCategory}[] = [
-	{category: 'Fiscalia'},
-	{category: 'Periodico'},
-	{category: 'Periodico'},
-	{category: 'Fiscalia'},
-	{category: 'Fiscalia'},
-	{category: 'Fiscalia'},
+const FILTER_ITEMS: { category: FilterCategory; label: string }[] = [
+	{ category: 'Fiscalia', label: 'Fiscalía' },
+	{ category: 'Periodico', label: 'Periódico' },
+	{ category: 'SitiosDeApoyo', label: 'Sitios de Apoyo' },
+	{ category: 'CubrimientoDeSitio', label: 'Área sin Cubrimiento' },
+	{ category: 'RezagoSocial', label: 'Rezago Social' },
+	{ category: 'Modelo', label: 'Modelo Predictivo' },
 ];
+
+export type MapFilters = {
+	showFiscalia: boolean;
+	showCubrimientoDeSitio: boolean;
+	showRezagoSocial: boolean;
+	showSitiosDeApoyo: boolean;
+	showModelo: boolean;
+	showPeriodico: boolean;
+}
 
 interface FiltersContainerProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-	onApplyFilters?: (selectedFilters: number[]) => void;
+	filters: MapFilters;
+	onFiltersChange: (filters: MapFilters) => void;
 }
 
 export function FiltersContainer({
-	open,
-	onOpenChange,
-	onApplyFilters,
-}: FiltersContainerProps) {
-	const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
+									 open,
+									 onOpenChange,
+									 filters,
+									 onFiltersChange,
+								 }: FiltersContainerProps) {
+	const [temporaryFilters, setTemporaryFilters] = useState<MapFilters>(filters);
 
-	const toggleFilter = (index: number) => {
-		setSelectedFilters(previous => {
-			return previous.includes(index)
-				? previous.filter(item => item !== index)
-				: [...previous, index];
+	const getSelectedState = (category: FilterCategory): boolean => {
+		switch (category) {
+			case 'Fiscalia':
+				return temporaryFilters.showFiscalia;
+			case 'Periodico':
+				return temporaryFilters.showPeriodico;
+			case 'SitiosDeApoyo':
+				return temporaryFilters.showSitiosDeApoyo;
+			case 'CubrimientoDeSitio':
+				return temporaryFilters.showCubrimientoDeSitio;
+			case 'RezagoSocial':
+				return temporaryFilters.showRezagoSocial;
+			case 'Modelo':
+				return temporaryFilters.showModelo;
+			default:
+				return false;
+		}
+	};
+
+	const toggleFilter = (category: FilterCategory) => {
+		setTemporaryFilters(previous => {
+			const newFilters = { ...previous };
+
+			switch (category) {
+				case 'Fiscalia': {
+					newFilters.showFiscalia = !previous.showFiscalia;
+					break;
+				}
+				case 'Periodico': {
+					newFilters.showPeriodico = !previous.showPeriodico;
+					break;
+				}
+				case 'SitiosDeApoyo': {
+					newFilters.showSitiosDeApoyo = !previous.showSitiosDeApoyo;
+					break;
+				}
+				case 'CubrimientoDeSitio': {
+					newFilters.showCubrimientoDeSitio = !previous.showCubrimientoDeSitio;
+					break;
+				}
+				case 'RezagoSocial': {
+					newFilters.showRezagoSocial = !previous.showRezagoSocial;
+					break;
+				}
+				case 'Modelo': {
+					newFilters.showModelo = !previous.showModelo;
+					break;
+				}
+			}
+
+			return newFilters;
 		});
 	};
 
 	const handleApply = () => {
-		if (onApplyFilters) {
-			onApplyFilters(selectedFilters);
-		}
+		onFiltersChange(temporaryFilters);
 		onOpenChange(false);
 	};
+
+	const handleClear = () => {
+		const clearedFilters: MapFilters = {
+			showFiscalia: false,
+			showCubrimientoDeSitio: false,
+			showRezagoSocial: false,
+			showSitiosDeApoyo: false,
+			showModelo: false,
+			showPeriodico: false,
+		};
+		setTemporaryFilters(clearedFilters);
+	};
+
+	useState(() => {
+		setTemporaryFilters(filters);
+	});
 
 	if (!open) return null;
 
@@ -58,25 +129,27 @@ export function FiltersContainer({
 					</Button>
 				</div>
 
-				<div className='grid grid-cols-3 sm:grid-cols-6 gap-4 py-4 text-[#A3A3A3]'>
-					{FILTER_ITEMS.map((item, index) => (
+				<div className='grid grid-cols-3 sm:grid-cols-3 gap-4 py-4 text-[#A3A3A3]'>
+					{FILTER_ITEMS.map((item) => (
 						<FilterItem
-							key={index}
+							key={item.category}
 							category={item.category}
-							selected={selectedFilters.includes(index)}
-							onClick={() => toggleFilter(index)}
-						/>
+							selected={getSelectedState(item.category)}
+							onClick={() => toggleFilter(item.category)}
+						>
+							{item.label}
+						</FilterItem>
 					))}
 				</div>
 
 				<div className='flex justify-end mt-4 gap-2 text-[#A3A3A3]'>
 					<Button
 						variant='outline'
-						onClick={() => setSelectedFilters([])}
+						onClick={handleClear}
 					>
 						Clear
 					</Button>
-					<Button onClick={handleApply}>Apply Filters</Button>
+					<Button onClick={handleApply}>Aplicar filtros</Button>
 				</div>
 			</div>
 		</div>

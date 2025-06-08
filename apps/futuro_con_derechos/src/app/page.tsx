@@ -1,6 +1,6 @@
 'use client';
 import {motion} from 'motion/react';
-import {Button, FiltersContainer, Statistics} from 'ui';
+import {Button, FiltersContainer, MapFilters, Statistics} from 'ui';
 import {Menu, X} from 'lucide-react';
 import {useLayoutEffect, useRef, useState} from 'react';
 import {useDragControls, useMotionValue, useSpring} from 'framer-motion';
@@ -22,8 +22,16 @@ export default function Home() {
 	const [visibleSheetPartHeight, setVisibleSheetPartHeight] = useState(0);
 	const [filtersOpen, setFiltersOpen] = useState(false); // Estado para abrir/cerrar filtros
 	const [showFilters, setShowFilters] = useState(false);
+	const [mapFilters, setMapFilters] = useState<MapFilters>({
+		showFiscalia: true,
+		showCubrimientoDeSitio: false,
+		showRezagoSocial: false,
+		showSitiosDeApoyo: false,
+		showModelo: false,
+		showPeriodico: true,
+	});
 
-	const [buttonWhite, setButtonWhite] = useState(false); // Nuevo estado
+	const [buttonWhite, setButtonWhite] = useState(false);
 
 	useLayoutEffect(() => {
 		if (innerRef.current) setSheetHeight(innerRef.current.offsetHeight);
@@ -33,12 +41,19 @@ export default function Home() {
 
 	return (
 		<main className='w-screen h-screen relative bg-neutral-800 overflow-hidden'>
-			<MapboxMap />
+			<MapboxMap
+				showFiscalia={mapFilters.showFiscalia}
+				showCubrimientoDeSitio={mapFilters.showCubrimientoDeSitio}
+				showRezagoSocial={mapFilters.showRezagoSocial}
+				showSitiosDeApoyo={mapFilters.showSitiosDeApoyo}
+				showModelo={mapFilters.showModelo}
+				showPeriodico={mapFilters.showPeriodico}
+			/>
 			{/* Menu Button */}
 			<div
 				style={{
-					//bottom: `calc(2rem + ${sheetHeight}px)`,
 					right: '1rem',
+					top: '1rem',
 					transition: 'bottom 0.3s',
 				}}
 				className='absolute z-10'
@@ -53,7 +68,7 @@ export default function Home() {
 					}`}
 					onClick={() => {
 						setFiltersOpen(true);
-						setButtonWhite(true); // Cam	bia a blanco al hacer click
+						setButtonWhite(true);
 					}}
 				>
 					<Menu
@@ -63,11 +78,14 @@ export default function Home() {
 			</div>
 			<FiltersContainer
 				open={filtersOpen}
-				onOpenChange={setFiltersOpen}
-				onApplyFilters={selected => {
-					// Aquí puedes manejar los filtros seleccionados
-					console.log('Filtros aplicados:', selected);
+				onOpenChange={(open) => {
+					setFiltersOpen(open);
+					if (!open) {
+						setButtonWhite(false);
+					}
 				}}
+				filters={mapFilters}
+				onFiltersChange={setMapFilters}
 			/>
 
 			<motion.div
@@ -163,7 +181,7 @@ export default function Home() {
 				)}
 				<Statistics />
 			</motion.div>
-			
+
 		</main>
 	);
 };
