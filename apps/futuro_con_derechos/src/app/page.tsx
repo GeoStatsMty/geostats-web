@@ -1,25 +1,21 @@
 'use client';
 import {motion} from 'motion/react';
-import {Button, FiltersContainer, MapFilters, Statistics} from 'ui';
+import {Button, FiltersContainer, MapFilters, Statistics, MapboxMap} from 'ui';
 import {Menu, X} from 'lucide-react';
-import {useLayoutEffect, useRef, useState} from 'react';
-import {useDragControls, useMotionValue, useSpring} from 'framer-motion';
-import {MapboxMap} from 'ui';
+import {useState} from 'react';
+import {ModalSheet} from '@/components/modal-sheet.tsx';
+
+/**
+ * The `Home` function represents the main component for rendering the application UI.
+ * It includes a map, a draggable UI sheet, filter options, and various interactive elements.
+ * Features:
+ * - Displays a map interface.
+ * - Contains a draggable bottom sheet for additional functionality.
+ * - Includes filter options with an interactive panel to apply filters.
+ * - Provides accessibility to interaction controls for UI elements, scrolling, and animations.
+ * @return The rendered `Home` component containing all its UI elements and interactive features.
+ */
 export default function Home() {
-	const y = useMotionValue(0);
-	const spring = useSpring(y, {
-		mass: 1,
-		damping: 100,
-		stiffness: 1000,
-
-	});
-	const dragControls = useDragControls();
-
-	const innerRef = useRef<HTMLDivElement>(null);
-	const visiblePartRef = useRef<HTMLDivElement>(null);
-
-	const [sheetHeight, setSheetHeight] = useState(0);
-	const [visibleSheetPartHeight, setVisibleSheetPartHeight] = useState(0);
 	const [filtersOpen, setFiltersOpen] = useState(false); // Estado para abrir/cerrar filtros
 	const [showFilters, setShowFilters] = useState(false);
 	const [mapFilters, setMapFilters] = useState<MapFilters>({
@@ -33,11 +29,6 @@ export default function Home() {
 
 	const [buttonWhite, setButtonWhite] = useState(false);
 
-	useLayoutEffect(() => {
-		if (innerRef.current) setSheetHeight(innerRef.current.offsetHeight);
-		if (visiblePartRef.current)
-			setVisibleSheetPartHeight(visiblePartRef.current.offsetHeight);
-	}, []);
 
 	return (
 		<main className='w-screen h-screen relative bg-neutral-800 overflow-hidden'>
@@ -56,11 +47,11 @@ export default function Home() {
 					top: '1rem',
 					transition: 'bottom 0.3s',
 				}}
-				className='absolute z-10'
+				className="absolute z-10"
 			>
 				<Button
-					variant='secondary'
-					size='icon'
+					variant="secondary"
+					size="icon"
 					className={`w-10 h-10 shadow-md flex justify-center rounded-md ${
 						buttonWhite
 							? 'bg-white'
@@ -88,43 +79,29 @@ export default function Home() {
 				onFiltersChange={setMapFilters}
 			/>
 
-			<motion.div
-				style={{
-					top: `calc(100% - ${visibleSheetPartHeight}px)`,
-					y: spring,
-				}}
-				className='rounded-t-2xl inset-x-0 absolute bg-neutral-900'
-				onDragEnd={() => {
-					console.log('dragEnd');
-					spring.set(0);
-				}}
-				drag='y'
-				dragConstraints={{
-					top: -sheetHeight + visibleSheetPartHeight,
-					bottom: 0,
-				}}
-			>
+			<ModalSheet header={<h1 className="text-white text-2xl">Feminicidios en el Area Metropolitana</h1>}>
 				{showFilters ? (
-					<div className='fixed inset-0 z-50 flex items-center justify-center bg-transparent bg-opacity-40'>
-						<div className='bg-white rounded-lg shadow-lg sm:max-w-[500px] w-full mx-4 p-6 relative'>
-							<div className='flex flex-row items-center justify-between mb-4'>
-								<span className='text-xl font-bold'>Filtros</span>
+					<div
+						className="fixed inset-0 z-50 flex items-center justify-center bg-transparent bg-opacity-40">
+						<div className="bg-white rounded-lg shadow-lg sm:max-w-[500px] w-full mx-4 p-6 relative">
+							<div className="flex flex-row items-center justify-between mb-4">
+								<span className="text-xl font-bold">Filtros</span>
 								<Button
-									variant='ghost'
-									size='icon'
+									variant="ghost"
+									size="icon"
 									onClick={() => setShowFilters(false)}
-									className='rounded-full h-8 w-8 p-0'
+									className="rounded-full h-8 w-8 p-0"
 								>
-									<X className='h-4 w-4' />
-									<span className='sr-only'>Close</span>
+									<X className="h-4 w-4" />
+									<span className="sr-only">Close</span>
 								</Button>
 							</div>
-							<div className='grid grid-cols-3 sm:grid-cols-6 gap-4 py-4'>
+							<div className="grid grid-cols-3 sm:grid-cols-6 gap-4 py-4">
 								{/* Aquí van los elementos de filtro */}
 							</div>
-							<div className='flex justify-end mt-4 gap-2'>
+							<div className="flex justify-end mt-4 gap-2">
 								<Button
-									variant='outline'
+									variant="outline"
 									// onClick={() => setSelectedFilters([])}
 								>
 									Clear
@@ -139,18 +116,8 @@ export default function Home() {
 					</div>
 				) : (
 					<div
-						ref={innerRef}
-						className='flex flex-col items-center p-4'
+						className="flex flex-col items-center"
 					>
-						<div
-							ref={visiblePartRef}
-							className='flex flex-col items-center space-y-4 pb-4'
-						>
-							<div className='w-16 h-2 rounded-full bg-neutral-600' />
-							<h1 className="font-['Inter'] text-[#A3A3A3] text-2xl">
-								Feminicidios en el Area Metropolitana
-							</h1>
-						</div>
 						<div className="space-y-2">
 							<p className="text-[#A3A3A3]">
 								Lorem Ipsum is simply dummy text of the printing and
@@ -179,8 +146,8 @@ export default function Home() {
 						</div>
 					</div>
 				)}
-				<Statistics />
-			</motion.div>
+			</ModalSheet>
+			<Statistics />
 
 		</main>
 	);
