@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { FilterItem, FilterCategory } from './filter-item';
+import { FilterItem, FilterCategory } from './filter-item.tsx';
 import { Button } from 'ui';
 
 const FILTER_ITEMS: { category: FilterCategory; label: string }[] = [

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.ts";
 import { useState } from "react";
 import { Building, LucideIcon, Newspaper, Hospital, MapPin, User, Search } from 'lucide-react'
 

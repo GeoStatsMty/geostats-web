@@ -1,5 +1,8 @@
 'use client';
-import {Button, FiltersContainer, MapboxMap, MapFilters, Statistics} from 'ui';
+import {FiltersContainer, MapFilters} from '../components/filter-container';
+import {Button} from 'ui';
+import {MapboxMap} from '../components/mapbox-map'
+import {Statistics} from '../components/statistics';
 import {Menu, X} from 'lucide-react';
 import {useState} from 'react';
 import {ModalSheet} from '@/components/modal-sheet.tsx';
