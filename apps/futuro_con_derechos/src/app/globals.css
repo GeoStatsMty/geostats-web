@@ -1,1 +1,6 @@
 @import 'tailwind-config/base.css';
+
+:root {
+    color-scheme: dark;
+}
+

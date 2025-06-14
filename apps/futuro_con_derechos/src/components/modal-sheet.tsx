@@ -2,7 +2,7 @@
 import {motion, useAnimationControls} from 'motion/react';
 import useWindowDimensions from '@/hooks/use-window-dimensions.ts';
 import {useElementSize} from '@/hooks/use-element-size.ts';
-import {ReactNode, useRef, useState} from 'react';
+import {ReactNode, useEffect, useRef, useState} from 'react';
 import {twJoin} from 'tailwind-merge';
 
 export type ModalSheetProps = {
@@ -30,16 +30,60 @@ export function ModalSheet(props: ModalSheetProps) {
 	const {height} = useWindowDimensions();
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [scrollPosition, setScrollPosition] = useState(0);
+
+	const [scroll, setScroll] = useState(0);
 
 	const max = height - visibleSheetPartHeight;
+
+	/**
+	 * Closes the sheet
+	 */
+	const close = () => {
+		setIsOpen(false);
+		animationControls.start({y: 0});
+	};
+
+	/**
+	 * Opens the sheet
+	 */
+	const open = () => {
+		setIsOpen(true);
+		animationControls.start({y: -max});
+	};
+
+	const [isDragging, setIsDragging] = useState(false);
+
+	const scrollRef = useRef<HTMLDivElement>(null);
+
+	// This touchmove handler disables scrolling on the inner container
+	// whenever the user is dragging the sheet.
+	// It needs to be on useEffect instead of on the HTML element itself
+	// because we need the listener to not be a passive listener, which
+	// can only be done via the addEventListener API
+	useEffect(() => {
+		const container = sheetRef.current;
+
+		if (!container) return;
+
+		const handler = (event: TouchEvent) => {
+			if (isDragging) {
+				event.preventDefault();
+			}
+		};
+		container.addEventListener('touchmove', handler, {
+			passive: false,
+		});
+
+		return () => {
+			container.removeEventListener('touchmove', handler);
+		};
+	}, [isDragging]);
 
 	return (
 		<motion.div
 			style={{
 				bottom: -sheetHeight + visibleSheetPartHeight,
 			}}
-			onScroll={event => setScrollPosition(event.currentTarget.scrollTop)}
 			animate={animationControls}
 			ref={sheetRef}
 			className={twJoin(
@@ -47,22 +91,29 @@ export function ModalSheet(props: ModalSheetProps) {
 				!isOpen && 'rounded-t-2xl',
 			)}
 			dragElastic={false}
-			dragListener={!isOpen || scrollPosition === 0}
 			transition={{
 				mass: 0.2,
 				bounce: 0,
 			}}
+			onDragStart={() => setIsDragging(true)}
 			onDragEnd={(_event, panInfo) => {
+				// This handlers makes it so that the sheet snaps to either the
+				// closed or open state when finishing dragging.
+				// It checks for either position or velocity for deciding whether
+				// to snap open or closed.
+				setIsDragging(false);
+
 				const velocity = panInfo.velocity.y;
-				const y = panInfo.point.y;
+				const y = sheetRef.current?.getBoundingClientRect().y ?? 0;
+
 				if (Math.abs(velocity) > 200) {
 					const isOpening = velocity < 0;
-					setIsOpen(isOpening);
-					animationControls.start({y: isOpening ? -max : 0});
+					if (isOpening) open();
+					else close();
 				} else {
 					const isOpening = y < max / 2;
-					setIsOpen(isOpening);
-					animationControls.start({y: isOpening ? -max : 0});
+					if (isOpening) open();
+					else close();
 				}
 			}}
 			drag='y'
@@ -74,20 +125,46 @@ export function ModalSheet(props: ModalSheetProps) {
 			<div className='absolute -top-4 right-4 -translate-y-full'>
 				{controls}
 			</div>
-			<div className='flex flex-col h-full'>
+			<div
+				ref={scrollRef}
+				onScroll={() => {
+					if (!scrollRef.current) return;
+					setScroll(scrollRef.current.scrollTop);
+				}}
+				onPointerMoveCapture={event => {
+					// This handler prevents drag being triggered
+					// when the user is actually trying to scroll
+
+					if (!isOpen) return;
+
+					// We are scrolling if the cursor is going upwards
+					// or if the cursor is going downwards AND we are not at the top
+					// (so the user is not trying to close the sheet)
+					const isScrolling =
+						event.movementY <= 0 ||
+						(scroll > 0 && event.movementY > 0);
+
+					// (if we are already dragging, don't attempt to cancel it)
+					if (!isDragging && isScrolling) {
+						// Stop the event from propagating to the drag container
+						event.stopPropagation();
+					}
+				}}
+				className={twJoin('h-full', isOpen && 'overflow-y-auto')}
+			>
 				<div ref={visiblePartRef} className='flex flex-col'>
 					<button
 						className='flex items-center justify-center py-3'
 						onClick={() => {
-							animationControls.start({y: isOpen ? 0 : -max});
-							setIsOpen(previousState => !previousState);
+							if (isOpen) close();
+							else open();
 						}}
 					>
 						<div className='w-16 h-2 rounded-full bg-neutral-600' />
 					</button>
-					<div className='px-2 py-4'>{header}</div>
+					<div className='px-2 py-4 text-white'>{header}</div>
 				</div>
-				{children}
+				<div className='px-2 py-4'>{children}</div>
 			</div>
 		</motion.div>
 	);

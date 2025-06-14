@@ -1,11 +1,11 @@
 'use client';
-import { FiltersList, MapFilters } from '../components/filters-list.tsx';
-import { Button } from 'ui';
-import { MapboxMap } from '../components/mapbox-map'
-import { Statistics } from '../components/statistics';
-import { Menu } from 'lucide-react';
-import { useState } from 'react';
-import { ModalSheet } from '@/components/modal-sheet.tsx';
+import {FiltersList, MapFilters} from '../components/filters-list.tsx';
+import {Button} from 'ui';
+import {MapboxMap} from '../components/mapbox-map';
+import {Statistics} from '../components/statistics';
+import {Menu} from 'lucide-react';
+import {useState} from 'react';
+import {ModalSheet} from '@/components/modal-sheet.tsx';
 
 /**
  * The `Home` function represents the main component for rendering the application UI.
@@ -15,7 +15,7 @@ import { ModalSheet } from '@/components/modal-sheet.tsx';
  * - Contains a draggable bottom sheet for additional functionality.
  * - Includes filter options with an interactive panel to apply filters.
  * - Provides accessibility to interaction controls for UI elements, scrolling, and animations.
- * @return The rendered `Home` component containing all its UI elements and interactive features.
+ * @returns The rendered `Home` component containing all its UI elements and interactive features.
  */
 export default function Home() {
 	const [mapFilters, setMapFilters] = useState<MapFilters>({
@@ -42,7 +42,9 @@ export default function Home() {
 			<ModalSheet
 				header={
 					<h1 className='text-white text-2xl'>
-						{showFilters ? 'Filtros' : 'Feminicidios en el Area Metropolitana'}
+						{showFilters
+							? 'Filtros'
+							: 'Feminicidios en el Area Metropolitana'}
 					</h1>
 				}
 				controls={
@@ -64,7 +66,7 @@ export default function Home() {
 					</Button>
 				}
 			>
-				<div className='flex flex-col items-center px-4'>
+				<div className='flex flex-col items-center '>
 					{showFilters ? (
 						<div className='w-full mb-6'>
 							<FiltersList
@@ -76,87 +78,93 @@ export default function Home() {
 						<div className='flex flex-col items-center'>
 							<div className='space-y-2'>
 								<p className='text-[#A3A3A3]'>
-									Lorem Ipsum is simply dummy text of the printing
-									and typesetting industry. Lorem Ipsum has been
-									the industry&apos;s standard dummy text ever
-									since the unknown printer took a galley of type
-									and scrambled it to make a type specimen book.
-									It has survived not only five centuries, but
-									also the leap into electronic typesetting,
-									remaining essentially unchanged. It was
-									popularised in the 1960s with the the release of
-									Letraset sheets containing Lorem Ipsum passages,
-									and more recently with desktop publishing
-									software like Aldus PageMaker including versions
-									of Lorem Ipsum Contrary to popular belief, Lorem
-									Ipsum is not simply random text. It has roots
-									roots in a piece of classical Latin literature
-									from 45 BC, making it over 2000 years old.
-									Richard McClintock, a Latin professor at
-									Hampden-Sydney College in Virginia, looked up
-									one of the more obscure Latin words,
+									Lorem Ipsum is simply dummy text of the
+									printing and typesetting industry. Lorem
+									Ipsum has been the industry&apos;s standard
+									dummy text ever since the unknown printer
+									took a galley of type and scrambled it to
+									make a type specimen book. It has survived
+									not only five centuries, but also the leap
+									into electronic typesetting, remaining
+									essentially unchanged. It was popularised in
+									the 1960s with the the release of Letraset
+									sheets containing Lorem Ipsum passages, and
+									more recently with desktop publishing
+									software like Aldus PageMaker including
+									versions of Lorem Ipsum Contrary to popular
+									belief, Lorem Ipsum is not simply random
+									text. It has roots roots in a piece of
+									classical Latin literature from 45 BC,
+									making it over 2000 years old. Richard
+									McClintock, a Latin professor at
+									Hampden-Sydney College in Virginia, looked
+									up one of the more obscure Latin words,
 									consectetur, from a Lorem Ipsum passage, and
-									going through the cites of the word in classical
-									literature, discovered the undoubtable source.
-									Lorem Ipsum comes from sections 1.10.32 and
-									1.10.33 of &quot;de Finibus Bonorum et
-									Malorum&quot;
+									going through the cites of the word in
+									classical literature, discovered the
+									undoubtable source. Lorem Ipsum comes from
+									sections 1.10.32 and 1.10.33 of &quot;de
+									Finibus Bonorum et Malorum&quot;
 								</p>
 
 								<p className='text-[#A3A3A3]'>
-									Lorem Ipsum is simply dummy text of the printing
-									and typesetting industry. Lorem Ipsum has been
-									the industry&apos;s standard dummy text ever
-									since the unknown printer took a galley of type
-									and scrambled it to make a type specimen book.
-									It has survived not only five centuries, but
-									also the leap into electronic typesetting,
-									remaining essentially unchanged. It was
-									popularised in the 1960s with the the release of
-									Letraset sheets containing Lorem Ipsum passages,
-									and more recently with desktop publishing
-									software like Aldus PageMaker including versions
-									of Lorem Ipsum Contrary to popular belief, Lorem
-									Ipsum is not simply random text. It has roots
-									roots in a piece of classical Latin literature
-									from 45 BC, making it over 2000 years old.
-									Richard McClintock, a Latin professor at
-									Hampden-Sydney College in Virginia, looked up
-									one of the more obscure Latin words,
+									Lorem Ipsum is simply dummy text of the
+									printing and typesetting industry. Lorem
+									Ipsum has been the industry&apos;s standard
+									dummy text ever since the unknown printer
+									took a galley of type and scrambled it to
+									make a type specimen book. It has survived
+									not only five centuries, but also the leap
+									into electronic typesetting, remaining
+									essentially unchanged. It was popularised in
+									the 1960s with the the release of Letraset
+									sheets containing Lorem Ipsum passages, and
+									more recently with desktop publishing
+									software like Aldus PageMaker including
+									versions of Lorem Ipsum Contrary to popular
+									belief, Lorem Ipsum is not simply random
+									text. It has roots roots in a piece of
+									classical Latin literature from 45 BC,
+									making it over 2000 years old. Richard
+									McClintock, a Latin professor at
+									Hampden-Sydney College in Virginia, looked
+									up one of the more obscure Latin words,
 									consectetur, from a Lorem Ipsum passage, and
-									going through the cites of the word in classical
-									literature, discovered the undoubtable source.
-									Lorem Ipsum comes from sections 1.10.32 and
-									1.10.33 of &quot;de Finibus Bonorum et
-									Malorum&quot;
+									going through the cites of the word in
+									classical literature, discovered the
+									undoubtable source. Lorem Ipsum comes from
+									sections 1.10.32 and 1.10.33 of &quot;de
+									Finibus Bonorum et Malorum&quot;
 								</p>
 
 								<p className='text-[#A3A3A3]'>
-									Lorem Ipsum is simply dummy text of the printing
-									and typesetting industry. Lorem Ipsum has been
-									the industry&apos;s standard dummy text ever
-									since the unknown printer took a galley of type
-									and scrambled it to make a type specimen book.
-									It has survived not only five centuries, but
-									also the leap into electronic typesetting,
-									remaining essentially unchanged. It was
-									popularised in the 1960s with the the release of
-									Letraset sheets containing Lorem Ipsum passages,
-									and more recently with desktop publishing
-									software like Aldus PageMaker including versions
-									of Lorem Ipsum Contrary to popular belief, Lorem
-									Ipsum is not simply random text. It has roots
-									roots in a piece of classical Latin literature
-									from 45 BC, making it over 2000 years old.
-									Richard McClintock, a Latin professor at
-									Hampden-Sydney College in Virginia, looked up
-									one of the more obscure Latin words,
+									Lorem Ipsum is simply dummy text of the
+									printing and typesetting industry. Lorem
+									Ipsum has been the industry&apos;s standard
+									dummy text ever since the unknown printer
+									took a galley of type and scrambled it to
+									make a type specimen book. It has survived
+									not only five centuries, but also the leap
+									into electronic typesetting, remaining
+									essentially unchanged. It was popularised in
+									the 1960s with the the release of Letraset
+									sheets containing Lorem Ipsum passages, and
+									more recently with desktop publishing
+									software like Aldus PageMaker including
+									versions of Lorem Ipsum Contrary to popular
+									belief, Lorem Ipsum is not simply random
+									text. It has roots roots in a piece of
+									classical Latin literature from 45 BC,
+									making it over 2000 years old. Richard
+									McClintock, a Latin professor at
+									Hampden-Sydney College in Virginia, looked
+									up one of the more obscure Latin words,
 									consectetur, from a Lorem Ipsum passage, and
-									going through the cites of the word in classical
-									literature, discovered the undoubtable source.
-									Lorem Ipsum comes from sections 1.10.32 and
-									1.10.33 of &quot;de Finibus Bonorum et
-									Malorum&quot;
+									going through the cites of the word in
+									classical literature, discovered the
+									undoubtable source. Lorem Ipsum comes from
+									sections 1.10.32 and 1.10.33 of &quot;de
+									Finibus Bonorum et Malorum&quot;
 								</p>
 							</div>
 						</div>
