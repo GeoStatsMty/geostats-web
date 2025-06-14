@@ -1,5 +1,4 @@
 import { X } from 'lucide-react';
-import { useState } from 'react';
 import { FilterItem, FilterCategory } from './filter-item';
 import { Button } from 'ui';
 
@@ -34,82 +33,66 @@ export function FiltersContainer({
 									 filters,
 									 onFiltersChange,
 								 }: FiltersContainerProps) {
-	const [temporaryFilters, setTemporaryFilters] = useState<MapFilters>(filters);
 
 	const getSelectedState = (category: FilterCategory): boolean => {
 		switch (category) {
-			case 'Fiscalia':
-				return temporaryFilters.showFiscalia;
-			case 'Periodico':
-				return temporaryFilters.showPeriodico;
-			case 'SitiosDeApoyo':
-				return temporaryFilters.showSitiosDeApoyo;
-			case 'CubrimientoDeSitio':
-				return temporaryFilters.showCubrimientoDeSitio;
-			case 'RezagoSocial':
-				return temporaryFilters.showRezagoSocial;
-			case 'Modelo':
-				return temporaryFilters.showModelo;
-			default:
+			case 'Fiscalia': {
+				return filters.showFiscalia;
+			}
+			case 'Periodico': {
+				return filters.showPeriodico;
+			}
+			case 'SitiosDeApoyo': {
+				return filters.showSitiosDeApoyo;
+			}
+			case 'CubrimientoDeSitio': {
+				return filters.showCubrimientoDeSitio;
+			}
+			case 'RezagoSocial': {
+				return filters.showRezagoSocial;
+			}
+			case 'Modelo': {
+				return filters.showModelo;
+			}
+			default: {
 				return false;
+			}
 		}
 	};
 
 	const toggleFilter = (category: FilterCategory) => {
-		setTemporaryFilters(previous => {
-			const newFilters = { ...previous };
+		const newFilters = { ...filters };
 
-			switch (category) {
-				case 'Fiscalia': {
-					newFilters.showFiscalia = !previous.showFiscalia;
-					break;
-				}
-				case 'Periodico': {
-					newFilters.showPeriodico = !previous.showPeriodico;
-					break;
-				}
-				case 'SitiosDeApoyo': {
-					newFilters.showSitiosDeApoyo = !previous.showSitiosDeApoyo;
-					break;
-				}
-				case 'CubrimientoDeSitio': {
-					newFilters.showCubrimientoDeSitio = !previous.showCubrimientoDeSitio;
-					break;
-				}
-				case 'RezagoSocial': {
-					newFilters.showRezagoSocial = !previous.showRezagoSocial;
-					break;
-				}
-				case 'Modelo': {
-					newFilters.showModelo = !previous.showModelo;
-					break;
-				}
+		switch (category) {
+			case 'Fiscalia': {
+				newFilters.showFiscalia = !filters.showFiscalia;
+				break;
 			}
+			case 'Periodico': {
+				newFilters.showPeriodico = !filters.showPeriodico;
+				break;
+			}
+			case 'SitiosDeApoyo': {
+				newFilters.showSitiosDeApoyo = !filters.showSitiosDeApoyo;
+				break;
+			}
+			case 'CubrimientoDeSitio': {
+				newFilters.showCubrimientoDeSitio = !filters.showCubrimientoDeSitio;
+				break;
+			}
+			case 'RezagoSocial': {
+				newFilters.showRezagoSocial = !filters.showRezagoSocial;
+				break;
+			}
+			case 'Modelo': {
+				newFilters.showModelo = !filters.showModelo;
+				break;
+			}
+		}
 
-			return newFilters;
-		});
+		// Apply filters immediately
+		onFiltersChange(newFilters);
 	};
-
-	const handleApply = () => {
-		onFiltersChange(temporaryFilters);
-		onOpenChange(false);
-	};
-
-	const handleClear = () => {
-		const clearedFilters: MapFilters = {
-			showFiscalia: false,
-			showCubrimientoDeSitio: false,
-			showRezagoSocial: false,
-			showSitiosDeApoyo: false,
-			showModelo: false,
-			showPeriodico: false,
-		};
-		setTemporaryFilters(clearedFilters);
-	};
-
-	useState(() => {
-		setTemporaryFilters(filters);
-	});
 
 	if (!open) return null;
 
@@ -140,16 +123,6 @@ export function FiltersContainer({
 							{item.label}
 						</FilterItem>
 					))}
-				</div>
-
-				<div className='flex justify-end mt-4 gap-2 text-[#A3A3A3]'>
-					<Button
-						variant='outline'
-						onClick={handleClear}
-					>
-						Clear
-					</Button>
-					<Button onClick={handleApply}>Aplicar filtros</Button>
 				</div>
 			</div>
 		</div>
