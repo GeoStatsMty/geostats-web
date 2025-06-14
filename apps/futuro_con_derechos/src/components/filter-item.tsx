@@ -67,7 +67,9 @@ export function FilterItem({
 					</div>
 				</div>
 			</div>
-			<span className="text-xs font-medium text-gray-300">{children}</span>
+			<div className="w-full text-center">
+				<span className="text-xs font-medium text-gray-300 inline-block">{children}</span>
+			</div>
 		</div>
 	);
 }
