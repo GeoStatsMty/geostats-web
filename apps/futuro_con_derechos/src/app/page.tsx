@@ -1,6 +1,5 @@
 'use client';
-import {motion} from 'motion/react';
-import {Button, FiltersContainer, MapFilters, Statistics, MapboxMap} from 'ui';
+import {Button, FiltersContainer, MapboxMap, MapFilters, Statistics} from 'ui';
 import {Menu, X} from 'lucide-react';
 import {useState} from 'react';
 import {ModalSheet} from '@/components/modal-sheet.tsx';
@@ -41,32 +40,6 @@ export default function Home() {
 				showPeriodico={mapFilters.showPeriodico}
 			/>
 			{/* Menu Button */}
-			<div
-				style={{
-					right: '1rem',
-					top: '1rem',
-					transition: 'bottom 0.3s',
-				}}
-				className="absolute z-10"
-			>
-				<Button
-					variant="secondary"
-					size="icon"
-					className={`w-10 h-10 shadow-md flex justify-center rounded-md ${
-						buttonWhite
-							? 'bg-white'
-							: 'bg-neutral-900 hover:bg-[#1A1A1A]'
-					}`}
-					onClick={() => {
-						setFiltersOpen(true);
-						setButtonWhite(true);
-					}}
-				>
-					<Menu
-						className={`h-6 w-6 ${buttonWhite ? 'text-neutral-900' : 'text-[#FAFAFA]'}`}
-					/>
-				</Button>
-			</div>
 			<FiltersContainer
 				open={filtersOpen}
 				onOpenChange={(open) => {
@@ -80,6 +53,27 @@ export default function Home() {
 			/>
 
 			<ModalSheet header={<h1 className="text-white text-2xl">Feminicidios en el Area Metropolitana</h1>}>
+				<div
+					className="absolute z-10 -top-4 -translate-y-full right-4"
+				>
+					<Button
+						variant="secondary"
+						size="icon"
+						className={`w-10 h-10 shadow-md flex justify-center rounded-md ${
+							buttonWhite
+								? 'bg-white'
+								: 'bg-neutral-900 hover:bg-[#1A1A1A]'
+						}`}
+						onClick={() => {
+							setFiltersOpen(true);
+							setButtonWhite(true);
+						}}
+					>
+						<Menu
+							className={`h-6 w-6 ${buttonWhite ? 'text-neutral-900' : 'text-[#FAFAFA]'}`}
+						/>
+					</Button>
+				</div>
 				{showFilters ? (
 					<div
 						className="fixed inset-0 z-50 flex items-center justify-center bg-transparent bg-opacity-40">

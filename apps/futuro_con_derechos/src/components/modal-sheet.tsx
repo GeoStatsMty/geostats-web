@@ -38,7 +38,7 @@ export function ModalSheet(props: ModalSheetProps) {
 		}}
 		animate={animationControls}
 		ref={sheetRef}
-		className={twJoin('inset-x-0 absolute py-2 px-4 bg-neutral-900 min-h-screen', !sliderOpen && 'rounded-t-2xl')}
+		className={twJoin('inset-x-0 absolute  bg-neutral-900 min-h-screen', !sliderOpen && 'rounded-t-2xl')}
 		dragElastic={false}
 		transition={{
 			mass: 0.2,
@@ -59,24 +59,28 @@ export function ModalSheet(props: ModalSheetProps) {
 		}}
 		drag="y"
 		dragConstraints={{
-			top: -height + visibleSheetPartHeight,
+			top: -height + visibleSheetPartHeight + dragBarHeight,
 			bottom: 0,
 		}}
 	>
 		<div
 			ref={visiblePartRef}
-			className={'flex flex-col items-center space-y-4'}
+			className="flex flex-col"
 		>
-			<button className="w-16 h-2 rounded-full bg-neutral-600"
+			<button className="flex items-center justify-center py-3"
 					onClick={() => {
 						animationControls.start({y: sliderOpen ? 0 : -max});
 						setSliderOpen(previousState => !previousState);
-					}} />
-			<div className="w-full">
+					}}>
+				<div className="w-16 h-2 rounded-full bg-neutral-600" />
+			</button>
+			<div className="px-2 py-4">
 				{header}
 			</div>
 		</div>
-		{children}
+		<div className="px-2">
+			{children}
+		</div>
 	</motion.div>;
 }
 
