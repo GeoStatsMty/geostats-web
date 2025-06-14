@@ -1,333 +1,298 @@
+// src/ui/MapboxMap.tsx
 'use client';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl, { Map } from 'mapbox-gl';
 import type { Feature } from 'geojson';
 import { useEffect, useRef, useState } from 'react';
 import {
-	addSitiosDeApoyoLayer,
-	addSitiosDeApoyoSource,
-	removeSitiosDeApoyoLayer,
-} from '@/lib/sitios-de-apoyo.ts';
+  addSitiosDeApoyoLayer,
+  addSitiosDeApoyoSource,
+  removeSitiosDeApoyoLayer,
+} from '@/lib/sitios-de-apoyo';
 import {
-	addFeminicidiosFiscaliaLayer,
-	addFeminiciosFiscaliaSource,
-	removeFeminicidiosFiscaliaLayer,
-} from '@/lib/feminicidios-fiscalia.ts';
+  addFeminicidiosFiscaliaLayer,
+  addFeminiciosFiscaliaSource,
+  removeFeminicidiosFiscaliaLayer,
+} from '@/lib/feminicidios-fiscalia';
 import {
-	addFeminicidiosPeriodicosLayer,
-	addFeminicidiosPeriodicosSource,
-	removeFeminicidiosPeriodicosLayer,
-} from '@/lib/feminicidios-periodico.ts';
+  addFeminicidiosPeriodicosLayer,
+  addFeminicidiosPeriodicosSource,
+  removeFeminicidiosPeriodicosLayer,
+} from '@/lib/feminicidios-periodico';
 import {
-	addAreaSinCubrimientoDeSitioLayer,
-	addAreaSinCubrimientoDeSitioSource,
-	removeAreaSinCubrimientoDeSitioLayer,
-} from '@/lib/area-sin-cubrimiento-de-sitio.ts';
+  addAreaSinCubrimientoDeSitioLayer,
+  addAreaSinCubrimientoDeSitioSource,
+  removeAreaSinCubrimientoDeSitioLayer,
+} from '@/lib/area-sin-cubrimiento-de-sitio';
 import {
-	addResagoSocialLayer,
-	addResagoSocialSource,
-	removeResagoSocialLayer,
-} from '@/lib/resago-social.ts';
+  addResagoSocialLayer,
+  addResagoSocialSource,
+  removeResagoSocialLayer,
+} from '@/lib/resago-social';
 import {
-	addModeloLayer,
-	addModeloSource,
-	removeModeloLayer,
-} from '@/lib/modelo.ts';
+  addModeloLayer,
+  addModeloSource,
+  removeModeloLayer,
+} from '@/lib/modelo';
 
 mapboxgl.accessToken =
-	'pk.eyJ1Ijoic3RvY2s0NCIsImEiOiJjbHE0amx3aXEwODQyMmlsb3RnNHk0MDN1In0.qWALc9kC_uuNNBucnTeauw';
+  'pk.eyJ1Ijoic3RvY2s0NCIsImEiOiJjbHE0amx3aXEwODQyMmlsb3RnNHk0MDN1In0.qWALc9kC_uuNNBucnTeauw';
 
 const monterreyLat = 25.67;
 const monterreyLng = -100.32;
 const initialZoom = 10.5;
 
+export type PointData = {
+  municipio: string;
+  direccion: string;
+  siniestros: number;
+  siniestrosPredichos: number;
+  probabilidad: number;
+};
+
 export type MapboxMapProps = {
-	readonly showFiscalia: boolean;
-	readonly showCubrimientoDeSitio: boolean;
-	readonly showRezagoSocial: boolean;
-	readonly showSitiosDeApoyo: boolean;
-	readonly showModelo: boolean;
-	readonly showPeriodico: boolean;
-}
+  showFiscalia: boolean;
+  showCubrimientoDeSitio: boolean;
+  showRezagoSocial: boolean;
+  showSitiosDeApoyo: boolean;
+  showModelo: boolean;
+  showPeriodico: boolean;
+  onPointClick?: (data: PointData) => void;
+};
 
-export function MapboxMap(properties: MapboxMapProps) {
-	const mapContainerRef = useRef<HTMLDivElement | null>(null);
-	const mapRef = useRef<Map | null>(null);
-	const [isLoaded, setIsLoaded] = useState(false);
+export function MapboxMap({
+  showFiscalia,
+  showCubrimientoDeSitio,
+  showRezagoSocial,
+  showSitiosDeApoyo,
+  showModelo,
+  showPeriodico,
+  onPointClick,
+}: MapboxMapProps) {
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<Map | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-	const {
-		showFiscalia,
-		showCubrimientoDeSitio,
-		showRezagoSocial,
-		showSitiosDeApoyo,
-		showModelo,
-		showPeriodico
-	} = properties;
+  // 1) Inicializa el mapa y las fuentes
+  useEffect(() => {
+    if (mapContainerRef.current && !mapRef.current) {
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4',
+        center: [monterreyLng, monterreyLat],
+        maxBounds: [
+          [monterreyLng - 2, monterreyLat - 3],
+          [monterreyLng + 2, monterreyLat + 3],
+        ],
+        zoom: initialZoom,
+      });
 
-	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
-			return;
-		}
+      map.on('load', () => {
+        addResagoSocialSource(map);
+        addAreaSinCubrimientoDeSitioSource(map);
+        addFeminiciosFiscaliaSource(map);
+        addFeminicidiosPeriodicosSource(map);
+        addSitiosDeApoyoSource(map);
+        addModeloSource(map);
+        setIsLoaded(true);
+      });
 
-		const map = mapRef.current;
+      mapRef.current = map;
+      return () => map.remove();
+    }
+  }, []);
 
-		if (map.getLayer('feminicidios-fiscalia-layer')) {
-			removeFeminicidiosFiscaliaLayer(map);
-		}
+  // 2) Capas de fiscalía y periódico
+  useEffect(() => {
+    if (!mapRef.current || !isLoaded) return;
+    const map = mapRef.current;
 
-		if (map.getLayer('feminicidios-periodicos-layer')) {
-			removeFeminicidiosPeriodicosLayer(map);
-		}
+    if (map.getLayer('feminicidios-fiscalia-layer')) {
+      removeFeminicidiosFiscaliaLayer(map);
+    }
+    if (map.getLayer('feminicidios-periodicos-layer')) {
+      removeFeminicidiosPeriodicosLayer(map);
+    }
+    if (showFiscalia) {
+      addFeminicidiosFiscaliaLayer(map);
+    }
+    if (showPeriodico) {
+      addFeminicidiosPeriodicosLayer(map);
+    }
 
-		if (showFiscalia) {
-			addFeminicidiosFiscaliaLayer(map);
-		}
+    return () => {
+      if (map.getLayer('feminicidios-fiscalia-layer')) {
+        removeFeminicidiosFiscaliaLayer(map);
+      }
+      if (map.getLayer('feminicidios-periodicos-layer')) {
+        removeFeminicidiosPeriodicosLayer(map);
+      }
+    };
+  }, [showFiscalia, showPeriodico, isLoaded]);
 
-		if (showPeriodico) {
-			addFeminicidiosPeriodicosLayer(map);
-		}
+  // 3) Popup al hover sobre fiscalía/ periódico
+  useEffect(() => {
+    if (!mapRef.current || !isLoaded) return;
+    const map = mapRef.current;
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
 
-		return () => {
-			if (mapRef.current) {
-				if (mapRef.current.getLayer('feminicidios-fiscalia-layer')) {
-					removeFeminicidiosFiscaliaLayer(mapRef.current);
-				}
-				if (mapRef.current.getLayer('feminicidios-periodicos-layer')) {
-					removeFeminicidiosPeriodicosLayer(mapRef.current);
-				}
-			}
-		};
-	}, [showFiscalia, showPeriodico, isLoaded]);
+    const layers = [
+      { id: 'feminicidios-fiscalia-layer', defaultText: 'Sin datos disponibles fiscalia' },
+      { id: 'feminicidios-periodicos-layer', defaultText: 'Sin datos disponibles periodico' },
+    ];
 
-	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
-			return;
-		}
+    const onMouseEnter = (e: mapboxgl.MapMouseEvent & { features?: Feature[] }) => {
+      if (e.features?.length) {
+        const pt = e.features[0].properties;
+        const num = pt?.NUMPOINTS ?? pt?.numPoints ?? '—';
+        popup
+          .setLngLat(e.lngLat)
+          .setHTML(`<div style="color:black">Número de siniestros: ${num}</div>`)
+          .addTo(map);
+      }
+    };
+    const onMouseLeave = () => popup.remove();
 
-		const map = mapRef.current;
-		const popup = new mapboxgl.Popup({
-			closeButton: false,
-			closeOnClick: false,
-		});
+    for (const { id } of layers) {
+      map.on('mouseenter', id, onMouseEnter);
+      map.on('mouseleave', id, onMouseLeave);
+    }
 
-		const layers = [
-			{
-				id: 'feminicidios-fiscalia-layer',
-				defaultText: 'Sin datos disponibles fiscalia',
-			},
-			{
-				id: 'feminicidios-periodicos-layer',
-				defaultText: 'Sin datos disponibles periodico',
-			},
-		];
+    return () => {
+      for (const { id } of layers) {
+        map.off('mouseenter', id, onMouseEnter);
+        map.off('mouseleave', id, onMouseLeave);
+      }
+      popup.remove();
+    };
+  }, [isLoaded]);
 
-		const onMouseEnter = (
-			event: mapboxgl.MapMouseEvent & {
-				features?: Feature[];
-			},
-		) => {
-			if (event.features && event.features.length > 0) {
-				const feature = event.features[0];
-				const numberPoints = feature.properties?.NUMPOINTS;
-				popup
-					.setLngLat(event.lngLat)
-					.setHTML(
-						`<div style="color:black">Número de siniestros: ${numberPoints}</div>`,
-					)
-					.addTo(map);
-			}
-		};
+  // 4) Capa área sin cubrimiento
+  useEffect(() => {
+    if (!mapRef.current || !isLoaded) return;
+    const map = mapRef.current;
+    if (map.getLayer('area-sin-cubrimiento-de-sitio-layer')) {
+      removeAreaSinCubrimientoDeSitioLayer(map);
+    }
+    if (showCubrimientoDeSitio) {
+      addAreaSinCubrimientoDeSitioLayer(map);
+    }
+    return () => {
+      if (map.getLayer('area-sin-cubrimiento-de-sitio-layer')) {
+        removeAreaSinCubrimientoDeSitioLayer(map);
+      }
+    };
+  }, [showCubrimientoDeSitio, isLoaded]);
 
-		const handleMouseLeave = () => {
-			popup.remove();
-		};
+  // 5) Capa rezago social
+  useEffect(() => {
+    if (!mapRef.current || !isLoaded) return;
+    const map = mapRef.current;
+    if (map.getLayer('resago-social-layer')) {
+      removeResagoSocialLayer(map);
+    }
+    if (showRezagoSocial) {
+      addResagoSocialLayer(map);
+    }
+    return () => {
+      if (map.getLayer('resago-social-layer')) {
+        removeResagoSocialLayer(map);
+      }
+    };
+  }, [showRezagoSocial, isLoaded]);
 
-		for (const { id } of layers) {
-			map.on('mouseenter', id, onMouseEnter);
-			map.on('mouseleave', id, handleMouseLeave);
-		}
+  // 6) Capa sitios de apoyo
+  useEffect(() => {
+    if (!mapRef.current || !isLoaded) return;
+    const map = mapRef.current;
+    if (map.getLayer('sitios-de-apoyo-layer')) {
+      removeSitiosDeApoyoLayer(map);
+    }
+    if (showSitiosDeApoyo) {
+      addSitiosDeApoyoLayer(map);
+    }
+    return () => {
+      if (map.getLayer('sitios-de-apoyo-layer')) {
+        removeSitiosDeApoyoLayer(map);
+      }
+    };
+  }, [showSitiosDeApoyo, isLoaded]);
 
-		return () => {
-			for (const { id } of layers) {
-				map.off('mouseenter', id, onMouseEnter);
-				map.off('mouseleave', id, handleMouseLeave);
-			}
-			popup.remove();
-		};
-	}, [isLoaded]);
+  // 7) Capa modelo: hover + click para stats
+  useEffect(() => {
+    if (!mapRef.current || !isLoaded) return;
+    const map = mapRef.current;
+    const layerId = 'modelo-layer';
 
-	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
-			return;
-		}
+    // limpia si existe
+    if (map.getLayer(layerId)) {
+      removeModeloLayer(map);
+    }
+    if (!showModelo) return;
 
-		const map = mapRef.current;
+    addModeloLayer(map);
 
-		if (map.getLayer('area-sin-cubrimiento-de-sitio-layer')) {
-			removeAreaSinCubrimientoDeSitioLayer(map);
-		}
+    const modeloPopup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
 
-		if (showCubrimientoDeSitio) {
-			addAreaSinCubrimientoDeSitioLayer(map);
-		}
+    const onMouseMove = (e: mapboxgl.MapMouseEvent & { features?: Feature[] }) => {
+      if (!e.features?.length) return;
+      const p = e.features[0].properties!;
+      modeloPopup
+        .setLngLat(e.lngLat)
+        .setHTML(
+          `<div style="color:black">
+             Siniestros predichos: ${p['Predicció']}<br>
+             Siniestros reales: ${p['FemTot']}<br>
+             Probabilidad: ${p['ProbAtLe']}
+           </div>`
+        )
+        .addTo(map);
+    };
+    const onMouseLeave = () => modeloPopup.remove();
 
-		return () => {
-			if (mapRef.current) {
-				if (mapRef.current.getLayer('area-sin-cubrimiento-de-sitio-layer')) {
-					removeAreaSinCubrimientoDeSitioLayer(mapRef.current);
-				}
-			}
-		};
-	}, [showCubrimientoDeSitio, isLoaded]);
+    map.on('mousemove', layerId, onMouseMove);
+    map.on('mouseleave', layerId, onMouseLeave);
 
-	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
-			return;
-		}
+    // click para abrir modal de stats
+    const onClick = (e: mapboxgl.MapMouseEvent & { features?: Feature[] }) => {
+      if (!e.features?.length || !onPointClick) return;
+      const props = e.features[0].properties!;
+      const data: PointData = {
+        municipio: String(props['Municipio'] ?? 'Desconocido'),
+        direccion: String(props['Direccion'] ?? '—'),
+        siniestros: Number(props['FemTot'] ?? 0),
+        siniestrosPredichos: Number(props['Predicció'] ?? 0),
+        probabilidad: Number(props['ProbAtLe'] ?? 0) * 100,
+      };
+      onPointClick(data);
+    };
+    map.on('click', layerId, onClick);
 
-		const map = mapRef.current;
+    return () => {
+      map.off('mousemove', layerId, onMouseMove);
+      map.off('mouseleave', layerId, onMouseLeave);
+      map.off('click', layerId, onClick);
+      if (map.getLayer(layerId)) {
+        removeModeloLayer(map);
+      }
+      modeloPopup.remove();
+    };
+  }, [showModelo, isLoaded, onPointClick]);
 
-		if (map.getLayer('resago-social-layer')) {
-			removeResagoSocialLayer(map);
-		}
-
-		if (showRezagoSocial) {
-			addResagoSocialLayer(map);
-		}
-
-		return () => {
-			if (mapRef.current) {
-				if (mapRef.current.getLayer('resago-social-layer')) {
-					removeResagoSocialLayer(mapRef.current);
-				}
-			}
-		};
-	}, [showRezagoSocial, isLoaded]);
-
-	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
-			return;
-		}
-
-		const map = mapRef.current;
-
-		if (map.getLayer('sitios-de-apoyo-layer')) {
-			removeSitiosDeApoyoLayer(map);
-		}
-
-		if (showSitiosDeApoyo) {
-			addSitiosDeApoyoLayer(map);
-		}
-
-		return () => {
-			if (mapRef.current) {
-				if (mapRef.current.getLayer('sitios-de-apoyo-layer')) {
-					removeSitiosDeApoyoLayer(mapRef.current);
-				}
-			}
-		};
-	}, [showSitiosDeApoyo, isLoaded]);
-
-	useEffect(() => {
-		if (!mapRef.current || !isLoaded) {
-			return;
-		}
-
-		const map = mapRef.current;
-
-		if (map.getLayer('modelo-layer')) {
-			removeModeloLayer(map);
-		}
-
-		if (showModelo) {
-			addModeloLayer(map);
-
-			const modeloPopup = new mapboxgl.Popup({
-				closeButton: false,
-				closeOnClick: false,
-			});
-
-			const handleMouseEnterModeloLayer = (event: mapboxgl.MapMouseEvent & { features?: Feature[] }) => {
-				if (event.features && event.features.length > 0) {
-					const properties = event.features[0].properties!;
-					const predictedCount = properties['Predicció'];
-					const total = properties['FemTot'];
-					const probability = properties['ProbAtLe'];
-					modeloPopup
-						.setLngLat(event.lngLat)
-						.setHTML(
-							`<div style="color:black">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</div>`,
-						)
-						.addTo(map);
-				}
-			};
-
-			const handleMouseLeaveModeloLayer = () => {
-				modeloPopup.remove();
-			};
-
-			const layerId = 'modelo-layer';
-
-			map.on('mousemove', layerId, handleMouseEnterModeloLayer);
-			map.on('mouseleave', layerId, handleMouseLeaveModeloLayer);
-
-			return () => {
-				if (mapRef.current) {
-					map.off('mousemove', layerId, handleMouseEnterModeloLayer);
-					map.off('mouseleave', layerId, handleMouseLeaveModeloLayer);
-					if (mapRef.current.getLayer(layerId)) {
-						removeModeloLayer(mapRef.current);
-					}
-				}
-			};
-		}
-
-		return () => {
-			if (mapRef.current && mapRef.current.getLayer('modelo-layer')) {
-				removeModeloLayer(mapRef.current);
-			}
-		};
-	}, [showModelo, isLoaded]);
-
-	useEffect(() => {
-		if (mapContainerRef.current && !mapRef.current) {
-			mapRef.current = new mapboxgl.Map({
-				container: mapContainerRef.current,
-				style: 'mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4',
-				center: [monterreyLng, monterreyLat],
-				maxBounds: [
-					[monterreyLng - 2, monterreyLat - 3],
-					[monterreyLng + 2, monterreyLat + 3],
-				],
-				zoom: initialZoom,
-			});
-
-			const map = mapRef.current;
-
-			map.on('load', () => {
-				addResagoSocialSource(map);
-				addAreaSinCubrimientoDeSitioSource(map);
-				addFeminiciosFiscaliaSource(map);
-				addFeminicidiosPeriodicosSource(map);
-				addSitiosDeApoyoSource(map);
-				addModeloSource(map);
-				setIsLoaded(true);
-			});
-
-			return () => map.remove();
-		}
-	}, []);
-
-	return (
-		<div
-			ref={mapContainerRef}
-			style={{
-				width: '100vw',
-				height: '100vh',
-				position: 'absolute',
-				inset: 0,
-				zIndex: 0,
-			}}
-		/>
-	);
+  // Render del contenedor
+  return (
+    <div
+      ref={mapContainerRef}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        position: 'absolute',
+        inset: 0,
+        zIndex: 0,
+      }}
+    />
+  );
 }
