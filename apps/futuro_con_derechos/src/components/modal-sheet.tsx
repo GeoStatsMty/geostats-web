@@ -1,6 +1,5 @@
 'use client';
 import {motion, useAnimationControls} from 'motion/react';
-import useWindowDimensions from '@/hooks/use-window-dimensions.ts';
 import {useElementSize} from '@/hooks/use-element-size.ts';
 import {ReactNode, useEffect, useRef, useState} from 'react';
 import {twJoin} from 'tailwind-merge';
@@ -9,47 +8,54 @@ export type ModalSheetProps = {
 	readonly children: ReactNode;
 	readonly controls: ReactNode;
 	readonly header: ReactNode;
+	readonly isOpen: boolean;
+	readonly onOpenChange: (isOpen: boolean) => void;
 };
 
 /**
  * Renders a draggable modal sheet
  */
 export function ModalSheet(props: ModalSheetProps) {
-	const {children, header, controls} = props;
+	const {children, header, controls, isOpen, onOpenChange} = props;
 
 	const animationControls = useAnimationControls();
 
 	const sheetRef = useRef<HTMLDivElement>(null);
-	const {height: sheetHeight} = useElementSize({ref: sheetRef});
 
 	const visiblePartRef = useRef<HTMLDivElement>(null);
 	const {height: visibleSheetPartHeight} = useElementSize({
 		ref: visiblePartRef,
 	});
 
-	const {height} = useWindowDimensions();
-
-	const [isOpen, setIsOpen] = useState(false);
+	const {height: sheetHeight} = useElementSize({
+		ref: sheetRef,
+	});
 
 	const [scroll, setScroll] = useState(0);
 
-	const max = height - visibleSheetPartHeight;
+	const max = sheetHeight - visibleSheetPartHeight;
 
 	/**
 	 * Closes the sheet
 	 */
 	const close = () => {
-		setIsOpen(false);
-		animationControls.start({y: 0});
+		onOpenChange(false);
 	};
 
 	/**
 	 * Opens the sheet
 	 */
 	const open = () => {
-		setIsOpen(true);
-		animationControls.start({y: -max});
+		onOpenChange(true);
 	};
+
+	useEffect(() => {
+		if (isOpen) {
+			animationControls.start({y: -max});
+		} else {
+			animationControls.start({y: 0});
+		}
+	}, [animationControls, isOpen, max]);
 
 	const [isDragging, setIsDragging] = useState(false);
 
@@ -87,7 +93,7 @@ export function ModalSheet(props: ModalSheetProps) {
 			animate={animationControls}
 			ref={sheetRef}
 			className={twJoin(
-				'inset-x-0 absolute z-50  bg-neutral-900 h-dvh ',
+				'inset-x-0 absolute z-50  bg-neutral-900',
 				!isOpen && 'rounded-t-2xl',
 			)}
 			dragElastic={false}
@@ -118,7 +124,7 @@ export function ModalSheet(props: ModalSheetProps) {
 			}}
 			drag='y'
 			dragConstraints={{
-				top: -height + visibleSheetPartHeight,
+				top: -sheetHeight + visibleSheetPartHeight,
 				bottom: 0,
 			}}
 		>
@@ -150,7 +156,7 @@ export function ModalSheet(props: ModalSheetProps) {
 						event.stopPropagation();
 					}
 				}}
-				className={twJoin('h-full', isOpen && 'overflow-y-auto')}
+				className={twJoin('max-h-dvh', isOpen && 'overflow-y-auto')}
 			>
 				<div ref={visiblePartRef} className='flex flex-col'>
 					<button

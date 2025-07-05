@@ -18,6 +18,7 @@ import {ModalSheet} from '@/components/modal-sheet.tsx';
  * @returns The rendered `Home` component containing all its UI elements and interactive features.
  */
 export default function Home() {
+	const [isSheetOpen, setIsSheetOpen] = useState(false);
 	const [mapFilters, setMapFilters] = useState<MapFilters>({
 		showFiscalia: true,
 		showCubrimientoDeSitio: false,
@@ -40,6 +41,8 @@ export default function Home() {
 			/>
 
 			<ModalSheet
+				isOpen={isSheetOpen}
+				onOpenChange={setIsSheetOpen}
 				header={
 					<h1 className='text-white text-2xl'>
 						{showFilters
@@ -58,6 +61,7 @@ export default function Home() {
 						}`}
 						onClick={() => {
 							setShowFilters(!showFilters);
+							setIsSheetOpen(!showFilters);
 						}}
 					>
 						<Menu
