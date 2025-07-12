@@ -182,7 +182,7 @@ export function ModalSheet(props: ModalSheetProps) {
 					</button>
 					<div className='px-2 py-4 text-white'>{header}</div>
 				</div>
-				<div className='px-2 py-4'>{children}</div>
+				<div className='px-2 pb-4'>{children}</div>
 			</div>
 		</motion.div>
 	);

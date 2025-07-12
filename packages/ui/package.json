@@ -8,8 +8,7 @@
   },
   "scripts": {
     "build": "tailwindcss -i src/index.css -o ./dist/styles.css",
-    "lint": "eslint .",
-    "dev": "tailwindcss -i src/index.css -o ./dist/styles.css --watch"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",

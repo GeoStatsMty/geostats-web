@@ -1,10 +1,18 @@
 'use client';
-import {FiltersList, MapFilters} from '../components/filters-list.tsx';
-import {Button} from 'ui';
+import {MapFilters} from '../components/filters-list.tsx';
+import {
+	Button,
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from 'ui';
 import {MapboxMap} from '../components/mapbox-map';
-import {Menu} from 'lucide-react';
 import {useState} from 'react';
 import {ModalSheet} from '@/components/modal-sheet.tsx';
+import {Layers} from 'lucide-react';
 
 /**
  * The `Home` function represents the main component for rendering the application UI.
@@ -53,79 +61,67 @@ export default function Home() {
 					</>
 				}
 				controls={
-					<Button
-						variant='secondary'
-						size='icon'
-						className={`w-10 h-10 shadow-md flex justify-center rounded-md ${
-							showFilters
-								? 'bg-white'
-								: 'bg-neutral-900 hover:bg-[#1A1A1A]'
-						}`}
-						onClick={() => {
-							setShowFilters(!showFilters);
-							setIsSheetOpen(!showFilters);
-						}}
-					>
-						<Menu
-							className={`h-6 w-6 ${showFilters ? 'text-neutral-900' : 'text-[#FAFAFA]'}`}
-						/>
-					</Button>
+					<Sheet>
+						<SheetTrigger>
+							<Button
+								size='icon'
+								onClick={() => {
+									setShowFilters(!showFilters);
+									setIsSheetOpen(!showFilters);
+								}}
+							>
+								<Layers />
+							</Button>
+						</SheetTrigger>
+						<SheetContent side='bottom'>
+							<SheetHeader>
+								<SheetTitle>Mostrar/ocultar capas</SheetTitle>
+								<SheetDescription>
+									Aquí puedes modificar cuales capas son
+									visibles en el mapa.
+								</SheetDescription>
+							</SheetHeader>
+						</SheetContent>
+					</Sheet>
 				}
 			>
 				<div className='text-stone-300'>
-					{showFilters ? (
-						<div className=''>
-							<FiltersList
-								filters={mapFilters}
-								onFiltersChange={setMapFilters}
-							/>
-						</div>
-					) : (
-						<>
-							<p className='mb-3'>
-								El feminicidio se define como el asesinato de
-								una mujer por su genero. México se encuentra
-								entre los países con mayores tasas de
-								feminicidios. Dentro de está situación, el
-								estado de Nuevo León presenta una de las tasas
-								más elevadas a nivel nacional, siendo uno de los
-								estados con mayor acontecimiento de este tipo de
-								delito. Está es una crisis multifacética, la
-								cual afecta a todas las personas viviendo en la
-								entidad. Los efectos de un feminicidio no acaban
-								con la víctima. Este es un fenómeno qué afecta a
-								todas las personas cercanas, tanto a la víctima
-								como a la comunidad. Por lo tanto, la
-								organización de Futuro con Derechos busca apoyar
-								a estas víctimas indirectas (NNA) por el delito
-								de feminicidio. La organización busca brindar
-								apoyo integral, con el objetivo de mitigar el
-								impacto social y contribuir a un entorno más
-								seguro y resiliente.
-							</p>
-							<p className='mb-6'>
-								Para apoyar a la causa, GeoStats entró en
-								colaboración con Futuro con Derechos para apoyar
-								en la generación de una fuente de datos
-								geográfica qué ayude a determinar el número
-								correcto de posibles víctimas indirectas por el
-								delito de feminicidio en Nuevo León.
-								Adicionalmente, se propone la definición de un
-								modelo predictivo qué identifique las zonas del
-								estado de Nuevo León qué sean más propensas a
-								qué sucedan feminicidios.
-							</p>
-							<h2 className='font-semibold text-lg mb-1'>
-								Visualizador de feminicidios
-							</h2>
-							<p>
-								El mapa que esta página muestra muestra las
-								ubicacones dentro del Area Metropolitana de
-								Monterrey donde ocurre una mayor incidencia de
-								feminicidios.
-							</p>
-						</>
-					)}
+					<p className='m"-6'>
+						El mapa que se puede ver en esta página permite observar
+						las ubicaciones dentro del Area Metropolitana de
+						Monterrey donde hay una mayor incidencia de
+						feminicidios.
+					</p>
+
+					<h2 className='font-se"ibold text-lg mb-1'>Introducción</h2>
+					<p className='pb-3'>
+						El feminicidio se define como el asesinato de una mujer
+						por su genero. México se encuentra entre los países con
+						mayores tasas de feminicidios. Dentro de está situación,
+						el estado de Nuevo León presenta una de las tasas más
+						elevadas a nivel nacional, siendo uno de los estados con
+						mayor acontecimiento de este tipo de delito. Está es una
+						crisis multifacética, la cual afecta a todas las
+						personas viviendo en la entidad. Los efectos de un
+						feminicidio no acaban con la víctima. Este es un
+						fenómeno qué afecta a todas las personas cercanas, tanto
+						a la víctima como a la comunidad. Por lo tanto, la
+						organización de Futuro con Derechos busca apoyar a estas
+						víctimas indirectas (NNA) por el delito de feminicidio.
+						La organización busca brindar apoyo integral, con el
+						objetivo de mitigar el impacto social y contribuir a un
+						entorno más seguro y resiliente.
+					</p>
+					<p>
+						Para apoyar a la causa, GeoStats entró en colaboración
+						con Futuro con Derechos para apoyar en la generación de
+						una fuente de datos geográfica qué ayude a determinar el
+						número correcto de posibles víctimas indirectas por el
+						delito de feminicidio en Nuevo León. Adicionalmente, se
+						propone la definición de un modelo predictivo qué
+						identifique las zonas del estado de Nuevo León qué sean
+						más propensas a qué sucedan feminicidios.
+					</p>
 				</div>
 			</ModalSheet>
 		</main>
