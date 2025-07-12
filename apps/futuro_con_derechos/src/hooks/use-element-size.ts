@@ -1,9 +1,9 @@
-import {RefObject, useEffect, useLayoutEffect, useState} from 'react';
+import {RefObject, useLayoutEffect, useState} from 'react';
 import invariant from 'ts-invariant';
 
 export type UseResizeObserverOptions = {
 	ref: RefObject<HTMLElement | null>;
-}
+};
 
 /**
  * Custom hook to track the size (width and height) of a given DOM element using a ResizeObserver.
@@ -13,17 +13,18 @@ export type UseResizeObserverOptions = {
  */
 export function useElementSize(options: UseResizeObserverOptions) {
 	const {ref} = options;
-	const [width, setWidth] = useState(0);
-	const [height, setHeight] = useState(0);
+
+	const [width, setWidth] = useState(ref.current?.offsetWidth ?? 0);
+	const [height, setHeight] = useState(ref.current?.offsetHeight ?? 0);
 
 	useLayoutEffect(() => {
 		if (!ref.current) return;
 
-		setWidth(ref.current.offsetWidth);
-		setHeight(ref.current.offsetHeight);
-
-		const resizeObserver = new ResizeObserver((entries) => {
-			invariant(entries.length === 1, 'Expected ResizeObserver to observe only one element');
+		const resizeObserver = new ResizeObserver(entries => {
+			invariant(
+				entries.length === 1,
+				'Expected ResizeObserver to observe only one element',
+			);
 			const [entry] = entries;
 			setWidth(entry.borderBoxSize[0].inlineSize);
 			setHeight(entry.borderBoxSize[0].blockSize);
@@ -33,7 +34,6 @@ export function useElementSize(options: UseResizeObserverOptions) {
 
 		return () => resizeObserver.disconnect();
 	}, [ref]);
-
 
 	return {width, height};
 }

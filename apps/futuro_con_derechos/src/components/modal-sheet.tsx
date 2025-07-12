@@ -10,19 +10,28 @@ export type ModalSheetProps = {
 	readonly header: ReactNode;
 	readonly isOpen: boolean;
 	readonly onOpenChange: (isOpen: boolean) => void;
+	readonly useFullHeight?: boolean;
 };
 
 /**
  * Renders a draggable modal sheet
  */
 export function ModalSheet(props: ModalSheetProps) {
-	const {children, header, controls, isOpen, onOpenChange} = props;
+	const {
+		children,
+		header,
+		controls,
+		isOpen,
+		onOpenChange,
+		useFullHeight = false,
+	} = props;
 
 	const animationControls = useAnimationControls();
 
 	const sheetRef = useRef<HTMLDivElement>(null);
 
 	const visiblePartRef = useRef<HTMLDivElement>(null);
+
 	const {height: visibleSheetPartHeight} = useElementSize({
 		ref: visiblePartRef,
 	});
@@ -85,16 +94,19 @@ export function ModalSheet(props: ModalSheetProps) {
 		};
 	}, [isDragging]);
 
+	const bottom = -sheetHeight + visibleSheetPartHeight;
+
 	return (
 		<motion.div
 			style={{
-				bottom: -sheetHeight + visibleSheetPartHeight,
+				bottom: bottom === 0 ? '-100dvh' : bottom,
 			}}
 			animate={animationControls}
 			ref={sheetRef}
 			className={twJoin(
 				'inset-x-0 absolute z-50  bg-neutral-900',
 				!isOpen && 'rounded-t-2xl',
+				useFullHeight && 'min-h-dvh',
 			)}
 			dragElastic={false}
 			transition={{
