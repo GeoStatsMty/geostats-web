@@ -47,9 +47,9 @@ export default function Home() {
 						<h1 className='text-stone-200 text-2xl font-semibold'>
 							Feminicidios en Nuevo León
 						</h1>
-						<h2 className='text-sm text-stone-200'>
+						<p className='text-sm text-stone-200'>
 							Modelo predictivo y situación actual
-						</h2>
+						</p>
 					</>
 				}
 				controls={
@@ -72,16 +72,16 @@ export default function Home() {
 					</Button>
 				}
 			>
-				<div className='flex flex-col items-center '>
+				<div className='text-stone-300'>
 					{showFilters ? (
-						<div className='w-full mb-6'>
+						<div className=''>
 							<FiltersList
 								filters={mapFilters}
 								onFiltersChange={setMapFilters}
 							/>
 						</div>
 					) : (
-						<div className='flex flex-col items-center text-stone-300'>
+						<>
 							<p className='mb-3'>
 								El feminicidio se define como el asesinato de
 								una mujer por su genero. México se encuentra
@@ -103,7 +103,7 @@ export default function Home() {
 								impacto social y contribuir a un entorno más
 								seguro y resiliente.
 							</p>
-							<p className=''>
+							<p className='mb-6'>
 								Para apoyar a la causa, GeoStats entró en
 								colaboración con Futuro con Derechos para apoyar
 								en la generación de una fuente de datos
@@ -115,7 +115,16 @@ export default function Home() {
 								estado de Nuevo León qué sean más propensas a
 								qué sucedan feminicidios.
 							</p>
-						</div>
+							<h2 className='font-semibold text-lg mb-1'>
+								Visualizador de feminicidios
+							</h2>
+							<p>
+								El mapa que esta página muestra muestra las
+								ubicacones dentro del Area Metropolitana de
+								Monterrey donde ocurre una mayor incidencia de
+								feminicidios.
+							</p>
+						</>
 					)}
 				</div>
 			</ModalSheet>
