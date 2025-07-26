@@ -97,7 +97,7 @@ export default function Home() {
 							feminicidios.
 						</p>
 
-						<h2 className='font-se"ibold text-lg mb-1'>Introducción</h2>
+						<h2 className='font-semibold text-lg mb-1'>Introducción</h2>
 						<p className='pb-3'>
 							El feminicidio se define como el asesinato de una mujer
 							por su genero. México se encuentra entre los países con
@@ -129,46 +129,55 @@ export default function Home() {
 					</div>
 				</ModalSheet>
 			) : (
-				<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
-					<h1 className='text-2x1 font-semibold mb-1'>
-						Feminicidios en el Área Metropolitana
-					</h1>
-					<p className='text-sm mb-4'>Modelo predictivo y situación actual</p>
+				<>
+					<div className='absolute top-4 left-4 z-30'>
+						<Button size='icon' onClick={() => setShowFilters(!showFilters)}>
+							<Layers />
+						</Button>
+					</div>
 
-					<p className='mb-3'>
-						El mapa que se puede ver en esta página permite observar las ubicaciones dentro del Área Metropolitana de Monterrey donde hay una mayor incidencia de feminicidios.
-					</p>
+					{showFilters && (
+						<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
+							<h1 className='text-2x1 font-semibold mb-1'>
+								Feminicidios en el Área Metropolitana
+							</h1>
+							<p className='text-sm mb-4'>Modelo predictivo y situación actual</p>
 
-					<h2 className='font-semibold text-lg mb-1'>Introducción</h2>
-					<p className='mb-3'>
-						El feminicidio se define como el asesinato de una mujer
-						por su genero. México se encuentra entre los países con
-						mayores tasas de feminicidios. Dentro de está situación,
-						el estado de Nuevo León presenta una de las tasas más
-						elevadas a nivel nacional, siendo uno de los estados con
-						mayor acontecimiento de este tipo de delito. Está es una
-						crisis multifacética, la cual afecta a todas las
-						personas viviendo en la entidad. Los efectos de un
-						feminicidio no acaban con la víctima. Este es un
-						fenómeno qué afecta a todas las personas cercanas, tanto
-						a la víctima como a la comunidad. Por lo tanto, la
-						organización de Futuro con Derechos busca apoyar a estas
-						víctimas indirectas (NNA) por el delito de feminicidio.
-						La organización busca brindar apoyo integral, con el
-						objetivo de mitigar el impacto social y contribuir a un
-						entorno más seguro y resiliente.
-					</p>
-					<p>
-						Para apoyar a la causa, GeoStats entró en colaboración
-						con Futuro con Derechos para apoyar en la generación de
-						una fuente de datos geográfica qué ayude a determinar el
-						número correcto de posibles víctimas indirectas por el
-						delito de feminicidio en Nuevo León. Adicionalmente, se
-						propone la definición de un modelo predictivo qué
-						identifique las zonas del estado de Nuevo León qué sean
-						más propensas a qué sucedan feminicidios.
-					</p>
-				</aside>
-		)}
-		</main>
+							<p className='mb-3'>
+								El mapa que se puede ver en esta página permite observar las ubicaciones dentro del Área Metropolitana de Monterrey donde hay una mayor incidencia de feminicidios.
+							</p>
+
+							<h2 className='font-semibold text-lg mb-1'>Introducción</h2>
+							<p className='mb-3'>
+								El feminicidio se define como el asesinato de una mujer
+								por su genero. México se encuentra entre los países con
+								mayores tasas de feminicidios. Dentro de está situación,
+								el estado de Nuevo León presenta una de las tasas más
+								elevadas a nivel nacional, siendo uno de los estados con
+								mayor acontecimiento de este tipo de delito. Está es una
+								crisis multifacética, la cual afecta a todas las
+								personas viviendo en la entidad. Los efectos de un
+								feminicidio no acaban con la víctima. Este es un
+								fenómeno qué afecta a todas las personas cercanas, tanto
+								a la víctima como a la comunidad. Por lo tanto, la
+								organización de Futuro con Derechos busca apoyar a estas
+								víctimas indirectas (NNA) por el delito de feminicidio.
+								La organización busca brindar apoyo integral, con el
+								objetivo de mitigar el impacto social y contribuir a un
+								entorno más seguro y resiliente.
+							</p>
+							<p>
+								Para apoyar a la causa, GeoStats entró en colaboración
+								con Futuro con Derechos para apoyar en la generación de
+								una fuente de datos geográfica qué ayude a determinar el
+								número correcto de posibles víctimas indirectas por el
+								delito de feminicidio en Nuevo León. Adicionalmente, se
+								propone la definición de un modelo predictivo qué
+								identifique las zonas del estado de Nuevo León qué sean
+								más propensas a qué sucedan feminicidios.
+							</p>
+						</aside>
+					)}
+				</>
+		)}</main>
 	)};
