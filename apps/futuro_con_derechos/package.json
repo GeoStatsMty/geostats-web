@@ -29,6 +29,7 @@
 	"devDependencies": {
 		"@svgr/webpack": "^8.1.0",
 		"@tailwindcss/postcss": "^4.1.7",
+		"@types/geojson": "^7946.0.16",
 		"@types/mapbox-gl": "^3.4.1",
 		"@types/node": "^22.15.18",
 		"@types/react": "^19.1.4",

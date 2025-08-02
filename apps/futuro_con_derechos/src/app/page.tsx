@@ -41,7 +41,7 @@ export default function Home() {
 	const [showFilters, setShowFilters] = useState(false);
 
 	return (
-		<main className='w-screen h-dvh relative bg-neutral-800 overflow-hidden'>
+		<main className='w-screen h-screen relative bg-neutral-800 overflow-hidden absolute inset-0 z-0'>
 			<MapboxMap
 				showFiscalia={mapFilters.showFiscalia}
 				showCubrimientoDeSitio={mapFilters.showCubrimientoDeSitio}
@@ -131,12 +131,15 @@ export default function Home() {
 			) : (
 				<>
 					<div className='absolute top-4 left-4 z-30'>
-						<Button size='icon' onClick={() => setShowFilters(!showFilters)}>
+						<Button size='icon' onClick={() => {
+							setShowFilters(!showFilters);
+							setIsSheetOpen(!showFilters);
+						}}
+							>
 							<Layers />
 						</Button>
 					</div>
 
-					{showFilters && (
 						<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
 							<h1 className='text-2x1 font-semibold mb-1'>
 								Feminicidios en el Área Metropolitana
@@ -177,7 +180,7 @@ export default function Home() {
 								más propensas a qué sucedan feminicidios.
 							</p>
 						</aside>
-					)}
+					
 				</>
 		)}</main>
 	)};
