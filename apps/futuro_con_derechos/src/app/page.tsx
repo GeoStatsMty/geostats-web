@@ -71,7 +71,7 @@ export default function Home() {
 									size='icon'
 									onClick={() => {
 										setShowFilters(!showFilters);
-										setIsSheetOpen(!showFilters);
+										//setIsSheetOpen(!showFilters);
 									}}
 								>
 									<Layers />

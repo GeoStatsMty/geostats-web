@@ -291,6 +291,7 @@ export function MapboxMap(properties: MapboxMapProps) {
 
 	useEffect(() => {
 		if (mapContainerRef.current && !mapRef.current) {
+
 			mapRef.current = new mapboxgl.Map({
 				container: mapContainerRef.current,
 				style: 'mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4',
@@ -305,6 +306,7 @@ export function MapboxMap(properties: MapboxMapProps) {
 			const map = mapRef.current;
 
 			map.on('load', () => {
+	
 				addResagoSocialSource(map);
 				addAreaSinCubrimientoDeSitioSource(map);
 				addFeminiciosFiscaliaSource(map);
@@ -314,7 +316,7 @@ export function MapboxMap(properties: MapboxMapProps) {
 				setIsLoaded(true);
 			});
 
-			return () => map.remove();
+			//return () => map.remove();
 		}
 	}, []);
 
