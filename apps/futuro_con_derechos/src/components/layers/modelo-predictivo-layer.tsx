@@ -2,6 +2,41 @@ import {MapLayer} from '@/components/map-layer.tsx';
 import {useMap} from '@/components/mapbox-map.tsx';
 import {Popup} from 'mapbox-gl';
 import {useState} from 'react';
+import type {Feature} from 'geojson';
+
+type BoundingBox = [number, number, number, number];
+
+/**
+ * Calculates the bounding box for a given set of 2D coordinates.
+ * @param coordinates - An array of 2D coordinate pairs, where each pair is represented as [x, y].
+ * @returns  The bounding box represented as [minX, minY, maxX, maxY].
+ */
+function getBoundingBox(coordinates: number[][]): BoundingBox {
+	const xs = coordinates.map(coord => coord[0]);
+	const ys = coordinates.map(coord => coord[1]);
+	return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+
+/**
+ * Calculates the center coordinates of a given feature's geometry.
+ * @param feature - The feature object containing the geometry data.
+ * @returns  The center coordinates of the feature's geometry as a tuple [longitude, latitude].
+ * @throws {Error} If the geometry type is unsupported.
+ */
+function getFeatureCenter(feature: Feature): [number, number] {
+	const geometry = feature.geometry;
+
+	if (geometry.type === 'Point') {
+		return geometry.coordinates as [number, number];
+	}
+
+	if (geometry.type === 'Polygon') {
+		const bbox = getBoundingBox(geometry.coordinates[0]);
+		return [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2];
+	}
+
+	throw new Error('Unsupported geometry type');
+}
 
 export type ModeloPredictivoLayerProps = {
 	readonly isEnabled?: boolean;
@@ -15,32 +50,49 @@ export function ModeloPredictivoLayer(props: ModeloPredictivoLayerProps) {
 
 	const map = useMap();
 
+	const [numberFormatter] = useState(
+		() =>
+			new Intl.NumberFormat('es-MX', {
+				maximumFractionDigits: 2,
+			}),
+	);
+
 	const [popup] = useState(
 		() =>
 			new Popup({
 				closeButton: false,
 				closeOnClick: false,
-				className: 'z-50 h-20 w-20 bg-white',
+				className: '',
 			}),
 	);
 
 	const handleMouseMove = (event: mapboxgl.MapMouseEvent) => {
-		const {features, lngLat} = event;
+		const {features} = event;
 
 		if (features === undefined) return;
 
 		if (features.length === 0) return;
 
-		const properties = features[0].properties!;
-		const predictedCount = properties['Predicció'];
-		const total = properties['FemTot'];
-		const probability = properties['ProbAtLe'];
+		const [feature] = features;
 
-		console.log(lngLat);
+		const {properties} = feature;
+
+		if (!properties) return;
+
+		const predictedCount = properties['Predicció'] as number;
+
+		if (predictedCount < 1) return;
+
+		const formattedPredictedCount = numberFormatter.format(
+			properties['Predicció'],
+		);
+		const total = numberFormatter.format(properties['FemTot']);
+		const probability = numberFormatter.format(properties['ProbAtLe']);
+
 		popup
-			.setLngLat(lngLat)
+			.setLngLat(getFeatureCenter(feature))
 			.setHTML(
-				`<div style="color:white">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</div>`,
+				`<div style="color:black">Siniestros predichos: ${formattedPredictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</div>`,
 			)
 			.addTo(map);
 	};

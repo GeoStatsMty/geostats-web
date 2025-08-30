@@ -53,7 +53,7 @@ export default function Home() {
 	} = filters;
 
 	return (
-		<main className='w-screen h-screen g-neutral-800 overflow-hidden absolute inset-0 z-0'>
+		<main className='w-screen h-screen g-neutral-800 overflow-hidden absolute inset-0'>
 			<MapboxMap
 				style='mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4'
 				initialCoordinate={[monterreyLng, monterreyLat]}
