@@ -8,11 +8,11 @@ import pluginUnicorn from 'eslint-plugin-unicorn';
 import pluginSonarJs from 'eslint-plugin-sonarjs';
 import pluginSecurity from 'eslint-plugin-security';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
-import prettierConfig from 'eslint-plugin-prettier/recommended';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import dependPlugin from 'eslint-plugin-depend';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import {defineConfig} from 'eslint/config';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 
 export default defineConfig([
 	{languageOptions: {globals: globals.browser}},
@@ -27,7 +27,7 @@ export default defineConfig([
 	pluginSecurity.configs.recommended,
 	pluginSonarJs.configs.recommended,
 	pluginUnicorn.configs['flat/recommended'],
-	prettierConfig,
+	eslintConfigPrettier,
 	{
 		rules: {
 			'sonarjs/void-use': 'off',
@@ -61,6 +61,7 @@ export default defineConfig([
 						ref: false,
 						args: false,
 						env: false,
+						utils: false,
 					},
 				},
 			],
