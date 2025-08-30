@@ -5,9 +5,9 @@
 	"devDependencies": {
 		"prettier-config": "workspace:*",
 		"tailwind-scrollbar": "^4.0.2",
-		"tailwindcss": "^4.1.7"
+		"tailwindcss": "^4.1.12"
 	},
 	"dependencies": {
-		"tailwindcss-react-aria-components": "^2.0.0"
+		"tailwindcss-react-aria-components": "^2.0.1"
 	}
 }
