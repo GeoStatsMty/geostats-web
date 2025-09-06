@@ -20,6 +20,7 @@ import {FeminicidiosEnFiscaliaLayer} from '@/components/layers/feminicidios-en-f
 import {AreaSinCubrimientoDeSitioLayer} from '@/components/layers/area-sin-cubrimiento-de-sitio-layer.tsx';
 import {SitiosDeApoyoLayer} from '@/components/layers/sitios-de-apoyo-layer.tsx';
 import {ModeloPredictivoLayer} from '@/components/layers/modelo-predictivo-layer.tsx';
+import { useEffect, useRef } from "react";
 
 const monterreyLat = 25.67;
 const monterreyLng = -100.32;
@@ -42,7 +43,31 @@ export default function Home() {
 		showModelo: true,
 		showPeriodico: true,
 	});
-
+	const [panelOpen, setPanelOpen] = useState(false);
+	const btnRef = useRef<HTMLButtonElement | null>(null);
+	const panelRef = useRef<HTMLDivElement | null>(null);
+	useEffect(() => {
+		function onClickOutside(e: MouseEvent) {
+			const t = e.target as Node;
+			if (
+			panelRef.current &&
+			!panelRef.current.contains(t) &&
+			btnRef.current &&
+			!btnRef.current.contains(t)
+			) {
+			setPanelOpen(false);
+			}
+		}
+		function onKey(e: KeyboardEvent) {
+			if (e.key === "Escape") setPanelOpen(false);
+		}
+		document.addEventListener("mousedown", onClickOutside);
+		document.addEventListener("keydown", onKey);
+		return () => {
+			document.removeEventListener("mousedown", onClickOutside);
+			document.removeEventListener("keydown", onKey);
+		};
+		}, []);
 	const {
 		showFiscalia,
 		showCubrimientoDeSitio,
@@ -96,7 +121,7 @@ export default function Home() {
 									<Layers />
 								</Button>
 							</SheetTrigger>
-							<SheetContent side='bottom'>
+							<SheetContent side='top'>
 								<SheetHeader>
 									<SheetTitle>
 										Mostrar/ocultar capas
@@ -159,12 +184,41 @@ export default function Home() {
 				</ModalSheet>
 			) : (
 				<>
-					<div className='absolute top-4 left-4 z-30'>
-						<Button size='icon'>
-							<Layers />
-						</Button>
-					</div>
+				<div className="absolute top-4 left-4 z-30">
+				<div className="relative">
+					<Button
+					ref={btnRef}
+					size="icon"
+					aria-label="Abrir filtros"
+					onClick={() => setPanelOpen((v) => !v)}
+					>
+					<Layers />
+					</Button>
 
+					{panelOpen && (
+					<div
+						ref={panelRef}
+						className="absolute left-0 mt-2 w-72 rounded-lg border border-neutral-800 bg-neutral-900/95 backdrop-blur p-3 text-stone-200 shadow-xl"
+					>
+						<div className="flex items-center justify-between mb-2">
+						<h3 className="text-sm font-semibold">Filtros</h3>
+						<button
+							className="text-xs opacity-70 hover:opacity-100"
+							onClick={() => setPanelOpen(false)}
+						>
+							Cerrar
+						</button>
+						</div>
+
+						{/* Aquí ya van tus filtros */}
+						<FiltersList
+						filters={filters}
+						onFiltersChange={setFilters}
+						/>
+					</div>
+					)}
+				</div>
+				</div>
 					<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
 						<h1 className='text-2x1 font-semibold mb-1'>
 							Feminicidios en el Área Metropolitana
