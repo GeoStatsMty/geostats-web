@@ -7,7 +7,6 @@
     "./styles.css": "./dist/styles.css"
   },
   "scripts": {
-    "build": "tailwindcss -i src/index.css -o ./dist/styles.css"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
