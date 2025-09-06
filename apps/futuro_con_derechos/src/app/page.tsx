@@ -49,7 +49,6 @@ export default function Home() {
 		showRezagoSocial,
 		showSitiosDeApoyo,
 		showModelo,
-		showPeriodico,
 	} = filters;
 
 	return (
