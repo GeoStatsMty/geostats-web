@@ -1,6 +1,6 @@
 import {MapLayer} from '@/components/map-layer.tsx';
 import {useMap} from '@/components/mapbox-map.tsx';
-import {Popup} from 'mapbox-gl';
+import {InteractionEvent, Popup} from 'mapbox-gl';
 import {useState} from 'react';
 
 export type ModeloPredictivoLayerProps = {
@@ -20,29 +20,26 @@ export function ModeloPredictivoLayer(props: ModeloPredictivoLayerProps) {
 			new Popup({
 				closeButton: false,
 				closeOnClick: false,
-				className: 'z-50 h-20 w-20 bg-white',
+				className: 'h-20 w-20 bg-white',
 			}),
 	);
 
-	const handleMouseMove = (event: mapboxgl.MapMouseEvent) => {
-		const {features, lngLat} = event;
+	const handleMouseEnterAndMove = (event: InteractionEvent) => {
+		const {lngLat, feature} = event;
 
-		if (features === undefined) return;
+		if (!feature) return;
 
-		if (features.length === 0) return;
-
-		const properties = features[0].properties!;
+		const {properties} = feature;
 		const predictedCount = properties['Predicció'];
 		const total = properties['FemTot'];
 		const probability = properties['ProbAtLe'];
 
-		console.log(lngLat);
 		popup
+			.addTo(map)
 			.setLngLat(lngLat)
 			.setHTML(
-				`<div style="color:white">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</div>`,
-			)
-			.addTo(map);
+				`<p style="color:black">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</p>`,
+			);
 	};
 
 	const handleMouseLeave = () => {
@@ -56,7 +53,8 @@ export function ModeloPredictivoLayer(props: ModeloPredictivoLayerProps) {
 				type: 'vector',
 				url: 'mapbox://stock44.4k2z4mbr',
 			}}
-			onMouseMove={handleMouseMove}
+			onMouseEnter={handleMouseEnterAndMove}
+			onMouseMove={handleMouseEnterAndMove}
 			onMouseLeave={handleMouseLeave}
 			layer={{
 				type: 'fill',

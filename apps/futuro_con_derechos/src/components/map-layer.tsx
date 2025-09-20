@@ -1,21 +1,29 @@
 import {useMap} from '@/components/mapbox-map.tsx';
 import {useEffect, useId, useState} from 'react';
-import {Layer, type MapMouseEvent, SourceSpecification} from 'mapbox-gl';
+import {InteractionEvent, Layer, SourceSpecification} from 'mapbox-gl';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 export type LayerProps = {
 	readonly source: SourceSpecification;
 	readonly layer: Omit<Layer, 'source' | 'id'>;
 	readonly isEnabled?: boolean;
-	readonly onMouseMove?: (event: MapMouseEvent) => void;
-	readonly onMouseLeave?: (event: MapMouseEvent) => void;
+	readonly onMouseEnter?: (event: InteractionEvent) => void;
+	readonly onMouseMove?: (event: InteractionEvent) => void;
+	readonly onMouseLeave?: (event: InteractionEvent) => void;
 };
 
 /**
  * Adds a layer to the map and ensures proper cleanup by removing the layer when the component is unmounted.
  */
 export function MapLayer(props: LayerProps) {
-	const {source, layer, isEnabled = true, onMouseMove, onMouseLeave} = props;
+	const {
+		source,
+		layer,
+		isEnabled = true,
+		onMouseEnter,
+		onMouseMove,
+		onMouseLeave,
+	} = props;
 
 	const map = useMap();
 
@@ -29,20 +37,42 @@ export function MapLayer(props: LayerProps) {
 	useEffect(() => {
 		if (onMouseLeave === undefined || !layerLoaded) return;
 
-		map.on('mouseleave', layerId, onMouseLeave);
+		map.addInteraction(`${layerId}-mouse-leave`, {
+			type: 'mouseleave',
+			target: {layerId},
+			handler: onMouseLeave,
+		});
 
 		return () => {
-			map.off('mouseleave', layerId, onMouseLeave);
+			map.removeInteraction(`${layerId}-mouse-leave`);
 		};
 	}, [layerId, layerLoaded, map, onMouseLeave]);
 
 	useEffect(() => {
-		if (onMouseMove === undefined || !layerLoaded) return;
+		if (onMouseEnter === undefined || !layerLoaded) return;
 
-		map.on('mousemove', layerId, onMouseMove);
+		map.addInteraction(`${layerId}-mouse-enter`, {
+			type: 'mouseenter',
+			target: {layerId},
+			handler: onMouseEnter,
+		});
 
 		return () => {
-			map.off('mousemove', layerId, onMouseMove);
+			map.removeInteraction(`${layerId}-mouse-enter`);
+		};
+	}, [layerId, layerLoaded, map, onMouseEnter]);
+
+	useEffect(() => {
+		if (onMouseMove === undefined || !layerLoaded) return;
+
+		map.addInteraction(`${layerId}-mouse-move`, {
+			type: 'mousemove',
+			target: {layerId},
+			handler: onMouseMove,
+		});
+
+		return () => {
+			map.removeInteraction(`${layerId}-mouse-move`);
 		};
 	}, [layerId, layerLoaded, map, onMouseMove]);
 
