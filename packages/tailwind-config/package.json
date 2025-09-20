@@ -1,0 +1,13 @@
+{
+	"name": "tailwind-config",
+	"main": "base.css",
+	"type": "module",
+	"devDependencies": {
+		"prettier-config": "workspace:*",
+		"tailwind-scrollbar": "^4.0.2",
+		"tailwindcss": "^4.1.12"
+	},
+	"dependencies": {
+		"tailwindcss-react-aria-components": "^2.0.1"
+	}
+}

@@ -1,193 +1,221 @@
 'use client';
-
-/* Limpiar código, documentar y agregar diseño responsivo. */
-import TopBar from '@/components/top-bar.tsx';
-import dynamic from 'next/dynamic';
-import {Paper, Switch} from 'geostats-ui';
-import {Button} from 'react-aria-components';
+import {FiltersList, MapFilters} from '../components/filters-list.tsx';
+import {
+	Button,
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from 'ui';
 import {useState} from 'react';
-import ChevronRight from '@material-design-icons/svg/round/chevron_right.svg';
+import {ModalSheet} from '@/components/modal-sheet.tsx';
+import {Layers} from 'lucide-react';
+import useWindowDimensions from '@/hooks/use-window-dimensions.ts';
+import {MapboxMap} from '@/components/mapbox-map.tsx';
+import {RezagoSocialLayer} from '@/components/layers/rezago-social-layer.tsx';
+import {FeminicidiosEnPeriodicosLayer} from '@/components/layers/feminicidios-en-periodicos-layer.tsx';
+import {FeminicidiosEnFiscaliaLayer} from '@/components/layers/feminicidios-en-fiscalia-layer.tsx';
+import {AreaSinCubrimientoDeSitioLayer} from '@/components/layers/area-sin-cubrimiento-de-sitio-layer.tsx';
+import {SitiosDeApoyoLayer} from '@/components/layers/sitios-de-apoyo-layer.tsx';
+import {ModeloPredictivoLayer} from '@/components/layers/modelo-predictivo-layer.tsx';
 
-// Cargando componentes de manera dinámica para evitar SSR
-const MainMap = dynamic(() => import('@/components/main-map.tsx'), {
-	ssr: false,
-});
+const monterreyLat = 25.67;
+const monterreyLng = -100.32;
+const initialZoom = 10.5;
 
-const InformationPanel = dynamic(
-	() => import('@/components/information-panel.tsx'),
-	{ssr: false},
-);
-
+/**
+ * The Home component renders the main layout for the Feminicidios en Nuevo León map visualization. It includes various map layers, controls, and introductory content explaining the problem of feminicidios in Nuevo León. The component adapts the layout for mobile and desktop devices.
+ */
 export default function Home() {
-	// Estados para los controles
-	const [showControls, setShowControls] = useState(false);
-	const [showFiscalia, setShowFiscalia] = useState(false);
-	const [showCubrimientoDeSitio, setShowCubrimientoDeSitio] = useState(true);
-	const [showRezagoSocial, setShowRezagoSocial] = useState(true);
-	const [showSitiosDeApoyo, setShowSitiosDeApoyo] = useState(true);
-	const [showModelo, setShowModelo] = useState(false);
-	const [showInformationPanel, setShowInformationPanel] = useState(false);
+	const {width} = useWindowDimensions();
+	const isMobile = width < 1024;
+
+	const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+	const [filters, setFilters] = useState<MapFilters>({
+		showFiscalia: true,
+		showCubrimientoDeSitio: true,
+		showRezagoSocial: true,
+		showSitiosDeApoyo: true,
+		showModelo: true,
+		showPeriodico: true,
+	});
+
+	const {
+		showFiscalia,
+		showCubrimientoDeSitio,
+		showRezagoSocial,
+		showSitiosDeApoyo,
+		showModelo,
+	} = filters;
 
 	return (
-		<main className='h-screen w-screen overflow-hidden bg-stone-950 text-stone-300'>
-			{/* Barra superior con animación de deslizamiento hacia arriba */}
-			<TopBar
-				className={
-					'fixed left-0 top-0 z-50 w-full translate-y-0 transition-transform duration-500'
-				}
-			/>
-
-			<div className='relative size-full'>
-				{/* Panel de Información con animación y transición */}
-				<InformationPanel
-					className={`absolute left-0 top-0 z-50 h-full transition-all duration-300 
-          ${showInformationPanel ? 'w-[95%] md:w-[30%]' : 'w-0'}`}
-					showInformationPanel={showInformationPanel}
-				>
-					<Button
-						className='absolute right-0 flex items-center justify-center rounded-md bg-inherit'
-						onPress={() =>
-							setShowInformationPanel(!showInformationPanel)
-						}
-					>
-						<ChevronRight className='fill-white' />
-					</Button>
-				</InformationPanel>
-
-				{/* Overlay global con transición de opacidad */}
-				<div
-					className={`absolute inset-0 z-40 bg-black transition-opacity duration-500 ease-in-out 
-          ${showInformationPanel ? 'opacity-70' : 'pointer-events-none opacity-0'}`}
+		<main className='w-screen h-screen g-neutral-800 overflow-hidden absolute inset-0 z-0'>
+			<MapboxMap
+				style='mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4'
+				initialCoordinate={[monterreyLng, monterreyLat]}
+				maxBounds={[
+					[monterreyLng - 2, monterreyLat - 3],
+					[monterreyLng + 2, monterreyLat + 3],
+				]}
+				zoom={initialZoom}
+				className='w-screen h-screen absolute inset-0 z-0'
+			>
+				<RezagoSocialLayer isEnabled={showRezagoSocial} />
+				<FeminicidiosEnPeriodicosLayer
+					isEnabled={showCubrimientoDeSitio}
 				/>
+				<FeminicidiosEnFiscaliaLayer isEnabled={showFiscalia} />
+				<AreaSinCubrimientoDeSitioLayer
+					isEnabled={showCubrimientoDeSitio}
+				/>
+				<SitiosDeApoyoLayer isEnabled={showSitiosDeApoyo} />
+				<ModeloPredictivoLayer isEnabled={showModelo} />
+			</MapboxMap>
 
-				{/* Mapa principal con posición fija */}
-				<div className='absolute inset-0 z-30'>
-					<MainMap
-						className='size-full'
-						showModelo={showModelo}
-						showFiscalia={showFiscalia}
-						showCubrimientoDeSitio={showCubrimientoDeSitio}
-						showRezagoSocial={showRezagoSocial}
-						showSitiosDeApoyo={showSitiosDeApoyo}
-					/>
-				</div>
-
-				{/* Controles para pantallas grandes */}
-				<Paper className='absolute right-8 top-20 z-50 hidden md:block'>
-					<div className='mb-4 inline-flex w-full flex-row rounded-md border border-gray-400'>
-						<Button
-							className={`flex-1 rounded-md p-2 ${
-								showFiscalia
-									? 'bg-white text-black'
-									: 'bg-inherit text-white'
-							}`}
-							onPress={() => setShowFiscalia(true)}
-						>
-							Fiscalia
-						</Button>
-						<Button
-							className={`flex-1 rounded-md p-2 ${
-								showFiscalia
-									? 'bg-inherit text-white'
-									: 'bg-white text-black'
-							}`}
-							onPress={() => setShowFiscalia(false)}
-						>
-							Periodico
-						</Button>
-					</div>
-					<Switch
-						label='Mostrar Cubrimiento De Sitio'
-						isSelected={showCubrimientoDeSitio}
-						onChange={setShowCubrimientoDeSitio}
-						className='mb-4'
-					/>
-					<Switch
-						label='Mostrar Rezago Social'
-						isSelected={showRezagoSocial}
-						onChange={setShowRezagoSocial}
-						className='mb-4'
-					/>
-					<Switch
-						label='Mostrar Sitios De Apoyo'
-						isSelected={showSitiosDeApoyo}
-						onChange={setShowSitiosDeApoyo}
-						className='mb-4'
-					/>
-					<Switch
-						label='Mostrar predicciones del modelo'
-						isSelected={showModelo}
-						onChange={setShowModelo}
-						className='mb-4'
-					/>
-				</Paper>
-
-				{/* Controles para pantallas pequeñas */}
-				<div className='fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 gap-4 md:hidden'>
-					<Button
-						className={`rounded-full p-3 ${
-							showFiscalia
-								? 'bg-white text-black'
-								: 'bg-stone-900 text-white'
-						}`}
-						onPress={() => setShowFiscalia(true)}
-					>
-						Fiscalía
-					</Button>
-					<Button
-						className='rounded-full bg-stone-900 p-3 text-white'
-						onPress={() => setShowControls(!showControls)}
-					>
-						<ChevronRight className='rotate-90 fill-white' />
-					</Button>
-					<Button
-						className={`rounded-full p-3 ${
-							showFiscalia
-								? 'bg-stone-900 text-white'
-								: 'bg-white text-black'
-						}`}
-						onPress={() => setShowFiscalia(false)}
-					>
-						Periódico
-					</Button>
-				</div>
-
-				{/* Menú centrado en pantalla */}
-				<Paper
-					className={`fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4 transition-all duration-300 ${
-						showControls
-							? 'scale-100 opacity-100'
-							: 'pointer-events-none scale-90 opacity-0'
-					}`}
+			{isMobile ? (
+				<ModalSheet
+					isOpen={isSheetOpen}
+					onOpenChange={setIsSheetOpen}
+					header={
+						<>
+							<h1 className='text-stone-200 text-2xl font-semibold'>
+								Feminicidios en Nuevo León
+							</h1>
+							<p className='text-sm text-stone-200'>
+								Modelo predictivo y situación actual
+							</p>
+						</>
+					}
+					controls={
+						<Sheet>
+							<SheetTrigger asChild>
+								<Button size='icon'>
+									<Layers />
+								</Button>
+							</SheetTrigger>
+							<SheetContent side='bottom'>
+								<SheetHeader>
+									<SheetTitle>
+										Mostrar/ocultar capas
+									</SheetTitle>
+									<SheetDescription>
+										Aquí puedes modificar cuales capas son
+										visibles en el mapa.
+									</SheetDescription>
+									<FiltersList
+										filters={filters}
+										onFiltersChange={setFilters}
+									/>
+								</SheetHeader>
+							</SheetContent>
+						</Sheet>
+					}
 				>
-					<div className='w-full max-w-lg rounded-md bg-black p-6 shadow-lg'>
-						<Switch
-							label='Mostrar Cubrimiento De Sitio'
-							isSelected={showCubrimientoDeSitio}
-							onChange={setShowCubrimientoDeSitio}
-							className='mb-4'
-						/>
-						<Switch
-							label='Mostrar Rezago Social'
-							isSelected={showRezagoSocial}
-							onChange={setShowRezagoSocial}
-							className='mb-4'
-						/>
-						<Switch
-							label='Mostrar Sitios De Apoyo'
-							isSelected={showSitiosDeApoyo}
-							onChange={setShowSitiosDeApoyo}
-							className='mb-4'
-						/>
-						<Switch
-							label='Mostrar Predicciones del Modelo'
-							isSelected={showModelo}
-							onChange={setShowModelo}
-							className='mb-4'
-						/>
+					<div className='text-stone-300'>
+						<p className='m"-6'>
+							El mapa que se puede ver en esta página permite
+							observar las ubicaciones dentro del Area
+							Metropolitana de Monterrey donde hay una mayor
+							incidencia de feminicidios.
+						</p>
+
+						<h2 className='font-semibold text-lg mb-1'>
+							Introducción
+						</h2>
+						<p className='pb-3'>
+							El feminicidio se define como el asesinato de una
+							mujer por su genero. México se encuentra entre los
+							países con mayores tasas de feminicidios. Dentro de
+							está situación, el estado de Nuevo León presenta una
+							de las tasas más elevadas a nivel nacional, siendo
+							uno de los estados con mayor acontecimiento de este
+							tipo de delito. Está es una crisis multifacética, la
+							cual afecta a todas las personas viviendo en la
+							entidad. Los efectos de un feminicidio no acaban con
+							la víctima. Este es un fenómeno qué afecta a todas
+							las personas cercanas, tanto a la víctima como a la
+							comunidad. Por lo tanto, la organización de Futuro
+							con Derechos busca apoyar a estas víctimas
+							indirectas (NNA) por el delito de feminicidio. La
+							organización busca brindar apoyo integral, con el
+							objetivo de mitigar el impacto social y contribuir a
+							un entorno más seguro y resiliente.
+						</p>
+						<p>
+							Para apoyar a la causa, GeoStats entró en
+							colaboración con Futuro con Derechos para apoyar en
+							la generación de una fuente de datos geográfica qué
+							ayude a determinar el número correcto de posibles
+							víctimas indirectas por el delito de feminicidio en
+							Nuevo León. Adicionalmente, se propone la definición
+							de un modelo predictivo qué identifique las zonas
+							del estado de Nuevo León qué sean más propensas a
+							qué sucedan feminicidios.
+						</p>
 					</div>
-				</Paper>
-			</div>
+				</ModalSheet>
+			) : (
+				<>
+					<div className='absolute top-4 left-4 z-30'>
+						<Button size='icon'>
+							<Layers />
+						</Button>
+					</div>
+
+					<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
+						<h1 className='text-2x1 font-semibold mb-1'>
+							Feminicidios en el Área Metropolitana
+						</h1>
+						<p className='text-sm mb-4'>
+							Modelo predictivo y situación actual
+						</p>
+
+						<p className='mb-3'>
+							El mapa que se puede ver en esta página permite
+							observar las ubicaciones dentro del Área
+							Metropolitana de Monterrey donde hay una mayor
+							incidencia de feminicidios.
+						</p>
+
+						<h2 className='font-semibold text-lg mb-1'>
+							Introducción
+						</h2>
+						<p className='mb-3'>
+							El feminicidio se define como el asesinato de una
+							mujer por su genero. México se encuentra entre los
+							países con mayores tasas de feminicidios. Dentro de
+							está situación, el estado de Nuevo León presenta una
+							de las tasas más elevadas a nivel nacional, siendo
+							uno de los estados con mayor acontecimiento de este
+							tipo de delito. Está es una crisis multifacética, la
+							cual afecta a todas las personas viviendo en la
+							entidad. Los efectos de un feminicidio no acaban con
+							la víctima. Este es un fenómeno qué afecta a todas
+							las personas cercanas, tanto a la víctima como a la
+							comunidad. Por lo tanto, la organización de Futuro
+							con Derechos busca apoyar a estas víctimas
+							indirectas (NNA) por el delito de feminicidio. La
+							organización busca brindar apoyo integral, con el
+							objetivo de mitigar el impacto social y contribuir a
+							un entorno más seguro y resiliente.
+						</p>
+						<p>
+							Para apoyar a la causa, GeoStats entró en
+							colaboración con Futuro con Derechos para apoyar en
+							la generación de una fuente de datos geográfica qué
+							ayude a determinar el número correcto de posibles
+							víctimas indirectas por el delito de feminicidio en
+							Nuevo León. Adicionalmente, se propone la definición
+							de un modelo predictivo qué identifique las zonas
+							del estado de Nuevo León qué sean más propensas a
+							qué sucedan feminicidios.
+						</p>
+					</aside>
+				</>
+			)}
 		</main>
 	);
 }

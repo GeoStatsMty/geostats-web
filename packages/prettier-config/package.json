@@ -1,0 +1,5 @@
+{
+	"name": "prettier-config",
+	"type": "module",
+	"main": "prettier.config.js"
+}
