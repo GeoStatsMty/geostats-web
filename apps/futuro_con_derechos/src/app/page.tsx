@@ -26,9 +26,7 @@ const monterreyLat = 25.67;
 const monterreyLng = -100.32;
 const initialZoom = 10.5;
 
-/**
- * The Home component renders the main layout for the Feminicidios en Nuevo León map visualization. It includes various map layers, controls, and introductory content explaining the problem of feminicidios in Nuevo León. The component adapts the layout for mobile and desktop devices.
- */
+
 export default function Home() {
 	const {width} = useWindowDimensions();
 	const isMobile = width < 1024;
