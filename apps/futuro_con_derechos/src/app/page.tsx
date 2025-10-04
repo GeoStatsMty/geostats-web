@@ -9,7 +9,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from 'ui';
-import {useState} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {ModalSheet} from '@/components/modal-sheet.tsx';
 import {Layers} from 'lucide-react';
 import useWindowDimensions from '@/hooks/use-window-dimensions.ts';
@@ -25,9 +25,6 @@ const monterreyLat = 25.67;
 const monterreyLng = -100.32;
 const initialZoom = 10.5;
 
-/**
- * The Home component renders the main layout for the Feminicidios en Nuevo León map visualization. It includes various map layers, controls, and introductory content explaining the problem of feminicidios in Nuevo León. The component adapts the layout for mobile and desktop devices.
- */
 export default function Home() {
 	const {width} = useWindowDimensions();
 	const isMobile = width < 1024;
@@ -42,6 +39,35 @@ export default function Home() {
 		showModelo: true,
 		showPeriodico: true,
 	});
+
+	const [panelOpen, setPanelOpen] = useState(false);
+	const buttonRef = useRef<HTMLButtonElement | null>(null);
+	const panelRef = useRef<HTMLDivElement | null>(null);
+
+	function onKey(event: KeyboardEvent) {
+		if (event.key === 'Escape') setPanelOpen(false);
+	}
+	function onClickOutside(event: MouseEvent) {
+		const t = event.target as Node;
+		if (
+			panelRef.current &&
+			!panelRef.current.contains(t) &&
+			buttonRef.current &&
+			!buttonRef.current.contains(t)
+		) {
+			setPanelOpen(false);
+		}
+	}
+
+	useEffect(() => {
+		if (!isMobile) return;
+		document.addEventListener('mousedown', onClickOutside);
+		document.addEventListener('keydown', onKey);
+		return () => {
+			document.removeEventListener('mousedown', onClickOutside);
+			document.removeEventListener('keydown', onKey);
+		};
+	}, [isMobile]);
 
 	const {
 		showFiscalia,
@@ -65,9 +91,8 @@ export default function Home() {
 				className='w-screen h-screen absolute inset-0 z-0'
 			>
 				<RezagoSocialLayer isEnabled={showRezagoSocial} />
-				<FeminicidiosEnPeriodicosLayer
-					isEnabled={showCubrimientoDeSitio}
-				/>
+				{/* FIX: esta capa debe responder a showPeriodico */}
+				<FeminicidiosEnPeriodicosLayer isEnabled={showPeriodico} />
 				<FeminicidiosEnFiscaliaLayer isEnabled={showFiscalia} />
 				<AreaSinCubrimientoDeSitioLayer
 					isEnabled={showCubrimientoDeSitio}
@@ -116,7 +141,7 @@ export default function Home() {
 					}
 				>
 					<div className='text-stone-300'>
-						<p className='m"-6'>
+						<p className='m-6'>
 							El mapa que se puede ver en esta página permite
 							observar las ubicaciones dentro del Area
 							Metropolitana de Monterrey donde hay una mayor
@@ -161,9 +186,41 @@ export default function Home() {
 			) : (
 				<>
 					<div className='absolute top-4 left-4 z-30'>
-						<Button size='icon'>
-							<Layers />
-						</Button>
+						<div className='relative'>
+							<Button
+								ref={buttonRef}
+								size='icon'
+								aria-label='Abrir filtros'
+								onClick={() => setPanelOpen(true)}
+								aria-expanded={panelOpen}
+							>
+								<Layers />
+							</Button>
+
+							{panelOpen && (
+								<div
+									ref={panelRef}
+									className='absolute left-0 mt-2 w-72 rounded-lg border border-neutral-800 bg-neutral-900/95 backdrop-blur p-3 text-stone-200 shadow-xl'
+								>
+									<div className='flex items-center justify-between mb-2'>
+										<h3 className='text-sm font-semibold'>
+											Filtros
+										</h3>
+										<button
+											className='text-xs opacity-70 hover:opacity-100'
+											onClick={() => setPanelOpen(false)}
+										>
+											X
+										</button>
+									</div>
+
+									<FiltersList
+										filters={filters}
+										onFiltersChange={setFilters}
+									/>
+								</div>
+							)}
+						</div>
 					</div>
 
 					<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
