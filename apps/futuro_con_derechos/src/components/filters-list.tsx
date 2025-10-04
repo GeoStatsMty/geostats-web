@@ -1,14 +1,18 @@
-import React, { useCallback, memo, startTransition} from 'react';
-import { FilterItem } from './filter-item';
-import type { FilterCategory } from './filter-item';
+import {useCallback, memo, startTransition} from 'react';
+import {FilterItem} from './filter-item';
+import type {FilterCategory} from './filter-item';
+import {twJoin} from 'tailwind-merge';
 
-const MAIN_CATEGORIES = ['Fiscalia', 'Periodico'] as const satisfies readonly FilterCategory[]
+const MAIN_CATEGORIES = [
+	'Fiscalia',
+	'Periodico',
+] as const satisfies readonly FilterCategory[];
 const EXTRA_CATEGORIES = [
-  'SitiosDeApoyo',
-  'CubrimientoDeSitio',
-  'RezagoSocial',
-  'Modelo',
-] as const satisfies readonly FilterCategory[]
+	'SitiosDeApoyo',
+	'CubrimientoDeSitio',
+	'RezagoSocial',
+	'Modelo',
+] as const satisfies readonly FilterCategory[];
 
 const LABELS = {
 	Fiscalia: 'Fiscalía',
@@ -30,7 +34,7 @@ type FiltersListProps = {
 export function FiltersList({
 	filters,
 	onFiltersChange,
-	variant = 'default'
+	variant = 'default',
 }: FiltersListProps) {
 	const compact = variant === 'compact';
 	const gridClass = compact
@@ -40,92 +44,93 @@ export function FiltersList({
 	const mainValue = filters.showFiscalia
 		? 'Fiscalia'
 		: filters.showPeriodico
-		? 'Periodico'
-		: ''
+			? 'Periodico'
+			: '';
 
 	const handleMainChange = (value: string) => {
 		startTransition(() => {
-		onFiltersChange((prev) => ({
-			...prev,
-			showFiscalia: value === 'Fiscalia',
-			showPeriodico: value === 'Periodico',
-		}))
-		})
-	}
+			onFiltersChange(prev => ({
+				...prev,
+				showFiscalia: value === 'Fiscalia',
+				showPeriodico: value === 'Periodico',
+			}));
+		});
+	};
 
 	const handleExtraChange = (category: FilterCategory) => {
-		const key = `show${category}` as const
+		const key = `show${category}` as const;
 		startTransition(() => {
-		onFiltersChange((prev) => ({
-			...prev,
-			[key]: !prev[key],
-		}))
-		})
-	}
+			onFiltersChange(prev => ({
+				...prev,
+				[key]: !prev[key],
+			}));
+		});
+	};
 
 	return (
-		<div className="space-y-6">
-		{/* Main categories as segmented switch */}
-		<div>
-			<h3 className="mb-2 text-sm font-semibold text-white">
-			Fuente principal (elige una)
-			</h3>
-			<div className="inline-flex rounded-md border border-gray-700 overflow-hidden">
-			{MAIN_CATEGORIES.map((category, idx) => {
-				const label = LABELS[category]
-				const selected = mainValue === category
-				return (
-				<button
-					key={category}
-					type="button"
-					onClick={() => handleMainChange(category)}
-					className={`
-					px-4 py-2 text-sm font-medium transition
-					${
-						selected
-						? 'bg-blue-600 text-white'
-						: 'bg-neutral-800 text-gray-300 hover:bg-neutral-700'
-					}
-					${idx === 0 ? 'rounded-l-md' : ''}
-					${idx === MAIN_CATEGORIES.length - 1 ? 'rounded-r-md' : ''}
-					`}
-				>
-					{label}
-				</button>
-				)
-			})}
+		<div className='space-y-6'>
+			{/* Main categories as segmented switch */}
+			<div>
+				<h3 className='mb-2 text-sm font-semibold text-white'>
+					Fuente principal (elige una)
+				</h3>
+				<div className='inline-flex rounded-md border border-gray-700 overflow-hidden'>
+					{MAIN_CATEGORIES.map((category, idx) => {
+						const label = LABELS[category];
+						const selected = mainValue === category;
+						return (
+							<button
+								key={category}
+								type='button'
+								onClick={() => handleMainChange(category)}
+								className={twJoin(
+									'px-4 py-2',
+									'text-sm font-medium',
+									'transition',
+									selected && 'bg-blue-600 text-white',
+									!selected &&
+										'bg-neutral-800 text-gray-300 hover:bg-neutral-700',
+									idx === 0 && 'rounded-l-md',
+									idx === MAIN_CATEGORIES.length - 1 &&
+										'rounded-r-md',
+								)}
+							>
+								{label}
+							</button>
+						);
+					})}
+				</div>
+			</div>
+
+			<div className='border-t border-gray-700'></div>
+
+			{/* Extra categories as FilterItem grid */}
+			<div>
+				<h3 className='mb-2 text-sm font-semibold text-white'>
+					Capas adicionales
+				</h3>
+				<div className={gridClass}>
+					{EXTRA_CATEGORIES.map(category => {
+						const key = `show${category}` as const;
+						const selected = filters[key];
+						const label = LABELS[category];
+						return (
+							<Item
+								key={category}
+								category={category}
+								label={label}
+								selected={selected}
+								compact={compact}
+								locked={false}
+								onClick={() => handleExtraChange(category)}
+							/>
+						);
+					})}
+				</div>
 			</div>
 		</div>
-
-		<div className="border-t border-gray-700"></div>
-
-		{/* Extra categories as FilterItem grid */}
-		<div>
-			<h3 className="mb-2 text-sm font-semibold text-white">
-			Capas adicionales
-			</h3>
-			<div className={gridClass}>
-			{EXTRA_CATEGORIES.map((category) => {
-				const key = `show${category}` as const
-				const selected = filters[key]
-				const label = LABELS[category]
-				return (
-				<Item
-					key={category}
-					category={category}
-					label={label}
-					selected={selected}
-					compact={compact}
-					locked={false}
-					onClick={() => handleExtraChange(category)}
-				/>
-				)
-			})}
-			</div>
-		</div>
-		</div>
-	)
-	}
+	);
+}
 
 type ItemProps = {
 	category: FilterCategory;
@@ -137,27 +142,38 @@ type ItemProps = {
 };
 
 const Item = memo(
-  function Item({ category, label, selected, compact, locked, onClick, className }: ItemProps & { className?: string}) {
-    const handleClick = useCallback(() => {
-		if (!locked) onClick(category);
-	}, [locked, onClick, category]);
+	function Item({
+		category,
+		label,
+		selected,
+		compact,
+		locked,
+		onClick,
+		className,
+	}: ItemProps & {className?: string}) {
+		const handleClick = useCallback(() => {
+			if (!locked) onClick(category);
+		}, [locked, onClick, category]);
 
-	const wrapperClass = `flex flex-col items-center select-none ${locked ? 'opacity-40 pointer-events-none' : ''}`;
-	const sizeClass = compact ? 'w-12 h-12' : '';
-	const buttonishClass = `${sizeClass} ${locked ? 'cursor-not-allowed' : ''} ${className ?? ''}`;
+		const wrapperClass = `flex flex-col items-center select-none ${locked ? 'opacity-40 pointer-events-none' : ''}`;
+		const sizeClass = compact ? 'w-12 h-12' : '';
+		const buttonishClass = `${sizeClass} ${locked ? 'cursor-not-allowed' : ''} ${className ?? ''}`;
 
-    return (
-      <div className={wrapperClass} title={label}>
-        <FilterItem
-          category={category}
-          selected={selected}
-          onClick={locked ? undefined : handleClick}
-          className={buttonishClass}
-        >
-          <span className="text-center">{label}</span>
-        </FilterItem>
-      </div>
-    );
-  },
-  (prev, next) => prev.selected === next.selected && prev.compact === next.compact && prev.locked === next.locked
+		return (
+			<div className={wrapperClass} title={label}>
+				<FilterItem
+					category={category}
+					selected={selected}
+					onClick={locked ? undefined : handleClick}
+					className={buttonishClass}
+				>
+					<span className='text-center'>{label}</span>
+				</FilterItem>
+			</div>
+		);
+	},
+	(prev, next) =>
+		prev.selected === next.selected &&
+		prev.compact === next.compact &&
+		prev.locked === next.locked,
 );
