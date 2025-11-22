@@ -1,14 +1,116 @@
 import {MapLayer} from '@/components/map-layer.tsx';
+import {useMap} from '@/components/mapbox-map.tsx';
+import {Popup} from 'mapbox-gl';
+import {useRef} from 'react';
 
 export type SitiosDeApoyoLayerProps = {
 	readonly isEnabled?: boolean;
 };
 
+type HoverEvent = {
+	lngLat: {lng: number; lat: number};
+	features?: Array<{
+		id?: string | number;
+		properties?: {
+			nom_estab?: string;
+			nombre_act?: string;
+			colonia?: string;
+			colonia_n?: string;
+			telefono?: string;
+			tel?: string;
+		};
+	}>;
+};
+
 /**
- * Creates a map layer that represents "Sitios de Apoyo" features with custom styling and visualization options.
+ * Muestra la capa de Sitios de Apoyo y, al pasar el mouse, despliega un popup compacto.
  */
-export function SitiosDeApoyoLayer(props: SitiosDeApoyoLayerProps) {
-	const {isEnabled} = props;
+export function SitiosDeApoyoLayer({isEnabled}: SitiosDeApoyoLayerProps) {
+	const map = useMap();
+
+	const popupRef = useRef<Popup | null>(null);
+	const lastFeatureIdRef = useRef<string | number | null>(null);
+
+	if (popupRef.current === null) {
+		popupRef.current = new Popup({
+			closeButton: false,
+			closeOnClick: false,
+			offset: 12,
+		}).setMaxWidth('220px');
+	}
+
+	const showPopup = (event: HoverEvent, isMove: boolean) => {
+		const popup = popupRef.current;
+		if (!popup) return;
+
+		const feature = event.features && event.features[0];
+		const properties = feature?.properties;
+		if (!feature || !properties) return;
+
+		// si solo movemos dentro del mismo punto, solo mover popup
+		if (isMove && lastFeatureIdRef.current === feature.id) {
+			popup.setLngLat(event.lngLat);
+			return;
+		}
+
+		const nombre =
+			properties.nom_estab ||
+			properties.nombre_act ||
+			'Sitio de apoyo';
+
+		const actividad = properties.nombre_act || '';
+		const colonia =
+			properties.colonia ||
+			properties.colonia_n ||
+			'';
+		const telefono =
+			properties.telefono ||
+			properties.tel ||
+			'';
+
+		const html = `
+			<div
+				style="
+					font-family:sans-serif;
+					background:white;
+					color:#111;
+					padding:8px 10px;
+					border-radius:10px;
+					min-width:180px;
+					max-width:220px;
+					box-shadow:0 10px 25px rgba(0,0,0,.18);
+					box-sizing:border-box;
+					word-break:break-word;
+					overflow-wrap:anywhere;
+					line-height:1.25;
+				"
+			>
+				<div style="font-weight:600;margin-bottom:4px">${nombre}</div>
+				${actividad ? `<div style="font-size:12px;margin-bottom:3px">${actividad}</div>` : ''}
+				${colonia ? `<div style="font-size:12px;margin-bottom:3px">${colonia}</div>` : ''}
+				${telefono ? `<div style="font-size:12px;">Tel: ${telefono}</div>` : ''}
+			</div>
+		`;
+
+		lastFeatureIdRef.current = feature.id ?? nombre;
+
+		popup.setLngLat(event.lngLat).setHTML(html).addTo(map);
+	};
+
+	const handleEnter = (event: HoverEvent) => {
+		showPopup(event, false);
+	};
+
+	const handleMove = (event: HoverEvent) => {
+		showPopup(event, true);
+	};
+
+	const handleLeave = () => {
+		const popup = popupRef.current;
+		if (popup) popup.remove();
+		lastFeatureIdRef.current = null;
+	};
+
 	return (
 		<MapLayer
 			isEnabled={isEnabled}
@@ -16,6 +118,9 @@ export function SitiosDeApoyoLayer(props: SitiosDeApoyoLayerProps) {
 				type: 'vector',
 				url: 'mapbox://stock44.94l5ijku',
 			}}
+			onMouseEnter={handleEnter}
+			onMouseMove={handleMove}
+			onMouseLeave={handleLeave}
 			layer={{
 				type: 'symbol',
 				paint: {

@@ -82,7 +82,7 @@ export function MapboxMap(props: MapboxMapProps) {
 			{isLoaded && mapRef.current && (
 				<mapContext.Provider value={mapRef.current}>
 					{props.children}
-				</mapContext.Provider>
+				</mapContext.Provider>	
 			)}
 		</div>
 	);
