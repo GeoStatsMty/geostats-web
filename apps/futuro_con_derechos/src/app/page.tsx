@@ -1,6 +1,10 @@
 'use client';
 import {FiltersList, MapFilters} from '../components/filters-list.tsx';
 import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 	Button,
 	Sheet,
 	SheetContent,
@@ -24,6 +28,136 @@ import {ModeloPredictivoLayer} from '@/components/layers/modelo-predictivo-layer
 const monterreyLat = 25.67;
 const monterreyLng = -100.32;
 const initialZoom = 10.5;
+
+const ACCORDION_ITEMS = [
+	{
+		value: 'introduccion',
+		title: 'Introducción',
+		content: (
+			<>
+			<p className='mb-3'>
+				El mapa que se puede ver en esta pagina permite observar
+				las ubicaciones dentro del Area Metropolitana de Monterrey
+				donde hay una mayor incidencia de feminicidios.
+			</p>
+			<p className='mb-3'>
+				El feminicidio se define como el asesinato de una mujer por
+				su genero. Mexico se encuentra entre los paises con mayores
+				tasas de feminicidios. Dentro de esta situacion, el estado
+				de Nuevo Leon presenta una de las tasas mas elevadas a
+				nivel nacional.
+			</p>
+			<p>
+				Para apoyar a la causa, GeoStats entro en colaboracion con
+				Futuro con Derechos para apoyar en la generacion de una
+				fuente de datos geografica que ayude a determinar el numero
+				correcto de posibles victimas indirectas por el delito de
+				feminicidio en Nuevo Leon. Adicionalmente, se propone la
+				definicion de un modelo predictivo que identifique las
+				zonas del estado mas propensas a que sucedan feminicidios.
+			</p>
+			</>
+		),
+	},
+	{
+		value: 'fiscalia',
+		title: 'Fiscalía',
+		content: (
+			<p>
+				Esta capa muestra los feminicidios registrados por la
+				Fiscalia, permitiendo identificar zonas donde existe una mayor
+				concentracion de casos reportados oficialmente.
+			</p>
+		),
+	},
+	{
+		value: 'periodico',
+		title: 'Periódicos',
+		content: (
+			<p>
+				Esta capa presenta feminicidios identificados en notas
+				periodísticas. Sirce como complemento a los registros
+				oficiales y ayuda a ampliar el contexto territorial.
+			</p>
+		),
+	},
+	{
+		value: 'sitios-de-apoyo',
+		title: 'Sitios de Apoyo',
+		content: (
+			<p>
+				Esta capa ubica instituciones y espacios que pueden brindar
+				apoyo social, medico, educativo o comunitario dentro del area
+				metropolitana.
+			</p>
+		),
+	},
+	{
+		value: 'curbimiento',
+		title: 'Area sin Cubrimiento',
+		content: (
+			<p>
+				Esta capa resalta zonas donde no existe cubrimiento de sitio,
+				lo que puede ayudar a detectar areas con menor acceso a
+				recursos de apoyo cercanos.
+			</p>
+		),
+	},
+	{
+		value: 'rezago-social',
+		title: 'Rezago Social',
+		content: (
+			<p>
+				Esta capa visualiza el grado de rezago social en distintas
+				zonas, lo que permite relacionar condiciones sociales con el
+				contexto territorial del problema.
+			</p>
+		),
+	},
+	{
+		value: 'modelo-predictivo',
+		title: 'Modelo Predictvo',
+		content: (
+			<p>
+				Esta capa muestra el resultado del modelo predictivo, 
+				el cual estima que zonas tienen mayor probabilidad de presentar 
+				feminicidios con base en los datos analizados.
+			</p>
+		),
+	},
+];
+
+function InfoAccordion({
+	textClassName,
+	triggerClassName,
+}: {
+	textClassName: string;
+	triggerClassName: string;
+}) {
+	return(
+		<Accordion
+		type='single'
+		collapsible
+		defaultValue='introduccion'
+		className='w-full'
+		>
+			{ACCORDION_ITEMS.map(item => (
+				<AccordionItem
+				key={item.value}
+				value={item.value}
+				className='border-b border-neutral-600/60'
+				>
+					<AccordionTrigger className={triggerClassName}>
+						{item.title}
+					</AccordionTrigger>
+					<AccordionContent className={textClassName}>
+						{item.content}
+					</AccordionContent>
+				</AccordionItem>
+			))}
+		</Accordion>
+	);
+}
 
 export default function Home() {
 	const {width} = useWindowDimensions();
@@ -140,47 +274,15 @@ export default function Home() {
 						</Sheet>
 					}
 				>
-					<div className='text-stone-300'>
-						<p className='m-6'>
-							El mapa que se puede ver en esta página permite
-							observar las ubicaciones dentro del Area
-							Metropolitana de Monterrey donde hay una mayor
-							incidencia de feminicidios.
-						</p>
+					<div className='text-stone-300 px-2 pb-4'>
+						<h1 className='text-stone-200 text-3xl font-semibold leading-tight mb-6'>
+							Feminicidios en el Area Metropolitana
+						</h1>
 
-						<h2 className='font-semibold text-lg mb-1'>
-							Introducción
-						</h2>
-						<p className='pb-3'>
-							El feminicidio se define como el asesinato de una
-							mujer por su genero. México se encuentra entre los
-							países con mayores tasas de feminicidios. Dentro de
-							está situación, el estado de Nuevo León presenta una
-							de las tasas más elevadas a nivel nacional, siendo
-							uno de los estados con mayor acontecimiento de este
-							tipo de delito. Está es una crisis multifacética, la
-							cual afecta a todas las personas viviendo en la
-							entidad. Los efectos de un feminicidio no acaban con
-							la víctima. Este es un fenómeno qué afecta a todas
-							las personas cercanas, tanto a la víctima como a la
-							comunidad. Por lo tanto, la organización de Futuro
-							con Derechos busca apoyar a estas víctimas
-							indirectas (NNA) por el delito de feminicidio. La
-							organización busca brindar apoyo integral, con el
-							objetivo de mitigar el impacto social y contribuir a
-							un entorno más seguro y resiliente.
-						</p>
-						<p>
-							Para apoyar a la causa, GeoStats entró en
-							colaboración con Futuro con Derechos para apoyar en
-							la generación de una fuente de datos geográfica qué
-							ayude a determinar el número correcto de posibles
-							víctimas indirectas por el delito de feminicidio en
-							Nuevo León. Adicionalmente, se propone la definición
-							de un modelo predictivo qué identifique las zonas
-							del estado de Nuevo León qué sean más propensas a
-							qué sucedan feminicidios.
-						</p>
+						<InfoAccordion
+							triggerClassName='py-4 text-base font-normal text-stone-200'
+							textClassName='text-sm leading-6 text-stone-400'
+						/>
 					</div>
 				</ModalSheet>
 			) : (
@@ -224,53 +326,14 @@ export default function Home() {
 					</div>
 
 					<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
-						<h1 className='text-2x1 font-semibold mb-1'>
-							Feminicidios en el Área Metropolitana
+						<h1 className='text-2xl font-semibold mb-6 leading-tight'>
+							Feminicidios en el Area Metropolitana
 						</h1>
-						<p className='text-sm mb-4'>
-							Modelo predictivo y situación actual
-						</p>
 
-						<p className='mb-3'>
-							El mapa que se puede ver en esta página permite
-							observar las ubicaciones dentro del Área
-							Metropolitana de Monterrey donde hay una mayor
-							incidencia de feminicidios.
-						</p>
-
-						<h2 className='font-semibold text-lg mb-1'>
-							Introducción
-						</h2>
-						<p className='mb-3'>
-							El feminicidio se define como el asesinato de una
-							mujer por su genero. México se encuentra entre los
-							países con mayores tasas de feminicidios. Dentro de
-							está situación, el estado de Nuevo León presenta una
-							de las tasas más elevadas a nivel nacional, siendo
-							uno de los estados con mayor acontecimiento de este
-							tipo de delito. Está es una crisis multifacética, la
-							cual afecta a todas las personas viviendo en la
-							entidad. Los efectos de un feminicidio no acaban con
-							la víctima. Este es un fenómeno qué afecta a todas
-							las personas cercanas, tanto a la víctima como a la
-							comunidad. Por lo tanto, la organización de Futuro
-							con Derechos busca apoyar a estas víctimas
-							indirectas (NNA) por el delito de feminicidio. La
-							organización busca brindar apoyo integral, con el
-							objetivo de mitigar el impacto social y contribuir a
-							un entorno más seguro y resiliente.
-						</p>
-						<p>
-							Para apoyar a la causa, GeoStats entró en
-							colaboración con Futuro con Derechos para apoyar en
-							la generación de una fuente de datos geográfica qué
-							ayude a determinar el número correcto de posibles
-							víctimas indirectas por el delito de feminicidio en
-							Nuevo León. Adicionalmente, se propone la definición
-							de un modelo predictivo qué identifique las zonas
-							del estado de Nuevo León qué sean más propensas a
-							qué sucedan feminicidios.
-						</p>
+						<InfoAccordion
+							triggerClassName='py-4 text-base font-normal text-stone-200'
+							textClassName='text-sm leading-6 text-stone-400'
+						/>
 					</aside>
 				</>
 			)}
