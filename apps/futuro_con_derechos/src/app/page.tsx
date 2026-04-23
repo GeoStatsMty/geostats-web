@@ -1,5 +1,6 @@
 'use client';
 import {FiltersList, MapFilters} from '../components/filters-list.tsx';
+import { MapLegend } from '@/components/map-legend.tsx';
 import {
 	Accordion,
 	AccordionContent,
@@ -274,14 +275,23 @@ export default function Home() {
 					}
 				>
 					<div className='text-stone-300 px-2 pb-4'>
-						<h1 className='text-stone-200 text-3xl font-semibold leading-tight mb-6'>
+						<h1 className='text-stone-200 text-3xl font-semibold leading-tight mb-3'>
 							Feminicidios en el Área Metropolitana
 						</h1>
 
-						<InfoAccordion
-							triggerClassName='py-4 text-base font-normal text-stone-200'
-							textClassName='text-sm leading-6 text-stone-400'
-						/>
+						<p className='mb-6 text-sm leading-6 text-stone-400'>
+							Explora las capas para comparar registros, contexto social y zonas con
+							mayor probabilidad estimada.
+						</p>
+
+						<MapLegend />
+
+						<div className='mt-8'>
+							<InfoAccordion
+								triggerClassName='py-4 text-base font-normal text-stone-200'
+								textClassName='text-sm leading-6 text-stone-400'
+							/>
+						</div>
 					</div>
 				</ModalSheet>
 			) : (
@@ -325,14 +335,23 @@ export default function Home() {
 					</div>
 
 					<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
-						<h1 className='text-2xl font-semibold mb-6 leading-tight'>
+						<h1 className='text-2xl font-semibold mb-3 leading-tight'>
 							Feminicidios en el Área Metropolitana
 						</h1>
 
-						<InfoAccordion
-							triggerClassName='py-4 text-base font-normal text-stone-200'
-							textClassName='text-sm leading-6 text-stone-400'
-						/>
+						<p className='mb-6 text-sm leading-6 text-stone-400'>
+							Explora las capas para comparar registros, contexto social y zonas con
+							mayor probabilidad estimada.
+						</p>
+
+						<MapLegend />
+
+						<div className='mt-8'>
+							<InfoAccordion
+								triggerClassName='py-4 text-base font-normal text-stone-200'
+								textClassName='text-sm leading-6 text-stone-400'
+							/>
+						</div>
 					</aside>
 				</>
 			)}
