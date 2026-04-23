@@ -36,25 +36,25 @@ const ACCORDION_ITEMS = [
 		content: (
 			<>
 			<p className='mb-3'>
-				El mapa que se puede ver en esta pagina permite observar
-				las ubicaciones dentro del Area Metropolitana de Monterrey
+				El mapa que se muestra en esta pagina permite observar
+				las ubicaciones dentro del Área Metropolitana de Monterrey
 				donde hay una mayor incidencia de feminicidios.
 			</p>
 			<p className='mb-3'>
 				El feminicidio se define como el asesinato de una mujer por
-				su genero. Mexico se encuentra entre los paises con mayores
-				tasas de feminicidios. Dentro de esta situacion, el estado
-				de Nuevo Leon presenta una de las tasas mas elevadas a
+				su género. México se encuentra entre los paises con mayores
+				tasas de feminicidios. Dentro de esta situación, el estado
+				de Nuevo León presenta una de las tasas mas elevadas a
 				nivel nacional.
 			</p>
 			<p>
-				Para apoyar a la causa, GeoStats entro en colaboracion con
-				Futuro con Derechos para apoyar en la generacion de una
-				fuente de datos geografica que ayude a determinar el numero
-				correcto de posibles victimas indirectas por el delito de
-				feminicidio en Nuevo Leon. Adicionalmente, se propone la
-				definicion de un modelo predictivo que identifique las
-				zonas del estado mas propensas a que sucedan feminicidios.
+				Para apoyar a la causa, GeoStats entró en colaboración con
+				Futuro con Derechos para contribuir a la generación de una
+				fuente de datos geográfica que ayude a determinar el número
+				correcto de posibles víctimas indirectas por el delito de
+				feminicidio en Nuevo León. Adicionalmente, se propone la
+				definición de un modelo predictivo que identifique las
+				zonas del estado más propensas a que ocurran feminicidios.
 			</p>
 			</>
 		),
@@ -65,8 +65,8 @@ const ACCORDION_ITEMS = [
 		content: (
 			<p>
 				Esta capa muestra los feminicidios registrados por la
-				Fiscalia, permitiendo identificar zonas donde existe una mayor
-				concentracion de casos reportados oficialmente.
+				Fiscalía, permitiendo identificar zonas donde existe una mayor
+				concentración de casos reportados oficialmente.
 			</p>
 		),
 	},
@@ -76,7 +76,7 @@ const ACCORDION_ITEMS = [
 		content: (
 			<p>
 				Esta capa presenta feminicidios identificados en notas
-				periodísticas. Sirce como complemento a los registros
+				periodísticas. Sirve como complemento a los registros
 				oficiales y ayuda a ampliar el contexto territorial.
 			</p>
 		),
@@ -87,7 +87,7 @@ const ACCORDION_ITEMS = [
 		content: (
 			<p>
 				Esta capa ubica instituciones y espacios que pueden brindar
-				apoyo social, medico, educativo o comunitario dentro del area
+				apoyo social, médico, educativo o comunitario dentro del área
 				metropolitana.
 			</p>
 		),
@@ -98,7 +98,7 @@ const ACCORDION_ITEMS = [
 		content: (
 			<p>
 				Esta capa resalta zonas donde no existe cubrimiento de sitio,
-				lo que puede ayudar a detectar areas con menor acceso a
+				lo que puede ayudar a detectar áreas con menor acceso a
 				recursos de apoyo cercanos.
 			</p>
 		),
@@ -120,7 +120,7 @@ const ACCORDION_ITEMS = [
 		content: (
 			<p>
 				Esta capa muestra el resultado del modelo predictivo, 
-				el cual estima que zonas tienen mayor probabilidad de presentar 
+				el cual estima qué zonas tienen mayor probabilidad de presentar 
 				feminicidios con base en los datos analizados.
 			</p>
 		),
@@ -213,7 +213,7 @@ export default function Home() {
 	} = filters;
 
 	return (
-		<main className='w-screen h-screen g-neutral-800 overflow-hidden absolute inset-0 z-0'>
+		<main className='w-screen h-screen bg-neutral-800 overflow-hidden absolute inset-0 z-0'>
 			<MapboxMap
 				style='mapbox://styles/stock44/clwwmpmk7003501nm1y6eh0q4'
 				initialCoordinate={[monterreyLng, monterreyLat]}
@@ -225,7 +225,6 @@ export default function Home() {
 				className='w-screen h-screen absolute inset-0 z-0'
 			>
 				<RezagoSocialLayer isEnabled={showRezagoSocial} />
-				{/* FIX: esta capa debe responder a showPeriodico */}
 				<FeminicidiosEnPeriodicosLayer isEnabled={showPeriodico} />
 				<FeminicidiosEnFiscaliaLayer isEnabled={showFiscalia} />
 				<AreaSinCubrimientoDeSitioLayer
@@ -262,7 +261,7 @@ export default function Home() {
 										Mostrar/ocultar capas
 									</SheetTitle>
 									<SheetDescription>
-										Aquí puedes modificar cuales capas son
+										Aquí puedes modificar cuáles capas son
 										visibles en el mapa.
 									</SheetDescription>
 									<FiltersList
@@ -276,7 +275,7 @@ export default function Home() {
 				>
 					<div className='text-stone-300 px-2 pb-4'>
 						<h1 className='text-stone-200 text-3xl font-semibold leading-tight mb-6'>
-							Feminicidios en el Area Metropolitana
+							Feminicidios en el Área Metropolitana
 						</h1>
 
 						<InfoAccordion
@@ -327,7 +326,7 @@ export default function Home() {
 
 					<aside className='absolute top-0 right-0 w-[400px] h-full bg-neutral-900 p-6 overflow-y-auto text-stone-300 z-20 shadow-lg'>
 						<h1 className='text-2xl font-semibold mb-6 leading-tight'>
-							Feminicidios en el Area Metropolitana
+							Feminicidios en el Área Metropolitana
 						</h1>
 
 						<InfoAccordion

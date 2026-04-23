@@ -2,7 +2,7 @@ import {FilterCategory, FilterItem} from './filter-item.tsx';
 
 const FILTER_ITEMS: {category: FilterCategory; label: string}[] = [
 	{category: 'Fiscalia', label: 'Fiscalía'},
-	{category: 'Periodico', label: 'Periódico'},
+	{category: 'Periodico', label: 'Periódicos'},
 	{category: 'SitiosDeApoyo', label: 'Sitios de Apoyo'},
 	{category: 'CubrimientoDeSitio', label: 'Área sin Cubrimiento'},
 	{category: 'RezagoSocial', label: 'Rezago Social'},
