@@ -31,12 +31,52 @@ export function SitiosDeApoyoLayer({isEnabled}: SitiosDeApoyoLayerProps) {
 	const popupRef = useRef<Popup | null>(null);
 	const lastFeatureIdRef = useRef<string | number | null>(null);
 
+	function escapeHTML(value: string) {
+		return value
+			.replaceAll('&', '&amp;')
+			.replaceAll('<', '&lt;')
+			.replaceAll('>', '&gt;')
+			.replaceAll('"', '&quot;')
+			.replaceAll("'", '&#39;');
+	}
+
+	function buildDetailRow(label: string, value: string) {
+		if (!value) return '';
+
+		return `
+			<div>
+				<div
+					style="
+						font-size:11px;
+						color:#6b7280;
+						text-transform:uppercase;
+						letter-spacing:0.04em;
+						margin-bottom:2px;
+					"
+				>
+					${label}
+				</div>
+				<div
+					style="
+						font-size:13px;
+						color:#111827;
+						font-weight:500;
+						word-break:break-word;
+						overflow-wrap:anywhere;
+					"
+				>
+					${escapeHTML(value)}
+				</div>
+			</div>
+		`;
+	}
+
 	if (popupRef.current === null) {
 		popupRef.current = new Popup({
 			closeButton: false,
 			closeOnClick: false,
 			offset: 12,
-		}).setMaxWidth('220px');
+		}).setMaxWidth('260px');
 	}
 
 	const showPopup = (event: HoverEvent, isMove: boolean) => {
@@ -71,24 +111,53 @@ export function SitiosDeApoyoLayer({isEnabled}: SitiosDeApoyoLayerProps) {
 		const html = `
 			<div
 				style="
-					font-family:sans-serif;
-					background:white;
-					color:#111;
-					padding:8px 10px;
-					border-radius:10px;
-					min-width:180px;
-					max-width:220px;
-					box-shadow:0 10px 25px rgba(0,0,0,.18);
+					font-family:Inter, ui-sans-serif, system-ui, sans-serif;
+					background:#ffffff;
+					color:#111827;
+					padding:12px 14px;
+					border-radius:14px;
+					min-width:190px;
+					max-width:250px;
+					box-shadow:0 16px 38px rgba(0,0,0,.22);
 					box-sizing:border-box;
-					word-break:break-word;
-					overflow-wrap:anywhere;
-					line-height:1.25;
+					line-height:1.35;
 				"
 			>
-				<div style="font-weight:600;margin-bottom:4px">${nombre}</div>
-				${actividad ? `<div style="font-size:12px;margin-bottom:3px">${actividad}</div>` : ''}
-				${colonia ? `<div style="font-size:12px;margin-bottom:3px">${colonia}</div>` : ''}
-				${telefono ? `<div style="font-size:12px;">Tel: ${telefono}</div>` : ''}
+				<div
+					style="
+						display:inline-flex;
+						align-items:center;
+						padding:4px 8px;
+						border-radius:999px;
+						background:#e0f2fe;
+						color:#075985;
+						font-size:11px;
+						font-weight:700;
+						letter-spacing:0.04em;
+						text-transform:uppercase;
+					"
+				>
+					Sitio de apoyo
+				</div>
+
+				<div
+					style="
+						margin-top:10px;
+						font-size:15px;
+						font-weight:700;
+						color:#111827;
+						word-break:break-word;
+						overflow-wrap:anywhere;
+					"
+				>
+					${escapeHTML(nombre)}
+				</div>
+
+				<div style="margin-top:10px;display:grid;grap:8px;">
+					${buildDetailRow('Actividad', actividad)}
+					${buildDetailRow('Colonia', colonia)}
+					${buildDetailRow('Teléfono', telefono)}
+				</div>
 			</div>
 		`;
 
