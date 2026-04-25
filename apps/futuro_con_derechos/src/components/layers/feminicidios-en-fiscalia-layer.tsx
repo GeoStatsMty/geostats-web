@@ -39,8 +39,11 @@ export function FeminicidiosEnFiscaliaLayer(
 						15,
 						20,
 					],
-					'circle-color': '#ec5151',
-					'circle-blur': 1,
+					'circle-color': '#ef4444',
+					'circle-stroke-color': 'rgba(255,255,255,0.28)',
+					'circle-stroke-width': 1,
+					'circle-opacity': 0.85,
+					'circle-blur': 0.65,
 				},
 			}}
 		/>
