@@ -280,10 +280,6 @@ export default function Home() {
 					}
 				>
 					<div className='text-stone-300 px-2 pb-4'>
-						<h1 className='text-stone-200 text-3xl font-semibold leading-tight mb-6'>
-							Feminicidios en el Área Metropolitana
-						</h1>
-
 						<InfoAccordion
 							triggerClassName='py-4 text-base font-normal text-stone-200'
 							textClassName='text-sm leading-6 text-stone-400'
