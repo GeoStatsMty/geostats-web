@@ -7,6 +7,7 @@ export type LayerProps = {
 	readonly source: SourceSpecification;
 	readonly layer: Omit<Layer, 'source' | 'id'>;
 	readonly isEnabled?: boolean;
+	readonly onClick?: (event: InteractionEvent) => void;
 	readonly onMouseEnter?: (event: InteractionEvent) => void;
 	readonly onMouseMove?: (event: InteractionEvent) => void;
 	readonly onMouseLeave?: (event: InteractionEvent) => void;
@@ -20,6 +21,7 @@ export function MapLayer(props: LayerProps) {
 		source,
 		layer,
 		isEnabled = true,
+		onClick,
 		onMouseEnter,
 		onMouseMove,
 		onMouseLeave,
@@ -33,6 +35,20 @@ export function MapLayer(props: LayerProps) {
 	const [sourceLoaded, setSourceLoaded] = useState(false);
 
 	const [layerLoaded, setLayerLoaded] = useState(false);
+
+	useEffect(() => {
+		if (onClick === undefined || !layerLoaded) return;
+
+		map.addInteraction(`${layerId}-click`, {
+			type: 'click',
+			target: {layerId},
+			handler: onClick,
+		});
+
+		return () => {
+			map.removeInteraction(`${layerId}-click`);
+		};
+	}, [layerId, layerLoaded, map, onClick]);
 
 	useEffect(() => {
 		if (onMouseLeave === undefined || !layerLoaded) return;

@@ -125,5 +125,100 @@
     }
 }
 
+.prediction-popup .mapboxgl-popup-content {
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background:
+        linear-gradient(180deg, rgba(35, 35, 35, 0.98), rgba(17, 17, 17, 0.98));
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.35),
+        0 4px 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.prediction-popup .mapboxgl-popup-tip {
+    border-top-color: rgba(17, 17, 17, 0.98);
+}
+
+.prediction-popup .mapboxgl-popup-close-button {
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 18px;
+    line-height: 22px;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.prediction-popup .mapboxgl-popup-close-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.prediction-popup__card {
+    min-width: 250px;
+    max-width: 300px;
+    padding: 16px;
+    color: #f5f5f4;
+    font-family: inherit;
+}
+
+.prediction-popup__eyebrow {
+    margin: 0 0 6px;
+    color: #fca5a5;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.prediction-popup__title {
+    margin: 0 0 14px;
+    padding-right: 20px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.prediction-popup__metrics {
+    display: grid;
+    gap: 8px;
+}
+
+.prediction-popup__metric {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.prediction-popup__metric--accent {
+    background: rgba(227, 13, 13, 0.12);
+    border-color: rgba(227, 13, 13, 0.24);
+}
+
+.prediction-popup__label {
+    color: #d6d3d1;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.prediction-popup__value {
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: right;
+}
+
 @source '../../../../packages/ui/src'
 

@@ -1,11 +1,43 @@
 import {MapLayer} from '@/components/map-layer.tsx';
 import {useMap} from '@/components/mapbox-map.tsx';
 import {InteractionEvent, Popup} from 'mapbox-gl';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 export type ModeloPredictivoLayerProps = {
 	readonly isEnabled?: boolean;
 };
+
+function formatValue(value: unknown) {
+	if (value === undefined || value === null || value === '') {
+		return 'Sin dato';
+	}
+
+	const numericValue = Number(value);
+	if (!Number.isNaN(numericValue)) {
+		return numericValue.toLocaleString('es-MX', {
+			maximumFractionDigits: 2,
+		});
+	}
+
+	return String(value);
+}
+
+function formatProbability(value: unknown) {
+	if (value === undefined || value === null || value === '') {
+		return 'Sin dato';
+	}
+
+	const numericValue = Number(value);
+	if (Number.isNaN(numericValue)) {
+		return String(value);
+	}
+
+	if (numericValue >= 0 && numericValue <= 1) {
+		return `${(numericValue * 100).toFixed(1)}%`;
+	}
+
+	return `${numericValue.toFixed(2)}%`;
+}
 
 /**
  * Creates a map layer that represents "Sitios de Apoyo" features with custom styling and visualization options.
@@ -18,13 +50,24 @@ export function ModeloPredictivoLayer(props: ModeloPredictivoLayerProps) {
 	const [popup] = useState(
 		() =>
 			new Popup({
-				closeButton: false,
-				closeOnClick: false,
-				className: 'h-20 w-20 bg-white',
+				closeButton: true,
+				closeOnClick: true,
+				className: 'prediction-popup',
+				offset: 16,
 			}),
 	);
 
-	const handleMouseEnterAndMove = (event: InteractionEvent) => {
+	useEffect(() => {
+		if (!isEnabled) {
+			popup.remove();
+		}
+
+		return () => {
+			popup.remove();
+		};
+	}, [isEnabled, popup]);
+
+	const handleClick = (event: InteractionEvent) => {
 		const {lngLat, feature} = event;
 
 		if (!feature) return;
@@ -38,12 +81,27 @@ export function ModeloPredictivoLayer(props: ModeloPredictivoLayerProps) {
 			.addTo(map)
 			.setLngLat(lngLat)
 			.setHTML(
-				`<p style="color:black">Siniestros predichos: ${predictedCount} <br> Siniestros reales: ${total} <br> Probabilidad: ${probability}</p>`,
+				`
+					<section class="prediction-popup__card">
+						<p class="prediction-popup__eyebrow">Modelo predictivo</p>
+						<h3 class="prediction-popup__title">Resumen de la zona seleccionada</h3>
+						<div class="prediction-popup__metrics">
+							<div class="prediction-popup__metric">
+								<span class="prediction-popup__label">Casos estimados</span>
+								<strong class="prediction-popup__value">${formatValue(predictedCount)}</strong>
+							</div>
+							<div class="prediction-popup__metric">
+								<span class="prediction-popup__label">Casos registrados</span>
+								<strong class="prediction-popup__value">${formatValue(total)}</strong>
+							</div>
+							<div class="prediction-popup__metric prediction-popup__metric--accent">
+								<span class="prediction-popup__label">Probabilidad</span>
+								<strong class="prediction-popup__value">${formatProbability(probability)}</strong>
+							</div>
+						</div>
+					</section>
+				`,
 			);
-	};
-
-	const handleMouseLeave = () => {
-		popup.remove();
 	};
 
 	return (
@@ -53,9 +111,7 @@ export function ModeloPredictivoLayer(props: ModeloPredictivoLayerProps) {
 				type: 'vector',
 				url: 'mapbox://stock44.4k2z4mbr',
 			}}
-			onMouseEnter={handleMouseEnterAndMove}
-			onMouseMove={handleMouseEnterAndMove}
-			onMouseLeave={handleMouseLeave}
+			onClick={handleClick}
 			layer={{
 				type: 'fill',
 				'source-layer': 'Modelo2-07rfx7',
